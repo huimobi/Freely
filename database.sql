@@ -1,33 +1,43 @@
+PRAGMA foreign_keys = ON;
 DROP TABLE IF EXISTS Service;
 DROP TABLE IF EXISTS User;
 DROP TABLE IF EXISTS FreeLancer;
 DROP TABLE IF EXISTS Client;
-DROP TABLE IF EXISTS Admin;~
+DROP TABLE IF EXISTS Admin;
 DROP TABLE IF EXISTS Comment;
 
-CREATE TABLE User(
-    UserId TEXT NOT NULL,
-    UserName TEXT NOT NULL UNIQUE,
-    FirstName NVARCHAR(40)  NOT NULL,
-    LastName NVARCHAR(20)  NOT NULL,
-    Phone NVARCHAR(24),
-    Email NVARCHAR(60) NOT NULL,
-    Password NVARCHAR(40) NOT NULL,
-    CONSTRAINT PK_User PRIMARY KEY  (UserId)
+CREATE TABLE User (
+    UserId TEXT PRIMARY KEY NOT NULL,
+    UserName TEXT UNIQUE NOT NULL,
+    FirstName TEXT NOT NULL, -- NVARCHAR(50) mapeado para TEXT
+    LastName TEXT NOT NULL,  -- NVARCHAR(50) mapeado para TEXT
+    Email TEXT UNIQUE NOT NULL, -- NVARCHAR(100) mapeado para TEXT
+    PasswordHash TEXT NOT NULL, -- Armazenar HASH+SALT!
+    Phone TEXT,                 -- NVARCHAR(24) mapeado para TEXT
+    CreatedAt TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, -- Formato 'YYYY-MM-DD HH:MM:SS'
+    IsActive INTEGER NOT NULL DEFAULT 1 CHECK (IsActive IN (0, 1)) -- BOOLEAN como INTEGER (0 ou 1)
 );
 
-Create Table FreeLancer(
-    UserId INTEGER NOT NULL,
-    Description NVARCHAR(200) NOT NULL,
-    FOREIGN KEY (UserId) REFERENCES User (UserId)
-	    ON DELETE NO ACTION ON UPDATE NO ACTION
-    );
 
-Create Table Client(
-    UserId TEXT NOT NULL,
-    FOREIGN KEY (UserId) REFERENCES User (UserId)
-	    ON DELETE NO ACTION ON UPDATE NO ACTION
+CREATE TABLE FreeLancer (
+    UserId TEXT PRIMARY KEY NOT NULL,
+    Headline TEXT,          -- NVARCHAR(150) mapeado para TEXT
+    Description TEXT,       -- NVARCHAR(2000) mapeado para TEXT
+    -- NOTA: REAL em SQLite é floating-point. Para valores monetários precisos,
+    -- considere guardar como INTEGER (cêntimos) ou usar bibliotecas de precisão decimal na aplicação.
+    HourlyRate REAL,        -- DECIMAL(10, 2) mapeado para REAL
+    CurrencyRate TEXT,      -- NVARCHAR(3) mapeado para TEXT
+    -- Outros campos específicos do freelancer aqui...
+    FOREIGN KEY (UserId) REFERENCES User (UserId) ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+
+CREATE TABLE Client (
+    UserId TEXT PRIMARY KEY NOT NULL,
+    -- Outros campos específicos do cliente aqui...
+    FOREIGN KEY (UserId) REFERENCES User (UserId) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
 
 Create Table Admin(
      UserId TEXT NOT NULL,
@@ -35,25 +45,77 @@ Create Table Admin(
 	    ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
-CREATE TABLE Service(
+CREATE TABLE Service (
+    ServiceId INTEGER PRIMARY KEY AUTOINCREMENT,
+    FreelancerUserId TEXT NOT NULL,
+    CategoryId INTEGER NOT NULL,
+    Title TEXT NOT NULL,        -- NVARCHAR(150) mapeado para TEXT
+    Description TEXT NOT NULL,  -- NVARCHAR(2000) mapeado para TEXT
+    -- NOTA: Usar REAL para moeda pode levar a problemas de precisão. Ver nota em FreeLancer.HourlyRate.
+    BasePrice REAL NOT NULL CHECK (BasePrice >= 0), -- DECIMAL(10, 2) mapeado para REAL
+    Currency TEXT NOT NULL DEFAULT 'EUR', -- NVARCHAR(3) mapeado para TEXT
+    DeliveryDays INTEGER CHECK (DeliveryDays IS NULL OR DeliveryDays > 0),
+    Revisions INTEGER DEFAULT 1,
+    IsActive INTEGER NOT NULL DEFAULT 1 CHECK (IsActive IN (0, 1)), -- BOOLEAN
+    CreatedAt TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UpdatedAt TEXT, -- TIMESTAMP mapeado para TEXT
+
+    FOREIGN KEY (FreelancerUserId) REFERENCES User (UserId) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (CategoryId) REFERENCES Category (CategoryId) ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+
+CREATE TABLE Comment (
+    CommentId INTEGER PRIMARY KEY AUTOINCREMENT,
+    JobOrderId INTEGER UNIQUE NOT NULL, -- Garante 1 comentário por JobOrder
+    ClientId TEXT NOT NULL,
+    ServiceId INTEGER NOT NULL, -- Redundante com JobOrderId mas pode ajudar em queries
+    Rating INTEGER NOT NULL CHECK (Rating >= 1 AND Rating <= 5),
+    Description TEXT, -- NVARCHAR(1000) mapeado para TEXT
+    CommentDate TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (JobOrderId) REFERENCES JobOrder (JobOrderId) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (ClientId) REFERENCES User (UserId) ON UPDATE CASCADE ON DELETE NO ACTION,
+    FOREIGN KEY (ServiceId) REFERENCES Service (ServiceId) ON UPDATE CASCADE ON DELETE NO ACTION
+);
+
+
+CREATE TABLE Category (
+    CategoryId INTEGER PRIMARY KEY AUTOINCREMENT, -- SERIAL mapeado para INTEGER PK AUTOINCREMENT
+    Name TEXT UNIQUE NOT NULL, -- NVARCHAR(100) mapeado para TEXT
+    Description TEXT,          -- NVARCHAR(255) mapeado para TEXT
+    ParentCategoryId INTEGER,
+    FOREIGN KEY (ParentCategoryId) REFERENCES Category (CategoryId) ON UPDATE CASCADE ON DELETE SET NULL
+);
+
+CREATE TABLE JobOrder (
+    JobOrderId INTEGER PRIMARY KEY AUTOINCREMENT,
     ServiceId INTEGER NOT NULL,
-    Description NVARCHAR(200) NOT NULL,
-    Pricing INTEGER NOT NULL,
-    DeliveryTime TIME,
-    Category TEXT NOT NULL,
-    CONSTRAINT PK_Service PRIMARY KEY  (ServiceId)
+    ClientId TEXT NOT NULL,
+    FreelancerUserId TEXT NOT NULL,
+    -- NOTA: Usar REAL para moeda pode levar a problemas de precisão. Ver nota em FreeLancer.HourlyRate.
+    AgreedPrice REAL NOT NULL, -- DECIMAL(10, 2) mapeado para REAL
+    Currency TEXT NOT NULL,    -- NVARCHAR(3) mapeado para TEXT
+    Status TEXT NOT NULL DEFAULT 'Pending' CHECK (Status IN ('Pending', 'Accepted', 'InProgress', 'Delivered', 'Revision', 'Completed', 'Disputed', 'Cancelled')), -- NVARCHAR(20)
+    Requirements TEXT,
+    OrderDate TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    StartDate TEXT,
+    ExpectedDeliveryDate TEXT,
+    ActualDeliveryDate TEXT,
+    CompletionDate TEXT,
+
+    FOREIGN KEY (ServiceId) REFERENCES Service (ServiceId) ON UPDATE CASCADE ON DELETE RESTRICT,
+    FOREIGN KEY (ClientId) REFERENCES User (UserId) ON UPDATE CASCADE ON DELETE RESTRICT,
+    FOREIGN KEY (FreelancerUserId) REFERENCES User (UserId) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
-CREATE TABLE Comment(
-    CommentId INTEGER NOT NULL,
-    Rating INTEGER NOT NULL CHECK(Rating>= 1 AND Rating <=5),
-    Description NVARCHAR(500),
-    Date TIME NOT NULL DEFAULT CURRENT_TIME,
+-- --- Criação de Índices para Otimização ---
+CREATE INDEX idx_joborder_client ON JobOrder (ClientId);
+CREATE INDEX idx_joborder_freelancer ON JobOrder (FreelancerUserId);
+CREATE INDEX idx_joborder_status ON JobOrder (Status);
 
-    FOREIGN KEY (UserId) REFERENCES User(UserId)
-	    ON DELETE NO ACTION ON UPDATE NO ACTION,
-    FOREIGN KEY (ServiceId) REFERENCES Service(ServiceId)
-	    ON DELETE NO ACTION ON UPDATE NO ACTION,
-    CONSTRAINT PK_Comment PRIMARY KEY  (CommentId),
-);
+CREATE INDEX idx_comment_client ON Comment (ClientId);
+CREATE INDEX idx_comment_service ON Comment (ServiceId);
 
+CREATE INDEX idx_service_category ON Service (CategoryId);
+CREATE INDEX idx_service_freelancer ON Service (FreelancerUserId);
