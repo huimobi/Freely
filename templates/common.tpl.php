@@ -21,10 +21,12 @@
                 <button type="submit" aria-label="Search"><i class="fa fa-search"></i></button>
             </form>
 
-            <button type="button" data-modal-open="loginModal">Login</button>
-            <button type="button" data-modal-open="registerModal">Register</button>
-
+            <nav class="actions">
+                <button class="btn btn--link" type="button" data-modal-open="registerModal">Register</button>
+                <button class="btn btn--primary" type="button" data-modal-open="loginModal">Login</button>
+            </nav>
         </header>
+        <main>
         <?php drawModal('loginModal','drawLoginForm');?>
         <?php drawModal('registerModal','drawRegisterForm');?>
 
@@ -35,6 +37,10 @@
         <input type="password" name="password" placeholder="password">
         <button type="submit">Login</button>
     </form>
+    <p>
+        Don't have an account?
+        <button type="button" class="btn btn--link" data-modal-open="registerModal">Register</button>
+    </p>
 
 
 <?php } function drawRegisterForm() { ?>
@@ -61,9 +67,12 @@
             <li>Nuno Gomes (up202306826)</li>
             <li>Francisco Antunes (up202307639)</li>
             <li>Pedro Coelho (up202306714)</li>
-        </ul>
-        LTW Freelancer website &copy; 2025
-    </footer>    
+        </ul>  
+        <p class="footer-note">
+            LTW Freelancer website &copy; 2025
+        </p>
+    </footer>
+    </main>    
     </body>
     </html>
 
