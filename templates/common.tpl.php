@@ -57,6 +57,11 @@
 
 <?php } function drawFooter() { ?>
     <footer>
+        <ul class="footer-team">
+            <li>Nuno Gomes (up202306826)</li>
+            <li>Francisco Antunes (up202307639)</li>
+            <li>Pedro Coelho (up202306714)</li>
+        </ul>
         LTW Freelancer website &copy; 2025
     </footer>    
     </body>
