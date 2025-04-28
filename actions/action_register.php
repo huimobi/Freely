@@ -2,8 +2,6 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../includes/session.php';
-require_once __DIR__ . '/../database/files/database.php';
-require_once __DIR__ . '/../database/scripts/user.class.php';
 
 $username  = trim($_POST['username'] ?? '');
 $firstName = trim($_POST['first_name'] ?? '');

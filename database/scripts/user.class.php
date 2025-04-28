@@ -1,6 +1,6 @@
 <?php
     declare(strict_types = 1);
-    require_once __DIR__ . '/../files/database.php';
+    require_once __DIR__ . '/database.php';
 
   class User {
     public int $id;
@@ -36,20 +36,21 @@
     
     public static function getUserWithPassword(string $email, string $password) : ?User {
       $db   = Database::getInstance();
-      $stmt = $db->prepare('SELECT * FROM User WHERE lower(email) = ? AND PasswordHash = ? ');
-      $stmt->execute([strtolower($email), password_hash($password)]);
+      $stmt = $db->prepare('SELECT UserId, UserName, FirstName, LastName, Email, Phone, CreatedAt, IsActive, PasswordHash FROM User WHERE lower(email) = ?');
+      $stmt->execute([strtolower($email)]);
       $row = $stmt->fetch();
       if (!$row ) return null;
+      if (!password_verify($password, (string)$row['PasswordHash'])) return null;
       
       return new User(
-        (int)    $User['UserId'],
-        (string) $User['UserName'],
-        (string) $User['FirstName'],
-        (string) $User['LastName'],
-        (string) $User['Email'],
+        (int)    $row['UserId'],
+        (string) $row['UserName'],
+        (string) $row['FirstName'],
+        (string) $row['LastName'],
+        (string) $row['Email'],
         $row['Phone'] !== null ? (string)$row['Phone'] : null,
-        (string) $User['CreatedAt'],
-        (bool)   $User['IsActive']
+        (string) $row['CreatedAt'],
+        (bool)   $row['IsActive']
       );
     }
 
@@ -57,19 +58,19 @@
       $db   = Database::getInstance();
       $stmt = $db->prepare('SELECT UserId, UserName, FirstName, LastName, Email, Phone, CreatedAt, IsActive FROM User WHERE UserId = ?');
       $stmt->execute([$id]);
-      $User = $stmt->fetch();
+      $row = $stmt->fetch();
 
       if(! $row) return null;
     
       return new User(
-        (int)    $User['UserId'],
-        (string) $User['UserName'],
-        (string) $User['FirstName'],
-        (string) $User['LastName'],
-        (string) $User['Email'],
+        (int)    $row['UserId'],
+        (string) $row['UserName'],
+        (string) $row['FirstName'],
+        (string) $row['LastName'],
+        (string) $row['Email'],
         $row['Phone'] !== null ? (string)$row['Phone'] : null,
-        (string) $User['CreatedAt'],
-        (bool)   $User['IsActive']
+        (string) $row['CreatedAt'],
+        (bool)   $row['IsActive']
       );
     }
 
@@ -82,7 +83,7 @@
       if (! $stmt->execute([':user'  => $username, ':first' => $firstName, ':last'  => $lastName, ':email' => $email,':hash'  => $hash])) return null;
       
       $newId = (int) $db->lastInsertId();
-      return self::getUser($db, $newId);
+      return self::getUser($newId);
     }
 
     public static function isClient(int $userId): bool {

@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 session_start();
 
-require_once __DIR__ . '/database.php';
-require_once __DIR__ . '/user.class.php';
+require_once __DIR__ . '/../database/scripts/database.php';
+require_once __DIR__ . '/../database/scripts/user.class.php';
 
 class Session {
     private static ?Session $instance = null;

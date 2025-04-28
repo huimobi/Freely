@@ -1,4 +1,12 @@
-<?php function drawHeader() { ?>
+<?php
+declare(strict_types=1);
+
+require_once __DIR__ . '/../includes/session.php';
+
+function drawHeader() { 
+    $session = Session::getInstance();
+    $user    = $session->getUser();
+    ?>
 
 <!DOCTYPE html>
     <html lang="en">
@@ -21,10 +29,19 @@
                 <button type="submit" aria-label="Search"><i class="fa fa-search"></i></button>
             </form>
 
-            <nav class="actions">
-                <button class="btn btn--link" type="button" data-modal-open="registerModal">Register</button>
-                <button class="btn btn--primary" type="button" data-modal-open="loginModal">Login</button>
-            </nav>
+            <?php if ($user): ?>
+                <form action="../actions/action_logout.php" method="post" class="login">
+                    <?= htmlspecialchars($user->name()) ?>
+                    <button class="btn btn--primary" type="submit">Logout</button>
+                </form>
+            
+            <?php else: ?>
+                <nav class="actions">
+                    <button class="btn btn--link" type="button" data-modal-open="registerModal">Register</button>
+                    <button class="btn btn--primary" type="button" data-modal-open="loginModal">Login</button>
+                </nav>
+
+            <?php endif; ?>
         </header>
         <main>
         <?php drawModal('loginModal','drawLoginForm');?>
@@ -33,8 +50,8 @@
 
 <?php } function drawLoginForm() { ?>
     <form action="../actions/action_login.php" method="post" class="login">
-        <input type="text" name="username" placeholder="username">
-        <input type="password" name="password" placeholder="password">
+        <input type="email" name="email" placeholder="you@example.com" required>
+        <input type="password" name="password" placeholder="Password" required>
         <button type="submit">Login</button>
     </form>
     <p>
@@ -45,10 +62,11 @@
 
 <?php } function drawRegisterForm() { ?>
     <form action="../actions/action_register.php" method="POST">
-        <input type="text" name="first_name" placeholder="First Name">
-        <input type="text" name="last_name" placeholder="Last Name">
-        <input type="text" name="username" placeholder="Username">
-        <input type="password" name="password" placeholder="Password">
+        <input type="text" name="first_name" placeholder="First Name" required>
+        <input type="text" name="last_name" placeholder="Last Name"  required>
+        <input type="text" name="username" placeholder="Username"   required>
+        <input type="email" name="email" placeholder="you@example.com" required>
+        <input type="password" name="password" placeholder="Password"   required>
         <button type="submit">Register</button>
     </form>
 
