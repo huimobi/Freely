@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS Admin;
 DROP TABLE IF EXISTS Comment;
 
 CREATE TABLE User (
-    UserId TEXT PRIMARY KEY NOT NULL,
+    UserId INTEGER PRIMARY KEY NOT NULL,
     UserName TEXT UNIQUE NOT NULL,
     FirstName TEXT NOT NULL, -- NVARCHAR(50) mapeado para TEXT
     LastName TEXT NOT NULL,  -- NVARCHAR(50) mapeado para TEXT
@@ -20,7 +20,7 @@ CREATE TABLE User (
 
 
 CREATE TABLE FreeLancer (
-    UserId TEXT PRIMARY KEY NOT NULL,
+    UserId INTEGER PRIMARY KEY NOT NULL,
     Headline TEXT,          -- NVARCHAR(150) mapeado para TEXT
     Description TEXT,       -- NVARCHAR(2000) mapeado para TEXT
     -- NOTA: REAL em SQLite é floating-point. Para valores monetários precisos,
@@ -32,20 +32,20 @@ CREATE TABLE FreeLancer (
 
 
 CREATE TABLE Client (
-    UserId TEXT PRIMARY KEY NOT NULL,
+    UserId INTEGER PRIMARY KEY NOT NULL,
     FOREIGN KEY (UserId) REFERENCES User (UserId) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 
 Create Table Admin(
-     UserId TEXT NOT NULL,
+     UserId INTEGER NOT NULL,
     FOREIGN KEY (UserId) REFERENCES User (UserId)
 	    ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
 CREATE TABLE Service (
     ServiceId INTEGER PRIMARY KEY AUTOINCREMENT,
-    FreelancerUserId TEXT NOT NULL,
+    FreelancerUserId INTEGER NOT NULL,
     CategoryId INTEGER NOT NULL,
     Title TEXT NOT NULL,        -- NVARCHAR(150) mapeado para TEXT
     Description TEXT NOT NULL,  -- NVARCHAR(2000) mapeado para TEXT
@@ -66,7 +66,7 @@ CREATE TABLE Service (
 CREATE TABLE Comment (
     CommentId INTEGER PRIMARY KEY AUTOINCREMENT,
     JobOrderId INTEGER UNIQUE NOT NULL, -- Garante 1 comentário por JobOrder
-    ClientId TEXT NOT NULL,
+    ClientId INTEGER NOT NULL,
     ServiceId INTEGER NOT NULL, -- Redundante com JobOrderId mas pode ajudar em queries
     Rating INTEGER NOT NULL CHECK (Rating >= 1 AND Rating <= 5),
     Description TEXT, -- NVARCHAR(1000) mapeado para TEXT
@@ -89,8 +89,8 @@ CREATE TABLE Category (
 CREATE TABLE JobOrder (
     JobOrderId INTEGER PRIMARY KEY AUTOINCREMENT,
     ServiceId INTEGER NOT NULL,
-    ClientId TEXT NOT NULL,
-    FreelancerUserId TEXT NOT NULL,
+    ClientId INTEGER NOT NULL,
+    FreelancerUserId INTEGER NOT NULL,
     -- NOTA: Usar REAL para moeda pode levar a problemas de precisão. Ver nota em FreeLancer.HourlyRate.
     AgreedPrice REAL NOT NULL, -- DECIMAL(10, 2) mapeado para REAL
     Currency TEXT NOT NULL,    -- NVARCHAR(3) mapeado para TEXT
