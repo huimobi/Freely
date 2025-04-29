@@ -37,14 +37,17 @@ function drawHeader() {
             
             <?php else: ?>
                 <nav class="actions">
-                    <button class="btn btn--link" type="button" data-modal-open="registerModal">Register</button>
+                    <button class="btn btn--link" type="button" data-modal-open="roleModal">Register</button>
                     <button class="btn btn--primary" type="button" data-modal-open="loginModal">Login</button>
                 </nav>
 
             <?php endif; ?>
+
+
         </header>
         <main>
-        <?php drawModal('loginModal','drawLoginForm');?>
+        <?php drawModal('roleModal', 'drawRoleSelectForm'); ?>
+        <?php drawModal('loginModal','drawLoginForm'); ?>
         <?php drawModal('registerModal','drawRegisterForm');?>
 
 
@@ -56,7 +59,7 @@ function drawHeader() {
     </form>
     <p>
         Don't have an account?
-        <button type="button" class="btn btn--link" data-modal-open="registerModal">Register</button>
+        <button class="btn btn--link" type="button" data-modal-open="roleModal">Register</button>
     </p>
 
 
@@ -69,6 +72,29 @@ function drawHeader() {
         <input type="password" name="password" placeholder="Password"   required>
         <button type="submit">Register</button>
     </form>
+
+
+<?php } function drawRoleSelectForm() { ?>
+
+    <h2 class="role-title">Join as a client or freelancer</h2>
+
+    <p class="role-pair">
+        <button class="role-btn btn--primary"  type="button" data-modal-open="registerModal">
+        <i class="fa fa-user"></i>
+        I’m a client,<br> hiring for a project
+        </button>
+
+        <button class="role-btn btn--primary" type="button"  onclick="window.location.href='/pages/form_register.php'">
+        <i class="fa fa-laptop-code"></i>
+        I’m a freelancer,<br> looking for work
+        </button>
+    </p>
+
+    <p>
+        Already have an account?
+        <button class="btn--link" type="button" data-modal-open="loginModal"> Login </button>
+    </p>
+
 
 <?php } function drawModal(string $modal, callable $formName) { ?>
     <dialog id="<?= $modal ?>">

@@ -24,7 +24,6 @@ CREATE TABLE FreeLancer (
     Headline TEXT,          -- NVARCHAR(150) mapeado para TEXT
     Description TEXT,       -- NVARCHAR(2000) mapeado para TEXT
     -- NOTA: REAL em SQLite é floating-point. Para valores monetários precisos,
-    -- considere guardar como INTEGER (cêntimos) ou usar bibliotecas de precisão decimal na aplicação.
     HourlyRate REAL,        -- DECIMAL(10, 2) mapeado para REAL
     CurrencyRate TEXT,      -- NVARCHAR(3) mapeado para TEXT
     FOREIGN KEY (UserId) REFERENCES User (UserId) ON UPDATE CASCADE ON DELETE CASCADE
