@@ -13,3 +13,11 @@ document.querySelectorAll('dialog [data-modal-close]').forEach(btn => {
         if (dlg) dlg?.close();
     });
 });
+
+document.querySelectorAll('dialog').forEach(dialog => {
+  dialog.addEventListener('close', () => {
+    dialog
+      .querySelectorAll('.form-error')
+      .forEach(el => el.remove());
+  });
+});

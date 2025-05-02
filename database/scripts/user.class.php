@@ -34,26 +34,6 @@
       $stmt->execute([$this->firstName, $this->lastName, $this->id]);
     }
     
-    public static function getUserWithPassword(string $email, string $password) : ?User {
-      $db   = Database::getInstance();
-      $stmt = $db->prepare('SELECT UserId, UserName, FirstName, LastName, Email, Phone, CreatedAt, IsActive, PasswordHash FROM User WHERE lower(email) = ?');
-      $stmt->execute([strtolower($email)]);
-      $row = $stmt->fetch();
-      if (!$row ) return null;
-      if (!password_verify($password, (string)$row['PasswordHash'])) return null;
-      
-      return new User(
-        (int)    $row['UserId'],
-        (string) $row['UserName'],
-        (string) $row['FirstName'],
-        (string) $row['LastName'],
-        (string) $row['Email'],
-        $row['Phone'] !== null ? (string)$row['Phone'] : null,
-        (string) $row['CreatedAt'],
-        (bool)   $row['IsActive']
-      );
-    }
-
     static function getUser(int $id) : ?User {
       $db   = Database::getInstance();
       $stmt = $db->prepare('SELECT UserId, UserName, FirstName, LastName, Email, Phone, CreatedAt, IsActive FROM User WHERE UserId = ?');
@@ -74,16 +54,59 @@
       );
     }
 
+    public static function authenticate(string $email, string $password): array {
+      $db   = Database::getInstance();
+      $stmt = $db->prepare('SELECT UserId, UserName, FirstName, LastName, Email, Phone, CreatedAt, IsActive, PasswordHash FROM User WHERE lower(Email) = ?');
+      $stmt->execute([strtolower($email)]);
+      $row = $stmt->fetch();
+      if (!$row) return ['status' => 'email_not_found'];
+      if (!password_verify($password, (string)$row['PasswordHash'])) return ['status' => 'invalid_password'];
+
+      $user = new User(
+        (int)    $row['UserId'],
+        (string) $row['UserName'],
+        (string) $row['FirstName'],
+        (string) $row['LastName'],
+        (string) $row['Email'],
+        $row['Phone'] !== null ? (string)$row['Phone'] : null,
+        (string) $row['CreatedAt'],
+        (bool)   $row['IsActive']
+      );
+
+      return ['status' => 'success', 'user' => $user];
+    }
+
     public static function register(string $username, string $firstName, string $lastName, string $email, string $password): ?User {
       $db   = Database::getInstance();
       $hash = password_hash($password, PASSWORD_DEFAULT);
-
       $stmt = $db->prepare('INSERT INTO User (UserName, FirstName, LastName, Email, PasswordHash) VALUES(:user, :first, :last, :email, :hash)');
-
-      if (! $stmt->execute([':user'  => $username, ':first' => $firstName, ':last'  => $lastName, ':email' => $email,':hash'  => $hash])) return null;
+      if (!$stmt->execute([':user' => $username, ':first' => $firstName, ':last'  => $lastName, ':email' => $email,':hash' => $hash])){
+        echo "error";
+        return null;
+      } 
       
       $newId = (int) $db->lastInsertId();
       return self::getUser($newId);
+    }
+
+    public function registerFreelancer( string $headline, string $description, float  $hourlyRate, string $currency): bool {
+      $db = Database::getInstance();
+      $stmt = $db->prepare('INSERT INTO FreeLancer (UserId, Headline, Description, HourlyRate, CurrencyRate) VALUES (:id, :headline, :description, :hourlyRate, :currency)');
+      return $stmt->execute([':id' => $this->id, ':headline' => $headline, ':description' => $description, ':hourlyRate' => $hourlyRate, ':currency' => strtoupper($currency),]);
+    }
+
+    public static function emailExists(string $email): bool {
+      $db   = Database::getInstance();
+      $stmt = $db->prepare('SELECT 1 FROM User WHERE lower(Email) = ?');
+      $stmt->execute([strtolower($email)]);
+      return (bool)$stmt->fetchColumn();
+    }
+
+    public static function usernameExists(string $username): bool {
+      $db   = Database::getInstance();
+      $stmt = $db->prepare('SELECT 1 FROM User WHERE UserName = ?');
+      $stmt->execute([$username]);
+      return (bool)$stmt->fetchColumn();
     }
 
     public static function isClient(int $userId): bool {

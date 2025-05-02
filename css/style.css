@@ -16,7 +16,8 @@
   --radius-lg:   12px;
 }
 
-/* Global Styles */
+/* -------------------- Global Styles -------------------- */
+
 * {
   margin: 0;
   padding: 0;
@@ -31,7 +32,8 @@ body {
     background: var(--color-background);
 }
 
-/* Header */
+/* -------------------- Header -------------------- */
+
 header {
   display: flex;
   align-items: center;
@@ -48,7 +50,8 @@ header h1 a {
   padding: var(--spacing-lg);
 }
 
-/* Search bar */
+/* -------------------- Search bar -------------------- */
+
 .search-bar {
   flex: 0 1 400px;
   margin: 0 auto 0  var(--spacing-md); 
@@ -85,9 +88,8 @@ header h1 a {
   gap: var(--spacing-sm);
 }
 
-/* Buttons */
+/* -------------------- Buttons -------------------- */
 
-/* Base button */
 .btn {
     font: inherit;
     cursor: pointer;
@@ -135,7 +137,8 @@ header h1 a {
     }
   }
 
-/* Dialog */
+/* -------------------- Dialog -------------------- */
+
 dialog {
     position: fixed;
     top: 50%;
@@ -199,14 +202,15 @@ dialog {
     margin-top: var(--spacing-md);
   }
 
-/* Footer */
-footer {
-    background: var(--color-background-dark);
-    color: var(--color-text-light);
-    padding: var(--spacing-lg) var(--spacing-md);
-    border-radius: var(--radius-md);
-}  
-  /* Team list */
+/* -------------------- Footer -------------------- */
+
+  footer {
+      background: var(--color-background-dark);
+      color: var(--color-text-light);
+      padding: var(--spacing-lg) var(--spacing-md);
+      border-radius: var(--radius-md);
+  }  
+
   .footer-team {
     display: flex;
     flex-wrap: wrap;
@@ -215,8 +219,7 @@ footer {
     margin: 0;
     list-style: none;
   }
-  
-  /* Footer note */
+
   .footer-note {
     border-top: 1px solid var(--color-border);
     margin: var(--spacing-md) 0 0;
@@ -226,13 +229,13 @@ footer {
     opacity: 0.8;
   }
 
-/* Role */
+/* -------------------- Role -------------------- */
+
 .role-pair {
   display: flex;
   gap: var(--spacing-md);
 }
 
-/* ensure each flex‐item button fills its half */
 .role-pair .role-btn {
   flex: 1;
   display: flex;
@@ -256,4 +259,87 @@ dialog#roleModal {
   width: 80%;
   max-width: 600px;
   font-size: 1.125rem;
+}
+
+/* -------------------- Error Message -------------------- */
+
+.form-error {
+  color: #b00020;
+  background: #fce4ec;
+  padding: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+}
+
+/* -------------------- Freelancer Sign-Up Page Styles -------------------- */
+main.register-form {
+  max-width: 600px;
+  margin: var(--spacing-lg) auto;
+  background: var(--color-white, #fff);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg, 0 2px 10px rgba(0, 0, 0, 0.1));
+}
+
+main.register-form h2 {
+  font-size: 1.8rem;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-md);
+  border-bottom: 2px solid var(--color-border);
+  padding-bottom: var(--spacing-sm);
+}
+
+main.register-form form {
+  display: grid;
+  gap: var(--spacing-md);
+}
+
+main.register-form label {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--font-size-sm, 0.9rem);
+  color: var(--color-text-secondary, #666);
+}
+
+main.register-form label input,
+main.register-form label textarea {
+  margin-top: var(--spacing-xs, 0.25rem);
+  padding: var(--spacing-sm);
+  font-size: var(--font-size-sm, 0.9rem);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-background);
+}
+
+main.register-form label textarea {
+  resize: vertical;
+  min-height: 6rem;
+}
+
+main.register-form button[type="submit"] {
+  padding: var(--spacing-md);
+  font-size: var(--font-size-md, 1rem);
+  background-color: var(--color-background-dark);
+  color: var(--color-white, #fff);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm, 0 1px 3px --color-background-dark);
+  transition: background-color 0.2s ease;
+}
+
+main.register-form button[type="submit"]:hover {
+  background-color: var(--color-hover);
+}
+
+/* Responsive tweaks */
+@media (max-width: 576px) {
+  main.register-form {
+    margin: var(--spacing-md) auto;
+    padding: var(--spacing-md);
+  }
+  main.register-form h2 {
+    font-size: 1.5rem;
+  }
 }

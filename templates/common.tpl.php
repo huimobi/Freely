@@ -52,6 +52,18 @@ function drawHeader() {
 
 
 <?php } function drawLoginForm() { ?>
+    <?php if (!empty($_SESSION['login_errors'])): ?>
+        <?php foreach($_SESSION['login_errors'] as $err): ?>
+            <p class="form-error"><?= htmlspecialchars($err) ?></p>
+        <?php endforeach; ?>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => { document.getElementById('<?= "loginModal" ?>').showModal();});
+        </script>
+
+        <?php unset($_SESSION['login_errors']); ?>
+    <?php endif; ?>
+
     <form action="../actions/action_login.php" method="post" class="login">
         <input type="email" name="email" placeholder="you@example.com" required>
         <input type="password" name="password" placeholder="Password" required>
@@ -64,12 +76,25 @@ function drawHeader() {
 
 
 <?php } function drawRegisterForm() { ?>
+    <?php if (!empty($_SESSION['register_errors'])): ?>
+        <?php foreach($_SESSION['register_errors'] as $err): ?>
+            <p class="form-error"><?= htmlspecialchars($err) ?></p>
+        <?php endforeach; ?>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => { document.getElementById('<?= "registerModal" ?>').showModal();});
+        </script>
+
+        <?php unset($_SESSION['register_errors']); ?>
+    <?php endif; ?>
+
     <form action="../actions/action_register.php" method="POST">
-        <input type="text" name="first_name" placeholder="First Name" required>
-        <input type="text" name="last_name" placeholder="Last Name"  required>
-        <input type="text" name="username" placeholder="Username"   required>
-        <input type="email" name="email" placeholder="you@example.com" required>
-        <input type="password" name="password" placeholder="Password"   required>
+        <input type="hidden" name="role" value="client">
+        <input type="text" name="first_name" placeholder="First Name" maxlength="30" required>
+        <input type="text" name="last_name" placeholder="Last Name" maxlength="30" required>
+        <input type="text" name="username" placeholder="Username" maxlength="30" required>
+        <input type="email" name="email" placeholder="you@example.com" maxlength="30" required>
+        <input type="password" name="password" placeholder="Password"  minlength="8" required>
         <button type="submit">Register</button>
     </form>
 
@@ -92,7 +117,7 @@ function drawHeader() {
 
     <p>
         Already have an account?
-        <button class="btn--link" type="button" data-modal-open="loginModal"> Login </button>
+        <button class="btn btn--link" type="button" data-modal-open="loginModal"> Login </button>
     </p>
 
 
@@ -120,4 +145,17 @@ function drawHeader() {
     </body>
     </html>
 
+<?php } function drawSimpleHeader() { ?>
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Freely</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+  </head>
+  <body>
+    <header class="minimal-header">
+      <h1><a href="/index.php">Freely</a></h1>
+    </header>
 <?php } ?>
