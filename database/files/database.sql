@@ -24,8 +24,6 @@ CREATE TABLE FreeLancer (
     Headline TEXT,          -- NVARCHAR(150) mapeado para TEXT
     Description TEXT,       -- NVARCHAR(2000) mapeado para TEXT
     -- NOTA: REAL em SQLite é floating-point. Para valores monetários precisos,
-    HourlyRate REAL,        -- DECIMAL(10, 2) mapeado para REAL
-    CurrencyRate TEXT,      -- NVARCHAR(3) mapeado para TEXT
     FOREIGN KEY (UserId) REFERENCES User (UserId) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
@@ -116,3 +114,26 @@ CREATE INDEX idx_comment_service ON Comment (ServiceId);
 
 CREATE INDEX idx_service_category ON Service (CategoryId);
 CREATE INDEX idx_service_freelancer ON Service (FreelancerUserId);
+
+
+-- ─── Temporary seed data for testing ─────────────────────────────────────
+
+PRAGMA foreign_keys = OFF;
+BEGIN TRANSACTION;
+
+-- 3) some categories
+INSERT INTO Category (Name, Description) VALUES
+  ('Development & IT','All your coding needs'),
+  ('Design & Creative','Logos, graphics, UI/UX'),
+  ('Writing & Translation','Copywriting, translation'),
+  ('Sales & Marketing','Ad campaigns, SEO'),
+  ('Finance & Accounting','Bookkeeping, CFO services'),
+  ('Video & Animation',     'Explainers, commercials, motion graphics'),
+  ('Music & Audio',         'Voice‐overs, jingles, editing'),
+  ('Business Consulting',   'Strategy, operations, market research'),
+  ('Legal Services',        'Contracts, IP, compliance'),
+  ('Lifestyle',             'Cooking, fitness, crafts');
+
+
+COMMIT;
+PRAGMA foreign_keys = ON;

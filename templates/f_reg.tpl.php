@@ -10,7 +10,7 @@ declare(strict_types=1);
         <?php unset($_SESSION['register_errors']); ?>
     <?php endif; ?>
 
-    <main class="register-form">
+    <main class="form-page">
         <h2>Freelancer Sign Up</h2>
         <form action="/actions/action_register.php" method="post">
 
@@ -24,8 +24,6 @@ declare(strict_types=1);
 
             <label> Headline <textarea name="headline" placeholder="Expert PHP Developer" maxlength="200"> </textarea>  </label>
             <label> Description <textarea name="description" placeholder="Tell clients what you do…" maxlength="1000"> </textarea> </label>
-            <label> Hourly Rate (€) <input type="number" name="hourly_rate" step="0.01" placeholder="e.g. 25.00" min="0" inputmode="decimal"> </label>
-            <label> Currency (3-letter code) <input type="text" name="currency_rate"  placeholder="EUR" maxlength="3"> </label>
             <button type="submit">Create Freelancer Account</button>
         </form>
     </main>

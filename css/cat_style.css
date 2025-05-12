@@ -1,0 +1,71 @@
+/* css/cat_style.css */
+
+/* Section wrapper */
+.category-browse {
+    margin: var(--spacing-lg) 0;
+  }
+  .category-browse h2 {
+    font-size: 1.75rem;
+    margin-bottom: var(--spacing-md);
+  }
+  
+  /* Grid uses a UL instead of a div */
+  .category-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px,1fr));
+    gap: var(--spacing-md);
+  }
+  
+  /* Each LI holds an <a> “card” */
+  .category-grid li {
+    margin: 0;
+  }
+  
+  /* Card styling on the <a> */
+  .category-card {
+    display: block;
+    background: #fafafa;
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    text-decoration: none;
+    color: var(--color-text);
+    transition: box-shadow 0.2s ease;
+  }
+  .category-card:hover {
+    box-shadow: var(--shadow-lg);
+  }
+  
+  /* Title */
+  .category-card h3 {
+    margin: 0 0 var(--spacing-sm) 0;
+    font-size: 1.125rem;
+    line-height: 1.2;
+  }
+  
+  /* Stats as a UL instead of a div */
+  .stats {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+  }
+  .stats li {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  .stats .rating {
+    color: #14a800;
+  }
+  .stats .rating .star {
+    font-size: 1rem;
+  }
+  

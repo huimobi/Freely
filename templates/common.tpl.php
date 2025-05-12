@@ -14,7 +14,12 @@ function drawHeader() {
         <meta charset="UTF-8">
         <title>Freely</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="../css/cat_style.css">
+        <link rel="stylesheet" href="../css/drop_down_style.css">
         <link rel="stylesheet" href="../css/style.css">
+
+
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" 
             integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" 
             crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -30,11 +35,26 @@ function drawHeader() {
             </form>
 
             <?php if ($user): ?>
+                <nav class="actions profile-nav">
+                    <button id="profileBtn" class="btn btn--link profile-btn" type="button">
+                       Profile <i class="fa fa-chevron-down profile-caret"></i>
+                    </button>
+                    <ul id="profileMenu" class="dropdown-menu" aria-hidden="true">
+                    <li><a href="/pages/my_services.php">My Services</a></li>
+                    <li><a href="/pages/my_buys.php">My Buys</a></li>
+                    <li><a href="/pages/edit_profile.php">Edit Profile</a></li>
+                    <li>
+                        <form action="../actions/action_logout.php" method="post">
+                        <button class="btn btn--link" type="submit">Logout</button>
+                        </form>
+                    </li>
+                    </ul>
+                </nav>
+
                 <form action="../actions/action_logout.php" method="post" class="login">
-                    <?= htmlspecialchars($user->name()) ?>
                     <button class="btn btn--primary" type="submit">Logout</button>
                 </form>
-            
+
             <?php else: ?>
                 <nav class="actions">
                     <button class="btn btn--link" type="button" data-modal-open="roleModal">Register</button>
@@ -153,9 +173,10 @@ function drawHeader() {
     <title>Freely</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/form_style.css">
   </head>
   <body>
     <header class="minimal-header">
       <h1><a href="/index.php">Freely</a></h1>
     </header>
-<?php } ?>
+<?php } ?>  

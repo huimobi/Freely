@@ -30,10 +30,16 @@
 
     public function save(): void {
       $db   = Database::getInstance();
-      $stmt = $db->prepare('UPDATE User SET FirstName = ?, LastName = ? WHERE UserId = ?');
-      $stmt->execute([$this->firstName, $this->lastName, $this->id]);
+      $stmt = $db->prepare('UPDATE User SET FirstName = ?, LastName = ?, Email=? WHERE UserId = ?');
+      $stmt->execute([$this->firstName, $this->lastName, $this->email, $this->id]);
     }
     
+    public function updateFreelancer(string $headline, string $description): bool {
+      $db = Database::getInstance();
+      $stmt = $db->prepare('UPDATE FreeLancer SET Headline=?, Description=? WHERE UserId=?' );
+      return $stmt->execute([$headline, $description, $this->id]);
+    }
+
     static function getUser(int $id) : ?User {
       $db   = Database::getInstance();
       $stmt = $db->prepare('SELECT UserId, UserName, FirstName, LastName, Email, Phone, CreatedAt, IsActive FROM User WHERE UserId = ?');
@@ -89,10 +95,10 @@
       return self::getUser($newId);
     }
 
-    public function registerFreelancer( string $headline, string $description, float  $hourlyRate, string $currency): bool {
+    public function registerFreelancer( string $headline, string $description): bool {
       $db = Database::getInstance();
-      $stmt = $db->prepare('INSERT INTO FreeLancer (UserId, Headline, Description, HourlyRate, CurrencyRate) VALUES (:id, :headline, :description, :hourlyRate, :currency)');
-      return $stmt->execute([':id' => $this->id, ':headline' => $headline, ':description' => $description, ':hourlyRate' => $hourlyRate, ':currency' => strtoupper($currency),]);
+      $stmt = $db->prepare('INSERT INTO FreeLancer (UserId, Headline, Description) VALUES (:id, :headline, :description)');
+      return $stmt->execute([':id' => $this->id, ':headline' => $headline, ':description' => $description,]);
     }
 
     public static function emailExists(string $email): bool {
