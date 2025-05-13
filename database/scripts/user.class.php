@@ -39,7 +39,7 @@
     }
     
     static function getUser(int $id) : ?User {
-      $db   = Database::getInstance();
+      $db = Database::getInstance();
       $stmt = $db->prepare('SELECT UserId, UserName, FirstName, LastName, Email, Phone, CreatedAt, IsActive, Headline, Description FROM User WHERE UserId = ?');
       $stmt->execute([$id]);
       $row = $stmt->fetch();
@@ -47,15 +47,15 @@
       if(! $row) return null;
     
       return new User(
-        (int)    $row['UserId'],
+        (int) $row['UserId'],
         (string) $row['UserName'],
         (string) $row['FirstName'],
         (string) $row['LastName'],
         (string) $row['Email'],
         $row['Phone'] !== null ? (string)$row['Phone'] : null,
         (string) $row['CreatedAt'],
-        (bool)   $row['IsActive'],
-        $row['Headline']    !== null ? (string)$row['Headline']    : null,
+        (bool) $row['IsActive'],
+        $row['Headline'] !== null ? (string)$row['Headline']    : null,
         $row['Description'] !== null ? (string)$row['Description'] : null
       );
     }

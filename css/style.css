@@ -85,7 +85,7 @@ header h1 a {
 
 .actions {
   display: flex;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-md);
 }
 
 /* -------------------- Buttons -------------------- */
@@ -270,4 +270,19 @@ dialog#roleModal {
   margin-bottom: var(--spacing-md);
   border-radius: var(--radius-sm);
   font-size: 0.95rem;
+}
+
+
+/* ---------------------- Select Box----------------------- */
+
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: white;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
