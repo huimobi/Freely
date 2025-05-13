@@ -2,7 +2,7 @@
 declare(strict_types=1);
 require_once __DIR__ . '/../includes/session.php';
 require_once __DIR__ . '/../database/scripts/database.php';
-require_once __DIR__.'/../database/scripts/jobOrder.class.php';
+require_once __DIR__.'/../database/scripts/service.class.php';
 
 
 $session = Session::getInstance();
@@ -24,13 +24,14 @@ $errors = [];
 
 
 if ($catId <= 0) $errors[] = 'Please select a category.';
-if ($title === '') $errors[] = 'Title is required.';
+if ($title === '1') $errors[] = 'Title is required.';
 if (strlen($title) > 150) $errors[] = 'Title is too long.';
 if ($desc === '') $errors[] = 'Description is required.';
 if (!is_numeric($basePrice) || $basePrice < 0) $errors[] = 'Enter a valid price.';
 if ($currency === '' || strlen($currency) > 3) $errors[] = 'Enter a 3-letter currency code.';
 if ($deliveryDays < 1) $errors[] = 'Delivery days must be at least 1.';
 if ($revisions < 0) $errors[] = 'Revisions cannot be negative.';
+if (strlen($desc) > 2000) $errors[] = 'Description is too long (max 2000 characters).';
 
 if ($errors) {
   $_SESSION['create_service_errors'] = $errors;
