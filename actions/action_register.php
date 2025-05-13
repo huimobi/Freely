@@ -37,16 +37,19 @@
         } else { header('Location: /');}
         exit;
     }
-        
-    $user = User::register( $username, $firstName, $lastName, $email, $password);
+    
+    if ($role === 'freelancer') {
+        $user = User::register(
+          $username, $firstName, $lastName, $email, $password,
+          $headline, $description
+        );
+      } else {
+        $user = User::register(
+          $username, $firstName, $lastName, $email, $password
+        );
+      }
+      
     if ($user !== null){
-        if ($role === 'freelancer'){
-            if(! $user->registerFreelancer($headline, $description)){
-                $_SESSION['register_errors'] = ['Could not create freelancer profile.'];
-                header('Location: /pages/form_register.php');
-                exit;
-            }
-        }
         Session::getInstance()->login($user);
     }
     

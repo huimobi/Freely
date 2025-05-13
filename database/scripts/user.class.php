@@ -10,9 +10,11 @@
     public string $email;
     public ?string $phone;
     public string $creationDate;  
-    public $isActive;
+    public bool $isActive;
+    public ?string $headline;
+    public ?string $description;
 
-    public function __construct(int $id, string $username, string $firstName,string $lastName, string $email, ?string $phone, string $creationDate, $isActive)
+    public function __construct(int $id, string $username, string $firstName,string $lastName, string $email, ?string $phone, string $creationDate, bool $isActive, ?string $headline, ?string $description)
     {
       $this->id = $id;
       $this->username= $username;
@@ -22,6 +24,8 @@
       $this->phone = $phone;
       $this->creationDate = $creationDate;
       $this->isActive = $isActive;
+      $this->headline    = $headline;
+      $this->description = $description;
     } 
 
     public function name(): string {
@@ -30,19 +34,13 @@
 
     public function save(): void {
       $db   = Database::getInstance();
-      $stmt = $db->prepare('UPDATE User SET FirstName = ?, LastName = ?, Email=? WHERE UserId = ?');
-      $stmt->execute([$this->firstName, $this->lastName, $this->email, $this->id]);
+      $stmt = $db->prepare('UPDATE User SET FirstName = ?, LastName = ?, Email=?, Headline=?, Description=? WHERE UserId = ?');
+      $stmt->execute([$this->firstName, $this->lastName, $this->email, $this->headline, $this->description ,$this->id]);
     }
     
-    public function updateFreelancer(string $headline, string $description): bool {
-      $db = Database::getInstance();
-      $stmt = $db->prepare('UPDATE FreeLancer SET Headline=?, Description=? WHERE UserId=?' );
-      return $stmt->execute([$headline, $description, $this->id]);
-    }
-
     static function getUser(int $id) : ?User {
       $db   = Database::getInstance();
-      $stmt = $db->prepare('SELECT UserId, UserName, FirstName, LastName, Email, Phone, CreatedAt, IsActive FROM User WHERE UserId = ?');
+      $stmt = $db->prepare('SELECT UserId, UserName, FirstName, LastName, Email, Phone, CreatedAt, IsActive, Headline, Description FROM User WHERE UserId = ?');
       $stmt->execute([$id]);
       $row = $stmt->fetch();
 
@@ -56,13 +54,15 @@
         (string) $row['Email'],
         $row['Phone'] !== null ? (string)$row['Phone'] : null,
         (string) $row['CreatedAt'],
-        (bool)   $row['IsActive']
+        (bool)   $row['IsActive'],
+        $row['Headline']    !== null ? (string)$row['Headline']    : null,
+        $row['Description'] !== null ? (string)$row['Description'] : null
       );
     }
 
     public static function authenticate(string $email, string $password): array {
       $db   = Database::getInstance();
-      $stmt = $db->prepare('SELECT UserId, UserName, FirstName, LastName, Email, Phone, CreatedAt, IsActive, PasswordHash FROM User WHERE lower(Email) = ?');
+      $stmt = $db->prepare('SELECT UserId, UserName, FirstName, LastName, Email, Phone, CreatedAt, IsActive, PasswordHash, Headline, Description FROM User WHERE lower(Email) = ?');
       $stmt->execute([strtolower($email)]);
       $row = $stmt->fetch();
       if (!$row) return ['status' => 'email_not_found'];
@@ -76,29 +76,25 @@
         (string) $row['Email'],
         $row['Phone'] !== null ? (string)$row['Phone'] : null,
         (string) $row['CreatedAt'],
-        (bool)   $row['IsActive']
+        (bool)   $row['IsActive'],
+        $row['Headline']    ?? null,
+        $row['Description'] ?? null
       );
 
       return ['status' => 'success', 'user' => $user];
     }
 
-    public static function register(string $username, string $firstName, string $lastName, string $email, string $password): ?User {
+    public static function register(string $username, string $firstName, string $lastName, string $email, string $password, ?string $headline = null, ?string $description = null): ?User {
       $db   = Database::getInstance();
       $hash = password_hash($password, PASSWORD_DEFAULT);
-      $stmt = $db->prepare('INSERT INTO User (UserName, FirstName, LastName, Email, PasswordHash) VALUES(:user, :first, :last, :email, :hash)');
-      if (!$stmt->execute([':user' => $username, ':first' => $firstName, ':last'  => $lastName, ':email' => $email,':hash' => $hash])){
+      $stmt = $db->prepare('INSERT INTO User (UserName, FirstName, LastName, Email, PasswordHash, Headline, Description) VALUES(:user, :first, :last, :email, :hash, :headline, :description)');
+      if (!$stmt->execute([':user' => $username, ':first' => $firstName, ':last'  => $lastName, ':email' => $email,':hash' => $hash, ':headline' => $headline,':description' => $description])){
         echo "error";
         return null;
       } 
       
       $newId = (int) $db->lastInsertId();
       return self::getUser($newId);
-    }
-
-    public function registerFreelancer( string $headline, string $description): bool {
-      $db = Database::getInstance();
-      $stmt = $db->prepare('INSERT INTO FreeLancer (UserId, Headline, Description) VALUES (:id, :headline, :description)');
-      return $stmt->execute([':id' => $this->id, ':headline' => $headline, ':description' => $description,]);
     }
 
     public static function emailExists(string $email): bool {
@@ -113,20 +109,6 @@
       $stmt = $db->prepare('SELECT 1 FROM User WHERE UserName = ?');
       $stmt->execute([$username]);
       return (bool)$stmt->fetchColumn();
-    }
-
-    public static function isClient(int $userId): bool {
-      $db   = Database::getInstance();
-      $stmt = $db->prepare('SELECT 1 FROM Client WHERE UserId = ?');
-      $stmt->execute([$userId]);
-      return (bool)$stmt->fetchColumn();
-    }
-
-    public static function isFreelancer(int $userId): bool {
-      $db   = Database::getInstance();
-      $stmt = $db->prepare('SELECT 1 FROM FreeLancer WHERE UserId = ?');
-      $stmt->execute([$userId]);
-      return (bool) $stmt->fetchColumn();
     }
 
     public static function isAdmin(int $userId): bool {
