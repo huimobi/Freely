@@ -55,4 +55,84 @@ class Service {
         $stmt->execute([ $sellerId, $categoryId, $title, $description, $basePrice, $currency, $deliveryDays, $revisions]);
         return (int)$db->lastInsertId();
     }
+
+    public static function countByCategory(int $catId, string $priceFilter, string $deliveryFilter): int {
+    $db = Database::getInstance();
+
+    // build WHERE
+    $where = ['CategoryId = :cat'];
+    $params = [':cat' => $catId];
+
+    // delivery filter: “1–3 days” or “7+”
+    if ($deliveryFilter === '1') {
+      $where[] = 'DeliveryDays BETWEEN 1 AND 3';
+    } elseif ($deliveryFilter === '7') {
+      $where[] = 'DeliveryDays >= 7';
+    }
+
+    $sql = 'SELECT COUNT(*) FROM Service
+            WHERE ' . implode(' AND ', $where) . ' AND IsActive = 1';
+    $stmt = $db->prepare($sql);
+    $stmt->execute($params);
+    return (int)$stmt->fetchColumn();
+  }
+
+  public static function getByCategory(
+    int $catId, int $limit, int $offset,
+    string $priceFilter, string $deliveryFilter
+  ): array {
+    $db = Database::getInstance();
+
+    $where = ['CategoryId = :cat'];
+    $params = [':cat' => $catId];
+
+    if ($deliveryFilter === '1') {
+      $where[] = 'DeliveryDays BETWEEN 1 AND 3';
+    } elseif ($deliveryFilter === '7') {
+      $where[] = 'DeliveryDays >= 7';
+    }
+
+    // sort clause
+    $order = 'CreatedAt DESC';
+    if ($priceFilter === 'low') {
+      $order = 'BasePrice ASC';
+    } elseif ($priceFilter === 'high') {
+      $order = 'BasePrice DESC';
+    }
+
+    $sql = "
+      SELECT ServiceId, SellerUserId, CategoryId, Title, Description,
+             BasePrice, Currency, DeliveryDays, Revisions, IsActive, CreatedAt
+      FROM Service
+      WHERE " . implode(' AND ', $where) . " AND IsActive = 1
+      ORDER BY $order
+      LIMIT :lim OFFSET :off
+    ";
+
+    $stmt = $db->prepare($sql);
+    foreach ($params as $k => $v) {
+      $stmt->bindValue($k, $v);
+    }
+    $stmt->bindValue(':lim', $limit,  PDO::PARAM_INT);
+    $stmt->bindValue(':off', $offset, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $out = [];
+    while ($row = $stmt->fetch()) {
+      $out[] = new self(
+        (int)$row['ServiceId'],
+        (int)$row['SellerUserId'],
+        (int)$row['CategoryId'],
+        $row['Title'],
+        $row['Description'],
+        (float)$row['BasePrice'],
+        $row['Currency'],
+        (int)$row['DeliveryDays'],
+        (int)$row['Revisions'],
+        (bool)$row['IsActive'],
+        $row['CreatedAt']
+      );
+    }
+    return $out;
+  }
 }
