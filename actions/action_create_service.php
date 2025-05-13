@@ -6,19 +6,19 @@ require_once __DIR__.'/../database/scripts/jobOrder.class.php';
 
 
 $session = Session::getInstance();
-$user    = $session->getUser();
+$user = $session->getUser();
 if (!$user) {
   header('Location: /');
   exit;
 }
 
-$catId        = (int)($_POST['category_id']   ?? 0);
-$title        = trim($_POST['title']          ?? '');
-$desc         = trim($_POST['description']    ?? '');
-$basePrice    = $_POST['base_price']          ?? '';
-$currency     = trim($_POST['currency']       ?? '');
+$catId = (int)($_POST['category_id'] ?? 0);
+$title = trim($_POST['title'] ?? '');
+$desc = trim($_POST['description'] ?? '');
+$basePrice = $_POST['base_price'] ?? '';
+$currency = trim($_POST['currency'] ?? '');
 $deliveryDays = (int)($_POST['delivery_days'] ?? 0);
-$revisions    = (int)($_POST['revisions']     ?? 0);
+$revisions = (int)($_POST['revisions'] ?? 0);
 
 $errors = [];
 

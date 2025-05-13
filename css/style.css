@@ -271,3 +271,18 @@ dialog#roleModal {
   border-radius: var(--radius-sm);
   font-size: 0.95rem;
 }
+
+
+/* ---------------------- Select Box----------------------- */
+
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: white;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}

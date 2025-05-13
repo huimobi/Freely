@@ -3,15 +3,16 @@ declare(strict_types=1);
 ?>
 
 <?php function drawRegisterPage() { ?>
-    <?php if (!empty($_SESSION['register_errors'])): ?>
-        <?php foreach ($_SESSION['register_errors'] as $err): ?>
-            <p class="form-error"><?= htmlspecialchars($err) ?></p>
-        <?php endforeach; ?>
-        <?php unset($_SESSION['register_errors']); ?>
-    <?php endif; ?>
-
     <main class="form-page">
         <h2>Freelancer Sign Up</h2>
+
+        <?php if (!empty($_SESSION['register_errors'])): ?>
+            <?php foreach ($_SESSION['register_errors'] as $err): ?>
+                <p class="form-error"><?= htmlspecialchars($err) ?></p>
+            <?php endforeach; ?>
+            <?php unset($_SESSION['register_errors']); ?>
+        <?php endif; ?>
+
         <form action="/actions/action_register.php" method="post">
 
             <input type="hidden" name="role" value="freelancer">

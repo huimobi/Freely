@@ -15,7 +15,6 @@
 
     $errors = [];
     
-    // Common validations
     if (User::emailExists($email)) $errors[] = 'That email is already in use.'; 
     if (User::usernameExists($username)) $errors[] = 'That username is already taken.'; 
     if (strlen($firstName) > 30) $errors[] = 'First name cannot exceed 30 characters.'; 
@@ -25,7 +24,6 @@
     if (! filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Please enter a valid e-mail address.';
     if (strlen($password) < 8) $errors[] = 'Password must be at least 8 characters.';
 
-    // If freelancer, validate their fields
     if ($role === 'freelancer') {
         if (strlen($headline) > 200) $errors[] = 'Headline cannot exceed 200 characters.'; 
         if (strlen($description) > 1000) $errors[] = 'Description cannot exceed 1000 characters.';
@@ -38,16 +36,8 @@
         exit;
     }
     
-    if ($role === 'freelancer') {
-        $user = User::register(
-          $username, $firstName, $lastName, $email, $password,
-          $headline, $description
-        );
-      } else {
-        $user = User::register(
-          $username, $firstName, $lastName, $email, $password
-        );
-      }
+    if ($role === 'freelancer') { $user = User::register( $username, $firstName, $lastName, $email, $password, $headline, $description);
+    } else { $user = User::register( $username, $firstName, $lastName, $email, $password);}
       
     if ($user !== null){
         Session::getInstance()->login($user);

@@ -7,11 +7,9 @@ function drawCreateServiceForm(array $cats, array $errors): void {
   <h2>Create New Service</h2>
 
   <?php if ($errors): ?>
-    <ul class="form-error-list">
-      <?php foreach ($errors as $e): ?>
-        <li class="form-error"><?= htmlspecialchars($e) ?></li>
-      <?php endforeach; ?>
-    </ul>
+    <?php foreach ($errors as $e): ?>
+      <p class="form-error"><?= htmlspecialchars($e) ?></p>
+    <?php endforeach; ?>
   <?php endif; ?>
 
   <form action="/actions/action_create_service.php" method="post" class="create-service__form">
