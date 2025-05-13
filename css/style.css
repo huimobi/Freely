@@ -85,7 +85,7 @@ header h1 a {
 
 .actions {
   display: flex;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-md);
 }
 
 /* -------------------- Buttons -------------------- */
