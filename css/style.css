@@ -286,3 +286,96 @@ select {
   -webkit-appearance: none;
   -moz-appearance: none;
 }
+
+
+/* --------------------------------------------------------- */
+.category-header {
+  margin: var(--spacing-lg) 0 var(--spacing-md);
+}
+
+.service-list {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(200px, 1fr));
+  gap: var(--spacing-md);
+  justify-content: start;
+}
+
+.service-card {
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.service-desc {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  margin: var(--spacing-xs) 0;
+  color: var(--color-text);
+}
+
+.service-meta {
+  margin-top: auto;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary, #666);
+}
+
+.service-card h3 {
+  margin-bottom: var(--spacing-sm);
+  font-size: 1.1rem;
+}
+
+.service-card p {
+  margin: var(--spacing-xs) 0;
+  color: var(--color-text);
+}
+
+.pagination {
+  margin: var(--spacing-lg) 0;
+  text-align: center;
+}
+
+.pagination a {
+  margin: 0 var(--spacing-xs);
+  text-decoration: none;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  color: var(--color-text);
+}
+
+.pagination a.active,
+.pagination a:hover {
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+/* ---------------------- Filter bar ---------------------- */
+.filter-bar {
+  display: flex;
+  gap: var(--spacing-md);
+  margin: var(--spacing-md) 0;
+}
+.filter-bar label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+}
+.filter-bar select {
+  margin-top: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-background);
+}
+
+/* ---------------------- Grey “box” around the service list ----------------------   */
+.service-list-container {
+  background: #f7f7f7;
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+}

@@ -7,8 +7,4 @@ require_once __DIR__ . '/templates/category.tpl.php';
 
 <?php drawHeader(); ?>  
 <?php drawCategoryList(); ?>
-<main>
-  <p>Welcome to the FreeLance project!</p>
-</main>
-
 <?php drawFooter(); ?>

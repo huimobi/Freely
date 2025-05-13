@@ -13,7 +13,7 @@ function drawCategoryList(): void {
     foreach ($cats as $cat) {
         printf(
           '<li>
-             <a href="/browse.php?cat=%d" class="category-card">
+             <a href="/pages/browse_cat.php?cat=%d" class="category-card">
                <h3>%s</h3>
                <ul class="stats">
                  <li class="rating"><i class="star fa fa-star"></i> %.2f/5</li>
