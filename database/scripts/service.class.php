@@ -135,4 +135,28 @@ class Service {
     }
     return $out;
   }
+
+  
+    public static function getService(int $id): ?Service {
+        $db = Database::getInstance();
+        $stmt = $db->prepare("SELECT ServiceId, SellerUserId, CategoryId, Title, Description, BasePrice, Currency, DeliveryDays, Revisions, IsActive, CreatedAt FROM Service WHERE ServiceId = ?");
+        $stmt->execute([$id]);
+        $row = $stmt->fetch();
+
+        if (!$row) return null;
+
+        return new Service(
+            (int)$row['ServiceId'],
+            (int)$row['SellerUserId'],
+            (int)$row['CategoryId'],
+            (string)$row['Title'],
+            (string)$row['Description'],
+            (float)$row['BasePrice'],
+            (string)$row['Currency'],
+            (int)$row['DeliveryDays'],
+            (int)$row['Revisions'],
+            (bool)$row['IsActive'],
+            (string)$row['CreatedAt']
+        );
+    }
 }
