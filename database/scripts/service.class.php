@@ -159,4 +159,31 @@ class Service {
     }
     return $services;
   }
+
+  public static function getAllActive(): array {
+    $db = Database::getInstance();
+    $stmt = $db->prepare("SELECT * FROM Service WHERE IsActive = 1 ORDER BY CreatedAt DESC");
+    $stmt->execute();
+    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $services = [];
+    foreach ($rows as $row) {
+      $svc = new Service(
+        (int)$row['ServiceId'],
+        (int)$row['SellerUserId'],
+        (int)$row['CategoryId'],
+        $row['Title'],
+        $row['Description'],
+        (float)$row['BasePrice'],
+        $row['Currency'],
+        isset($row['DeliveryDays']) ? (int)$row['DeliveryDays'] : null,
+        (int)$row['Revisions'],
+        (bool)$row['IsActive'],
+        $row['CreatedAt']
+      );
+      $services[] = $svc;
+    }
+
+    return $services;
+  }
 }

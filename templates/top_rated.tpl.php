@@ -28,4 +28,7 @@ function drawTopRatedServices(array $services): void { ?>
       <?php endforeach; ?>
     </section>
   </section>
+
+  <section class="view-more"> <a href="/pages/browse_services.php" class="btn btn--link">View All Services</a> </section>
+
 <?php }
