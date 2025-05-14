@@ -21,6 +21,12 @@ $totalCount = Service::countByCategory($catId, $priceFilter, $deliveryFilter);
 $services   = Service::getByCategory($catId, $limit, $offset, $priceFilter, $deliveryFilter);
 $totalPages = (int)ceil($totalCount / $limit);
 
+foreach ($services as $svc) {
+    $svc->seller = User::getUser($svc->sellerId);
+    $svc->rating = 4.9;          // TEMP: static value or real average if implemented
+    $svc->numRatings = 100;      // TEMP: static value or real count
+}
+
 drawHeader();
 drawBrowsePage($category, $services, $page, $totalPages, $catId, $priceFilter, $deliveryFilter);
 drawFooter();

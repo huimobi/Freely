@@ -13,7 +13,7 @@ function drawEditProfileForm($user, array $errors): void { ?>
     </ul>
     <?php endif; ?>
 
-    <form action="/actions/action_edit_profile.php" method="post" class="edit-profile__form">
+    <form action="/actions/action_edit_profile.php" method="post" class="edit-profile__form" enctype="multipart/form-data">
         <input type="hidden" name="user_id" value="<?= $user->id ?>">
 
     <label> First Name <input type="text" name="first_name" value="<?= htmlspecialchars($user->firstName) ?> "maxlength="30" required> </label>
@@ -21,6 +21,10 @@ function drawEditProfileForm($user, array $errors): void { ?>
     <label> Email <input type="email" name="email" value="<?= htmlspecialchars($user->email) ?> "maxlength="30" required> </label>
     <label> Headline <textarea name="headline" maxlength="200" required><?= htmlspecialchars($user->headline  ?? '') ?></textarea> </label>
     <label> Description <textarea name="description" maxlength="1000" required><?= htmlspecialchars($user->description  ?? '') ?></textarea> </label>
+
+    <img src="/images/users/<?= $user->id ?>.jpg" alt="Profile picture" width="150" height="150" onerror="this.src='/images/users/default.jpg'"><br>
+    <label>Profile Photo: <input type="file" name="photo" accept="image/jpeg,image/png"></label>
+
     <button type="submit" class="btn btn--primary">Save Changes</button>
   </form>
 

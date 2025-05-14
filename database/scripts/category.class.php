@@ -61,10 +61,11 @@ class Category {
     $row = $stmt->fetch();
     if (!$row) return null;
     return new self(
-      (int)   $row['id'],
+      (int) $row['id'],
       (string)$row['name'],
       (float) $row['avgRating'],
-      (int)   $row['serviceCount']
+      (int) $row['serviceCount'],
+      (string)$row['Description']
     );
   }
 }
