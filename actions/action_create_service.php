@@ -41,5 +41,11 @@ if ($errors) {
 
 $newServiceId = Service::create( $user->id,$catId, $title, $desc, (float)$basePrice, $currency, $deliveryDays, $revisions);
 
+if (isset($_FILES['photo']) && is_uploaded_file($_FILES['photo']['tmp_name'])) {
+    $targetDir = __DIR__ . '/../images/services/';
+    $targetPath = $targetDir . $newServiceId . '.jpg';
+    move_uploaded_file($_FILES['photo']['tmp_name'], $targetPath);
+}
+
 header('Location: /');
 exit;

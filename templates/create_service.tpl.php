@@ -12,7 +12,7 @@ function drawCreateServiceForm(array $cats, array $errors): void {
     <?php endforeach; ?>
   <?php endif; ?>
 
-  <form action="/actions/action_create_service.php" method="post" class="create-service__form">
+  <form action="/actions/action_create_service.php" method="post" class="create-service__form" enctype="multipart/form-data">
 
     <label> Category
       <select name="category_id" required>
@@ -29,6 +29,8 @@ function drawCreateServiceForm(array $cats, array $errors): void {
     <label> Currency <input type="text" name="currency" maxlength="3" value="EUR" required> </label>
     <label> Delivery Days <input type="number" name="delivery_days" min="1" required> </label>
     <label> Revisions <input type="number" name="revisions" min="0" value="1" required> </label>
+    <label> Service Image <input type="file" name="photo" accept="image/jpeg,image/png"> </label>
+
 
     <button type="submit" class="btn btn--primary">Create Service</button>
 
