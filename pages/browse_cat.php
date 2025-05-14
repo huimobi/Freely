@@ -7,6 +7,7 @@ require_once __DIR__ . '/../templates/browse_cat.tpl.php';
 require_once __DIR__ . '/../templates/service_card.tpl.php';
 require_once __DIR__ . '/../database/scripts/category.class.php';
 require_once __DIR__ . '/../database/scripts/service.class.php';
+require_once __DIR__ . '/../database/scripts/comment.class.php';
 
 $catId          = (int)($_GET['cat']      ?? 0);
 $priceFilter    = $_GET['price']    ?? '';   // '' | 'low' | 'high'
@@ -23,8 +24,8 @@ $totalPages = (int)ceil($totalCount / $limit);
 
 foreach ($services as $svc) {
     $svc->seller = User::getUser($svc->sellerId);
-    $svc->rating = 4.9;          // TEMP: static value or real average if implemented
-    $svc->numRatings = 100;      // TEMP: static value or real count
+    $svc->rating = Comment::averageForService($svc->id);
+    $svc->numRatings = Comment::countForService($svc->id);
 }
 
 drawHeader();
