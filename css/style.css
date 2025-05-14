@@ -354,6 +354,11 @@ select {
   gap: var(--spacing-md);
 }
 
+.view-more {
+  margin: 1rem;
+  text-align: center;
+}
+
 /* ---------------------- Service Card ---------------------- */
 .service-card {
   display: flex;
