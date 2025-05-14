@@ -42,6 +42,13 @@ if ($user) {
   $user->email = $email;
   $user->headline = $headline;
   $user->description = $description;
+
+  if (isset($_FILES['photo']) && is_uploaded_file($_FILES['photo']['tmp_name'])) {
+      $targetDir = __DIR__ . '/../images/users/';
+      $targetFile = $targetDir . $userId . '.jpg';
+      move_uploaded_file($_FILES['photo']['tmp_name'], $targetFile);
+  }
+
   $user->save();
 }
 
