@@ -27,5 +27,43 @@ class Tag {
       $stmt->execute([$serviceId, $tagId]);
     }
   }
+
+  public static function getServicesByPartialTag(string $tag): array {
+    $db = Database::getInstance();
+    $tag = strtolower(trim($tag));
+
+    $stmt = $db->prepare("
+        SELECT Service.* FROM Service
+        JOIN ServiceTag ON Service.ServiceId = ServiceTag.ServiceId
+        JOIN Tag ON Tag.TagId = ServiceTag.TagId
+        WHERE Tag.Name LIKE ?
+        GROUP BY Service.ServiceId
+    ");
+    $stmt->execute(['%' . $tag . '%']);
+
+    $services = [];
+    while ($row = $stmt->fetch()) {
+        $service = new Service(
+            $row['ServiceId'],
+            $row['SellerUserId'],
+            $row['CategoryId'],
+            $row['Title'],
+            $row['Description'],
+            $row['BasePrice'],
+            $row['Currency'],
+            $row['DeliveryDays'],
+            $row['Revisions'],
+            (bool)$row['IsActive'],
+            $row['CreatedAt']
+        );
+        $service->seller = User::getUser($row['SellerUserId']);
+
+        $services[] = $service;
+    }
+
+    return $services;
+}
+
+
 }
 ?>
