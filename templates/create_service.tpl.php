@@ -23,6 +23,8 @@ function drawCreateServiceForm(array $cats, array $errors): void {
       </select>
     </label>
 
+    <label>Tags (comma-separated) <input type="text" name="tags" placeholder="e.g., tutoring, math, online"> </label>
+
     <label> Title <input type="text" name="title" maxlength="150" required> </label>
     <label> Description <textarea name="description" maxlength="2000" required></textarea> </label>
     <label> Base Price <input type="number" name="base_price" step="0.01" min="0" required> </label>

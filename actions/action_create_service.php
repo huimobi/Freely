@@ -2,7 +2,8 @@
 declare(strict_types=1);
 require_once __DIR__ . '/../includes/session.php';
 require_once __DIR__ . '/../database/scripts/database.php';
-require_once __DIR__.'/../database/scripts/service.class.php';
+require_once __DIR__. '/../database/scripts/service.class.php';
+require_once __DIR__ . '/../database/scripts/tag.class.php';
 
 
 $session = Session::getInstance();
@@ -40,6 +41,9 @@ if ($errors) {
 }
 
 $newServiceId = Service::create( $user->id,$catId, $title, $desc, (float)$basePrice, $currency, $deliveryDays, $revisions);
+
+$rawTags = $_POST['tags'] ?? '';
+Tag::processTagsForService($newServiceId, $rawTags);
 
 if (isset($_FILES['photo']) && is_uploaded_file($_FILES['photo']['tmp_name'])) {
     $targetDir = __DIR__ . '/../images/services/';

@@ -52,6 +52,19 @@
         FOREIGN KEY (ParentCategoryId) REFERENCES Category (CategoryId) ON UPDATE CASCADE ON DELETE SET NULL
     );
 
+    CREATE TABLE Tag (
+        TagId INTEGER PRIMARY KEY AUTOINCREMENT,
+        Name TEXT NOT NULL UNIQUE
+    );
+
+    CREATE TABLE IF NOT EXISTS ServiceTag (
+        ServiceId INTEGER,
+        TagId INTEGER,
+        PRIMARY KEY (ServiceId, TagId),
+        FOREIGN KEY (ServiceId) REFERENCES Service(ServiceId) ON DELETE CASCADE,
+        FOREIGN KEY (TagId) REFERENCES Tag(TagId) ON DELETE CASCADE
+    );
+
     CREATE TABLE JobOrder (
         JobOrderId INTEGER PRIMARY KEY AUTOINCREMENT,
         ServiceId INTEGER NOT NULL,
@@ -88,13 +101,16 @@
     );
 
     -- --- Criação de Índices para Otimização ---
-    CREATE INDEX idx_service_seller   ON Service(SellerUserId);
+    CREATE INDEX idx_service_seller ON Service(SellerUserId);
     CREATE INDEX idx_service_category ON Service(CategoryId);
-    CREATE INDEX idx_order_buyer      ON JobOrder(BuyerUserId);
-    CREATE INDEX idx_order_seller     ON JobOrder(SellerUserId);
-    CREATE INDEX idx_order_status     ON JobOrder(Status);
-    CREATE INDEX idx_comment_buyer    ON Comment(BuyerUserId);
-    CREATE INDEX idx_comment_service  ON Comment(ServiceId);
+    CREATE INDEX idx_order_buyer ON JobOrder(BuyerUserId);
+    CREATE INDEX idx_order_seller ON JobOrder(SellerUserId);
+    CREATE INDEX idx_order_status ON JobOrder(Status);
+    CREATE INDEX idx_comment_buyer ON Comment(BuyerUserId);
+    CREATE INDEX idx_comment_service ON Comment(ServiceId);
+    CREATE INDEX idx_service_tag_tagid ON ServiceTag(TagId);
+    CREATE INDEX idx_service_tag_serviceid ON ServiceTag(ServiceId);
+    CREATE INDEX idx_tag_name ON Tag(Name);
 
 
     -- ─── Temporary seed data for testing ─────────────────────────────────────
