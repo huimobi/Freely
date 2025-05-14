@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 
 function drawBrowsePage($category, array $services, int $page, int $totalPages, int $catId, string $priceFilter, string $deliveryFilter): void { ?>
+
   <section class="category-header">
     <h2><?= htmlspecialchars($category->name) ?></h2>
     <?php if ($category->description): ?>
@@ -32,30 +33,29 @@ function drawBrowsePage($category, array $services, int $page, int $totalPages, 
     </label>
   </section>
 
-  <div class="service-list-container">
-    <section class="service-list">
-      <?php if (empty($services)): ?>
-        <p>No services found in this category.</p>
-      <?php else: ?>
-        <?php foreach ($services as $svc): ?>
-          <?php drawServiceCard($svc); ?>
-        <?php endforeach; ?>
-      <?php endif; ?>
-    </section>
-  </div>
-
-    <?php if ($totalPages > 1): ?>
-      <nav class="pagination">
-        <?php if ($page > 1): ?>
-          <a href="/pages/browse_cat.php?cat=<?= $catId ?>&page=<?= $page-1 ?>">&laquo; Prev</a>
-        <?php endif; ?>
-        <?php for ($p = 1; $p <= $totalPages; $p++): ?>
-          <a href="/pages/browse_cat.php?cat=<?= $catId ?>&page=<?= $p ?> "class="<?= $p === $page ? 'active' : '' ?>" > <?= $p ?></a>
-        <?php endfor; ?>
-        <?php if ($page < $totalPages): ?>
-          <a href="/pages/browse_cat.php?cat=<?= $catId ?>&page=<?= $page+1 ?>"> Next &raquo; </a>
-        <?php endif; ?>
-      </nav>
+  <section class="service-list">
+    <?php if (empty($services)): ?>
+      <p>No services found in this category.</p>
+    <?php else: ?>
+      <?php foreach ($services as $svc): ?>
+        <?php drawServiceCard($svc); ?>
+      <?php endforeach; ?>
     <?php endif; ?>
-  </div>
+  </section>
+
+
+  <?php if ($totalPages > 1): ?>
+    <nav class="pagination">
+      <?php if ($page > 1): ?>
+        <a href="/pages/browse_cat.php?cat=<?= $catId ?>&page=<?= $page-1 ?>">&laquo; Prev</a>
+      <?php endif; ?>
+      <?php for ($p = 1; $p <= $totalPages; $p++): ?>
+        <a href="/pages/browse_cat.php?cat=<?= $catId ?>&page=<?= $p ?> "class="<?= $p === $page ? 'active' : '' ?>" > <?= $p ?></a>
+      <?php endfor; ?>
+      <?php if ($page < $totalPages): ?>
+        <a href="/pages/browse_cat.php?cat=<?= $catId ?>&page=<?= $page+1 ?>"> Next &raquo; </a>
+      <?php endif; ?>
+    </nav>
+  <?php endif; ?>
+
 <?php }
