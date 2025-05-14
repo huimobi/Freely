@@ -20,7 +20,6 @@
         IsActive INTEGER NOT NULL DEFAULT 1 CHECK (IsActive IN (0, 1))
     );
 
-
     Create Table Admin(
         UserId INTEGER NOT NULL,
         FOREIGN KEY (UserId) REFERENCES User (UserId)
@@ -44,8 +43,6 @@
         FOREIGN KEY (SellerUserId) REFERENCES User (UserId) ON UPDATE CASCADE ON DELETE CASCADE,
         FOREIGN KEY (CategoryId) REFERENCES Category (CategoryId) ON UPDATE CASCADE ON DELETE RESTRICT
     );
-
-
 
     CREATE TABLE Category (
         CategoryId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, -- SERIAL mapeado para INTEGER PK AUTOINCREMENT

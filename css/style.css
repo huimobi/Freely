@@ -301,51 +301,6 @@ select {
   max-width: 800px;
 }
 
-.service-list {
-  background: #f7f7f7;
-  padding: var(--spacing-lg);
-  border-radius: var(--radius-md);
-  margin-bottom: var(--spacing-lg);
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: var(--spacing-md);
-}
-
-.service-card {
-  background: var(--color-background);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  padding: var(--spacing-md);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
-}
-
-.service-desc {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
-  margin: var(--spacing-xs) 0;
-  color: var(--color-text);
-}
-
-.service-meta {
-  margin-top: auto;
-  font-size: 0.9rem;
-  color: var(--color-text-secondary, #666);
-}
-
-.service-card h3 {
-  margin-bottom: var(--spacing-sm);
-  font-size: 1.1rem;
-}
-
-.service-card p {
-  margin: var(--spacing-xs) 0;
-  color: var(--color-text);
-}
-
 .pagination {
   margin: var(--spacing-lg) 0;
   text-align: center;
@@ -383,31 +338,67 @@ select {
   background: var(--color-background);
 }
 
-/* ---------------------- Service Card ---------------------- */
-.service-card {
-  border: 1px solid #ddd;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  max-width: 320px;
-  background: white;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  margin: var(--spacing-sm);
+/* ---------------------- Service List ---------------------- */
+
+.top-rated h2 {
+  margin-bottom: 2rem;
 }
 
+.service-list {
+  background: #f7f7f7;
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--spacing-md);
+}
+
+/* ---------------------- Service Card ---------------------- */
+.service-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  cursor: pointer;
+
+  min-height: 370px;
+  max-width: 320px;
+  margin: var(--spacing-sm);
+  padding: 0;
+
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: var(--radius-md);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.service-card:hover {
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+  transform: translateY(-2px);
+  transition: all 0.2s ease;
+}
+
+.service-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: inline-block;
+}
+
+/* ---------------------- Card Content ---------------------- */
 .service-img {
   width: 100%;
   height: 180px;
   object-fit: cover;
-  border-radius: 0;
   border-top-left-radius: var(--radius-md);
   border-top-right-radius: var(--radius-md);
 }
 
 .service-info {
-  padding: var(--spacing-sm) var(--spacing-md)  var(--spacing-md) var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md) var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
 .service-title {
@@ -416,10 +407,17 @@ select {
   color: black;
   text-decoration: none;
   margin-bottom: var(--spacing-xs);
+  margin-bottom: var(--spacing-sm);
 }
 
 .service-desc {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
   font-size: 16px;
+  margin: var(--spacing-xs) 0;
+  color: var(--color-text);
 }
 
 .service-meta {
@@ -427,8 +425,11 @@ select {
   justify-content: space-between;
   font-size: 15px;
   margin-top: 4px;
+  color: var(--color-text-secondary, #666);
+  margin-top: auto;
 }
 
+/* ---------------------- Seller Info ---------------------- */
 .service-seller {
   display: flex;
   align-items: center;
@@ -449,22 +450,4 @@ select {
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
-}
-
-
-/* ---------------------- Service Card (link) ---------------------- */
-.service-card:hover {
-  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
-  transform: translateY(-2px);
-  transition: all 0.2s ease;
-}
-
-.service-card-link {
-  text-decoration: none;
-  color: inherit;
-  display: inline-block;
-}
-
-.service-card {
-  cursor: pointer;
 }
