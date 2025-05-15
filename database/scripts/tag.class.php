@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+require_once __DIR__ . '/database.php';
 
 class Tag {
     
@@ -74,6 +75,13 @@ class Tag {
     ");
     $stmt->execute(['%' . $term . '%']);
     return (int)$stmt->fetchColumn();
+  }
+
+  public static function getTagsByPartial(string $query, int $limit = 10): array {
+    $db = Database::getInstance();
+    $stmt = $db->prepare('SELECT DISTINCT name FROM Tag WHERE name LIKE ? LIMIT ?');
+    $stmt->execute(["%$query%", $limit]);
+    return $stmt->fetchAll(PDO::FETCH_COLUMN);
   }
 }
 ?>

@@ -30,7 +30,7 @@ function drawHeader() {
             <h1><a href="../index.php">Freely</a></h1>
 
             <form action="../pages/search.php" method="get" class="search-bar">
-                <input id="q" name="q" type="search" placeholder="Search freelancers…" required>
+                <input id="q" name="q" type="search" placeholder="Search by tags…" autocomplete="off" required>
                 <button type="submit" aria-label="Search"><i class="fa fa-search"></i></button>
             </form>
 

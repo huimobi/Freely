@@ -43,3 +43,47 @@ if (profileBtn) {
     }
   });
 }
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const searchInput = document.querySelector('#q');
+  const suggestionBox = document.createElement('ul');
+  suggestionBox.id = 'tag-suggestions';
+  suggestionBox.classList.add('tag-suggestions');
+  document.body.appendChild(suggestionBox); // append to body
+
+  searchInput.addEventListener('input', async () => {
+    const query = searchInput.value.trim();
+    if (query.length === 0) {
+      suggestionBox.innerHTML = '';
+      return;
+    }
+
+    const rect = searchInput.getBoundingClientRect();
+    suggestionBox.style.top = `${rect.bottom + window.scrollY}px`;
+    suggestionBox.style.left = `${rect.left + window.scrollX}px`;
+    suggestionBox.style.width = `${rect.width}px`;
+
+    const res = await fetch(`../api/search_tags.php?q=${encodeURIComponent(query)}`);
+    const tags = await res.json();
+
+    suggestionBox.innerHTML = '';
+    for (const tag of tags) {
+      const li = document.createElement('li');
+      li.textContent = tag;
+      li.classList.add('tag-suggestion-item');
+      li.addEventListener('click', () => {
+        searchInput.value = tag;
+        suggestionBox.innerHTML = '';
+        searchInput.form.submit();
+      });
+      suggestionBox.appendChild(li);
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!suggestionBox.contains(e.target) && e.target !== searchInput) {
+      suggestionBox.innerHTML = '';
+    }
+  });
+});
