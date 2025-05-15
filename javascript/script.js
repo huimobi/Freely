@@ -41,5 +41,21 @@ if (profileBtn) {
       nav.classList.remove('open');
       menu.setAttribute('aria-hidden', 'true');
     }
-  });
+  })
 }
+
+//select photo on service page
+    const mainPhoto = document.getElementById('selected-photo');
+    const thumbnailPhotos = document.querySelectorAll('.thumbnail-photos img');
+    thumbnailPhotos.forEach(thumbnail => {
+      thumbnail.addEventListener('click', () => {
+        // Set main photo src to clicked thumbnail src
+        mainPhoto.src = thumbnail.src;
+
+        // Highlight selected photo
+        document.querySelectorAll('.thumbnail-photos img').forEach(img => {
+          img.removeAttribute('data-selected');
+        });
+        thumbnail.setAttribute('data-selected', 'true');
+      });
+  });
