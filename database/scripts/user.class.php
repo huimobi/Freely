@@ -33,9 +33,20 @@
     }
 
     public function save(): void {
-      $db   = Database::getInstance();
-      $stmt = $db->prepare('UPDATE User SET FirstName = ?, LastName = ?, Email=?, Headline=?, Description=? WHERE UserId = ?');
-      $stmt->execute([$this->firstName, $this->lastName, $this->email, $this->headline, $this->description ,$this->id]);
+      $db = Database::getInstance();
+      $stmt = $db->prepare('
+        UPDATE User
+        SET UserName = ?, FirstName = ?, LastName = ?, Email = ?, Headline = ?, Description = ?
+        WHERE UserId = ?
+      ');
+      $stmt->execute([ $this->username, $this->firstName, $this->lastName, $this->email, $this->headline, $this->description, $this->id ]);
+    }
+
+    public function updatePassword(string $newHash): void {
+      $db = Database::getInstance();
+      $stmt = $db->prepare('UPDATE User SET PasswordHash = ? WHERE UserId = ?');
+      $stmt->execute([$newHash, $this->id]);
+      $this->passwordHash = $newHash;
     }
     
     static function getUser(int $id) : ?User {
