@@ -242,6 +242,29 @@ class Service {
       return $services;
   }
 
+  public static function getByUserId(int $userId): array {
+    $db = Database::getInstance();
+    $stmt = $db->prepare("SELECT * FROM Service WHERE SellerUserId = ?");
+    $stmt->execute([$userId]);
+
+    $services = [];
+    while ($service = $stmt->fetch()) {
+        $services[] = new Service(
+            (int)$service['ServiceId'],
+            (int)$service['SellerUserId'],
+            (int)$service['CategoryId'],
+            $service['Title'],
+            $service['Description'],
+            (float)$service['BasePrice'],
+            $service['Currency'],
+            (int)$service['DeliveryDays'],
+            (int)$service['Revisions'],
+            (bool)$service['IsActive'],
+            $service['CreatedAt']
+        );
+    }
+    return $services;
+}
 
   public static function getTopRated(int $limit = 10): array {
     $db = Database::getInstance();
