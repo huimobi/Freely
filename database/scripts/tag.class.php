@@ -29,51 +29,91 @@ class Tag {
     }
   }
 
-  public static function getServicesByPartialTag(string $tag, int $limit, int $offset, string $priceSort = '', string $ratingSort = ''): array {
-    $db = Database::getInstance();
+  public static function getServicesByPartialTag(
+      string $tag, int $limit, int $offset,
+      string $sort = '', ?float $priceMin = null, ?float $priceMax = null,
+      ?float $ratingMin = null, ?float $ratingMax = null
+  ): array {
+      $db = Database::getInstance();
 
-    if (!empty($ratingSort)) {
-      $orderBy = "avgRating " . ($ratingSort === 'asc' ? 'ASC' : 'DESC');
-    } elseif (!empty($priceSort)) {
-      $orderBy = "BasePrice " . ($priceSort === 'asc' ? 'ASC' : 'DESC');
-    } else {
-      $orderBy = "s.CreatedAt DESC";
-    }
+      switch ($sort) {
+          case 'price_asc':  $orderBy = 's.BasePrice ASC'; break;
+          case 'price_desc': $orderBy = 's.BasePrice DESC'; break;
+          case 'rating_asc': $orderBy = 'avgData.avgRating ASC'; break;
+          case 'rating_desc': $orderBy = 'avgData.avgRating DESC'; break;
+          default: $orderBy = 's.CreatedAt DESC';
+      }
 
-    $stmt = $db->prepare("
-      SELECT s.*, COALESCE(avgData.avgRating, 0) as avgRating
-      FROM Service s
-      JOIN ServiceTag st ON s.ServiceId = st.ServiceId
-      JOIN Tag t ON t.TagId = st.TagId LEFT JOIN (
-        SELECT ServiceId, AVG(Rating) as avgRating
-        FROM Comment
-        GROUP BY ServiceId
-      ) avgData ON s.ServiceId = avgData.ServiceId
-      WHERE t.Name LIKE ?
-        AND s.IsActive = 1
-      ORDER BY $orderBy
-      LIMIT ? OFFSET ? ");
-      
-    $stmt->execute(['%' . $tag . '%', $limit, $offset]);
+      $where = 's.IsActive = 1 AND t.Name LIKE :tag';
+      $params = [':tag' => '%' . $tag . '%'];
 
-    $services = [];
-    while ($row = $stmt->fetch()) {
-      $services[] = new Service(
-        (int)$row['ServiceId'],
-        (int)$row['SellerUserId'],
-        (int)$row['CategoryId'],
-        $row['Title'],
-        $row['Description'],
-        (float)$row['BasePrice'],
-        $row['Currency'],
-        (int)$row['DeliveryDays'],
-        (int)$row['Revisions'],
-        (bool)$row['IsActive'],
-        $row['CreatedAt']
-      );
-    }
+      if ($priceMin !== null) {
+          $where .= ' AND s.BasePrice >= :priceMin';
+          $params[':priceMin'] = $priceMin;
+      }
+      if ($priceMax !== null) {
+          $where .= ' AND s.BasePrice <= :priceMax';
+          $params[':priceMax'] = $priceMax;
+      }
 
-    return $services;
+      $having = [];
+      if ($ratingMin !== null) {
+          $having[] = 'AVG(Rating) >= :ratingMin';
+          $params[':ratingMin'] = $ratingMin;
+      }
+      if ($ratingMax !== null) {
+          $having[] = 'AVG(Rating) <= :ratingMax';
+          $params[':ratingMax'] = $ratingMax;
+      }
+
+      $avgSubquery = "
+          SELECT ServiceId, AVG(Rating) as avgRating
+          FROM Comment
+          GROUP BY ServiceId
+      ";
+      if (count($having)) {
+          $avgSubquery .= ' HAVING ' . implode(' AND ', $having);
+      }
+
+      $stmt = $db->prepare("
+          SELECT s.*, COALESCE(avgData.avgRating, 0) as avgRating
+          FROM Service s
+          JOIN ServiceTag st ON s.ServiceId = st.ServiceId
+          JOIN Tag t ON t.TagId = st.TagId
+          LEFT JOIN (
+              $avgSubquery
+          ) avgData ON s.ServiceId = avgData.ServiceId
+          WHERE $where
+          ORDER BY $orderBy
+          LIMIT :lim OFFSET :off
+      ");
+
+      $stmt->bindValue(':lim', $limit, PDO::PARAM_INT);
+      $stmt->bindValue(':off', $offset, PDO::PARAM_INT);
+      foreach ($params as $key => $value) {
+          $stmt->bindValue($key, $value, PDO::PARAM_STR);
+      }
+
+      $stmt->execute();
+
+      $services = [];
+      while ($row = $stmt->fetch()) {
+          $services[] = new Service(
+              (int)$row['ServiceId'],
+              (int)$row['SellerUserId'],
+              (int)$row['CategoryId'],
+              $row['Title'],
+              $row['Description'],
+              (float)$row['BasePrice'],
+              $row['Currency'],
+              (int)$row['DeliveryDays'],
+              (int)$row['Revisions'],
+              (bool)$row['IsActive'],
+              $row['CreatedAt']
+          );
+      }
+
+      return $services;
   }
 
   public static function countServicesByPartialTag(string $term): int {

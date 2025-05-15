@@ -25,7 +25,7 @@ function drawBrowseServicesPage(string $title, array $services, ?string $categor
       <div class="filter-group">
         <label>Rating</label>
         <div class="price-range">
-          <input type="number" name="rating_min" placeholder="De" step="0.1" min="1" max="5" value="<?= htmlspecialchars($_GET['rating_min'] ?? '') ?>">
+          <input type="number" name="rating_min" placeholder="De" step="0.1" min="0" max="5" value="<?= htmlspecialchars($_GET['rating_min'] ?? '') ?>">
           <input type="number" name="rating_max" placeholder="Até" step="0.1" min="1" max="5" value="<?= htmlspecialchars($_GET['rating_max'] ?? '') ?>">
         </div>
       </div>
@@ -43,6 +43,10 @@ function drawBrowseServicesPage(string $title, array $services, ?string $categor
 
       <?php if (isset($_GET['cat'])): ?>
         <input type="hidden" name="cat" value="<?= htmlspecialchars($_GET['cat']) ?>">
+      <?php endif; ?>
+
+      <?php if (isset($_GET['q'])): ?>
+        <input type="hidden" name="q" value="<?= htmlspecialchars($_GET['q']) ?>">
       <?php endif; ?>
 
       <button class="btn--primary" type="submit">Filtrar</button>
