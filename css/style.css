@@ -655,4 +655,163 @@ select {
   line-height: var(--spacing-lg);
 }
 
+/* ---------------------- Freelancer Page ---------------------- */
+.freelancer-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+}
+
+.freelancer-header {
+  background: var(--card-background);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.freelancer-profile {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+}
+
+.freelancer-profile .profile-picture {
+  width: 270px;
+  height: 270px;
+  border-radius: 25px;
+  object-fit: cover;
+}
+
+.freelancer-info {
+  flex: 1;
+  padding-top: var(--spacing-sm);
+  position: relative; /* Adicionado para posicionar o botão de contato */
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-wrapper {
+  margin-top: var(--spacing-md);
+  align-self: flex-end; /* Alinha o botão à direita */
+}
+
+.contact-btn {
+  padding: var(--spacing-lg) var(--spacing-lg);
+  background-color: var(--color-background-dark);
+  color: var(--color-text-light);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  min-width: 250px; /* Aumentado de 180px */
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.contact-btn:hover {
+  background-color: var(--color-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.contact-btn i {
+  font-size: 1.5rem;
+}
+
+.contact-btn:hover {
+  background-color: var(--color-hover);
+}
+
+.freelancer-info h1 {
+  font-size: 2.6rem;
+  margin-bottom: var(--spacing-xs);
+}
+
+.freelancer-info .headline {
+  font-size: 1.2rem;
+  font-weight: normal;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-sm);
+}
+
+.freelancer-info .rating {
+  font-size: 1rem;
+  color: var(--color-text);
+}
+
+.freelancer-description {
+  background: var(--color-background);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+  line-height: 1.6;
+}
+
+.freelancer-services {
+  margin-bottom: var(--spacing-lg);
+}
+
+.freelancer-services h2,
+.freelancer-reviews h2 {
+  margin-bottom: var(--spacing-md);
+}
+
+.reviews-list {
+  list-style: none;
+  padding: 0;
+}
+
+.reviews-list .review {
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var (--spacing-md);
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--spacing-sm);
+  gap: var(--spacing-sm);
+}
+
+.reviewer-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.reviewer-name {
+  font-weight: bold;
+  flex: 1;
+}
+
+.review-rating {
+  color: var(--color-text);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .freelancer-profile {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .contact-wrapper {
+    align-self: center; /* Centraliza o botão em telas menores */
+    margin-top: var(--spacing-lg);
+  }
+  
+  .freelancer-services .service-list {
+    grid-template-columns: 1fr;
+  }
+}
+
 

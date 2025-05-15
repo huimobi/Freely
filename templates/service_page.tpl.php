@@ -11,7 +11,7 @@
                         onerror="this.src='/images/users/default.jpg'" alt="Seller">
                     <section class="seller-text">
                         <div class="seller-rating">
-                            <h2><a href="/pages/user.php?id=<?= $SERVICE->sellerId ?>"><?= htmlspecialchars($SERVICE->seller->username) ?>
+                            <h2><a href="/pages/freelancer.php?id=<?= $SERVICE->sellerId ?>"><?= htmlspecialchars($SERVICE->seller->username) ?>
                             </h2></a>
                             <span class="rating">⭐ <?= $SERVICE->rating ?? '4.9' ?>
                                 (<?= $SERVICE->numRatings ?? '100' ?>)</span>

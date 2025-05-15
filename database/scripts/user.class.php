@@ -117,5 +117,17 @@
       $stmt->execute([$userId]);
       return (bool)$stmt->fetchColumn();
     }
+
+    public static function isFreelancer(int $userId): bool 
+    {
+        $db = Database::getInstance();
+        $stmt = $db->prepare('
+            SELECT 1 
+            FROM User 
+            WHERE UserId = ? 
+            AND (Headline IS NOT NULL OR Description IS NOT NULL)
+        ');
+        $stmt->execute([$userId]);
+        return (bool)$stmt->fetchColumn();
+    }
   }
-?>

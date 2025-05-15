@@ -18,7 +18,7 @@ function drawHeader() {
         <link rel="stylesheet" href="../css/cat_style.css">
         <link rel="stylesheet" href="../css/drop_down_style.css">
         <link rel="stylesheet" href="../css/style.css">
-
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" 
             integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" 
@@ -184,4 +184,4 @@ function drawHeader() {
     <header class="minimal-header">
       <h1><a href="/index.php">Freely</a></h1>
     </header>
-<?php } ?>  
+<?php } ?>
