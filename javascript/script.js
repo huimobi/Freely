@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const suggestionBox = document.createElement('ul');
   suggestionBox.id = 'tag-suggestions';
   suggestionBox.classList.add('tag-suggestions');
-  document.body.appendChild(suggestionBox); // append to body
+  document.body.appendChild(suggestionBox);
 
   searchInput.addEventListener('input', async () => {
     const query = searchInput.value.trim();
