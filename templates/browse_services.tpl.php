@@ -10,6 +10,45 @@ function drawBrowseServicesPage(string $title, array $services, ?string $categor
     <?php endif; ?>
   </section>
 
+  <section class="filters-bar">
+    <h3>Filtros</h3>
+    <form method="get" class="filter-form">
+
+      <div class="filter-group">
+        <label>Preço</label>
+        <div class="price-range">
+          <input type="number" name="price_min" placeholder="De" value="<?= htmlspecialchars($_GET['price_min'] ?? '') ?>">
+          <input type="number" name="price_max" placeholder="Até" value="<?= htmlspecialchars($_GET['price_max'] ?? '') ?>">
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label>Rating</label>
+        <div class="price-range">
+          <input type="number" name="rating_min" placeholder="De" step="0.1" min="1" max="5" value="<?= htmlspecialchars($_GET['rating_min'] ?? '') ?>">
+          <input type="number" name="rating_max" placeholder="Até" step="0.1" min="1" max="5" value="<?= htmlspecialchars($_GET['rating_max'] ?? '') ?>">
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label for="sort">Ordenar por</label>
+        <select name="sort" id="sort">
+          <option value="">Mostrar tudo</option>
+          <option value="price_asc" <?= ($_GET['sort'] ?? '') === 'price_asc' ? 'selected' : '' ?>>Preço: menor → maior</option>
+          <option value="price_desc" <?= ($_GET['sort'] ?? '') === 'price_desc' ? 'selected' : '' ?>>Preço: maior → menor</option>
+          <option value="rating_asc" <?= ($_GET['sort'] ?? '') === 'rating_asc' ? 'selected' : '' ?>>Rating: menor → maior</option>
+          <option value="rating_desc" <?= ($_GET['sort'] ?? '') === 'rating_desc' ? 'selected' : '' ?>>Rating: maior → menor</option>
+        </select>
+      </div>
+
+      <?php if (isset($_GET['cat'])): ?>
+        <input type="hidden" name="cat" value="<?= htmlspecialchars($_GET['cat']) ?>">
+      <?php endif; ?>
+
+      <button class="btn--primary" type="submit">Filtrar</button>
+    </form>
+  </section>
+
   <section class="service-list">
     <?php if (empty($services)): ?>
       <p>No services found.</p>

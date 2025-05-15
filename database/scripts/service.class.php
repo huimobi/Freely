@@ -70,17 +70,30 @@ class Service {
     return (int)$stmt->fetchColumn();
   }
 
-  public static function getAll(int $limit, int $offset): array {
+  public static function getAll(int $limit, int $offset, string $priceSort = '', string $ratingSort = ''): array {
     $db = Database::getInstance();
 
+    error_log("SORT DEBUG: price=$priceSort, rating=$ratingSort, order=$orderBy");
+
+    if (!empty($ratingSort)) {
+      $orderBy = "avgRating " . ($ratingSort === 'asc' ? 'ASC' : 'DESC');
+    } elseif (!empty($priceSort)) {
+      $orderBy = "BasePrice " . ($priceSort === 'asc' ? 'ASC' : 'DESC');
+    } else {
+      $orderBy = "s.CreatedAt DESC";
+    }
+
     $stmt = $db->prepare("
-      SELECT ServiceId, SellerUserId, CategoryId, Title, Description,
-            BasePrice, Currency, DeliveryDays, Revisions, IsActive, CreatedAt
-      FROM Service
-      WHERE IsActive = 1
-      ORDER BY CreatedAt DESC
-      LIMIT :lim OFFSET :off
-    ");
+      SELECT s.*, COALESCE(avgData.avgRating, 0) as avgRating
+      FROM Service s LEFT JOIN (
+        SELECT ServiceId, AVG(Rating) as avgRating
+        FROM Comment
+        GROUP BY ServiceId
+      ) avgData ON s.ServiceId = avgData.ServiceId
+      WHERE s.IsActive = 1
+      ORDER BY $orderBy
+      LIMIT :lim OFFSET :off ");
+
     $stmt->bindValue(':lim', $limit, PDO::PARAM_INT);
     $stmt->bindValue(':off', $offset, PDO::PARAM_INT);
     $stmt->execute();
@@ -105,43 +118,93 @@ class Service {
     return $services;
   }
 
-  public static function getByCategory(int $catId, int $limit, int $offset): array {
-    $db = Database::getInstance();
+  public static function getByCategory(
+      int $catId, int $limit, int $offset,
+      string $sort = '', ?float $priceMin = null, ?float $priceMax = null,
+      ?float $ratingMin = null, ?float $ratingMax = null
+  ): array {
+      $db = Database::getInstance();
 
-    $sql = "
-      SELECT ServiceId, SellerUserId, CategoryId, Title, Description,
-            BasePrice, Currency, DeliveryDays, Revisions, IsActive, CreatedAt
-      FROM Service
-      WHERE CategoryId = :cat AND IsActive = 1
-      ORDER BY CreatedAt DESC
-      LIMIT :lim OFFSET :off
-    ";
+      switch ($sort) {
+          case 'price_asc':  $orderBy = 's.BasePrice ASC'; break;
+          case 'price_desc': $orderBy = 's.BasePrice DESC'; break;
+          case 'rating_asc': $orderBy = 'avgData.avgRating ASC'; break;
+          case 'rating_desc': $orderBy = 'avgData.avgRating DESC'; break;
+          default: $orderBy = 's.CreatedAt DESC';
+      }
 
-    $stmt = $db->prepare($sql);
-    $stmt->bindValue(':cat', $catId, PDO::PARAM_INT);
-    $stmt->bindValue(':lim', $limit, PDO::PARAM_INT);
-    $stmt->bindValue(':off', $offset, PDO::PARAM_INT);
-    $stmt->execute();
+      $where = 's.CategoryId = :cat AND s.IsActive = 1';
+      $params = [':cat' => $catId];
 
-    $out = [];
-    while ($row = $stmt->fetch()) {
-      $out[] = new self(
-        (int)$row['ServiceId'],
-        (int)$row['SellerUserId'],
-        (int)$row['CategoryId'],
-        $row['Title'],
-        $row['Description'],
-        (float)$row['BasePrice'],
-        $row['Currency'],
-        (int)$row['DeliveryDays'],
-        (int)$row['Revisions'],
-        (bool)$row['IsActive'],
-        $row['CreatedAt']
-      );
-    }
+      if ($priceMin !== null) {
+          $where .= ' AND s.BasePrice >= :priceMin';
+          $params[':priceMin'] = $priceMin;
+      }
+      if ($priceMax !== null) {
+          $where .= ' AND s.BasePrice <= :priceMax';
+          $params[':priceMax'] = $priceMax;
+      }
 
-    return $out;
+      $having = [];
+      if ($ratingMin !== null) {
+          $having[] = 'AVG(Rating) >= :ratingMin';
+          $params[':ratingMin'] = $ratingMin;
+      }
+      if ($ratingMax !== null) {
+          $having[] = 'AVG(Rating) <= :ratingMax';
+          $params[':ratingMax'] = $ratingMax;
+      }
+
+      $avgDataSubquery = "
+          SELECT ServiceId, AVG(Rating) as avgRating
+          FROM Comment
+          GROUP BY ServiceId
+      ";
+
+      if (count($having)) {
+          $avgDataSubquery .= " HAVING " . implode(' AND ', $having);
+      }
+
+      $stmt = $db->prepare("
+          SELECT s.*, COALESCE(avgData.avgRating, 0) as avgRating
+          FROM Service s
+          LEFT JOIN (
+              $avgDataSubquery
+          ) avgData ON s.ServiceId = avgData.ServiceId
+          WHERE $where
+          ORDER BY $orderBy
+          LIMIT :lim OFFSET :off
+      ");
+
+      $stmt->bindValue(':lim', $limit, PDO::PARAM_INT);
+      $stmt->bindValue(':off', $offset, PDO::PARAM_INT);
+
+      foreach ($params as $key => $value) {
+          $stmt->bindValue($key, $value, PDO::PARAM_STR);
+      }
+
+      $stmt->execute();
+
+      $services = [];
+      while ($row = $stmt->fetch()) {
+          $services[] = new self(
+              (int)$row['ServiceId'],
+              (int)$row['SellerUserId'],
+              (int)$row['CategoryId'],
+              $row['Title'],
+              $row['Description'],
+              (float)$row['BasePrice'],
+              $row['Currency'],
+              (int)$row['DeliveryDays'],
+              (int)$row['Revisions'],
+              (bool)$row['IsActive'],
+              $row['CreatedAt']
+          );
+      }
+
+      return $services;
   }
+
 
   public static function getTopRated(int $limit = 10): array {
     $db = Database::getInstance();

@@ -14,7 +14,10 @@ $offset = ($page - 1) * $limit;
 
 $totalCount = Service::countAll();
 $totalPages = (int)ceil($totalCount / $limit);
-$services = Service::getAll($limit, $offset);
+
+$priceSort = $_GET['price'] ?? '';
+$ratingSort = $_GET['rating'] ?? '';
+$services = Service::getAll($limit, $offset, $priceSort, $ratingSort);
 
 foreach ($services as $svc) {
     $svc->seller = User::getUser($svc->sellerId);

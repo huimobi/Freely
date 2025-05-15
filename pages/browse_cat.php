@@ -16,7 +16,16 @@ $offset = ($page - 1) * $limit;
 
 $category   = Category::getById($catId);
 $totalCount = Service::countByCategory($catId);
-$services   = Service::getByCategory($catId, $limit, $offset);
+
+$sort       = $_GET['sort'] ?? '';
+$priceMin = (isset($_GET['price_min']) && $_GET['price_min'] !== '') ? (float)$_GET['price_min'] : null;
+$priceMax = (isset($_GET['price_max']) && $_GET['price_max'] !== '') ? (float)$_GET['price_max'] : null;
+$ratingMin = (isset($_GET['rating_min']) && $_GET['rating_min'] !== '') ? (float)$_GET['rating_min'] : null;
+$ratingMax = (isset($_GET['rating_max']) && $_GET['rating_max'] !== '') ? (float)$_GET['rating_max'] : null;
+
+
+$services = Service::getByCategory($catId, $limit, $offset, $sort, $priceMin, $priceMax, $ratingMin, $ratingMax);
+
 $totalPages = (int)ceil($totalCount / $limit);
 
 foreach ($services as $svc) {

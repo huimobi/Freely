@@ -19,9 +19,14 @@ $totalPages = 1;
 
 if (!empty($searchTerm)) {
   $totalCount = Tag::countServicesByPartialTag($searchTerm);
-  $totalPages = (int)ceil($totalCount / $limit);
-  $services = Tag::getServicesByPartialTag($searchTerm, $limit, $offset);
 
+
+  $priceSort = $_GET['price'] ?? '';
+  $ratingSort = $_GET['rating'] ?? '';
+  $services = Tag::getServicesByPartialTag($searchTerm, $limit, $offset, $priceSort, $ratingSort);
+
+  $totalPages = (int)ceil($totalCount / $limit);
+  
   foreach ($services as $svc) {
     $svc->seller = User::getUser($svc->sellerId);
     $svc->rating = Comment::averageForService($svc->id);

@@ -89,6 +89,29 @@ header h1 a {
   gap: var(--spacing-md);
 }
 
+
+.tag-suggestions {
+  position: absolute;
+  z-index: 1000;
+  background: white;
+  border: 1px solid #ccc;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.tag-suggestion-item {
+  padding: 0.5em;
+  cursor: pointer;
+}
+
+.tag-suggestion-item:hover {
+  background-color: #f0f0f0;
+}
+
+
 /* -------------------- Buttons -------------------- */
 
 .btn {
@@ -458,23 +481,60 @@ select {
   object-fit: cover;
 }
 
-.tag-suggestions {
-  position: absolute;
-  z-index: 1000;
+/* ---------- Filter Select Section ---------- */
+
+.filters-bar {
+  background: #f7f7f7;
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.filters-bar h3 {
+  margin-bottom: var(--spacing-md);
+}
+
+.filter-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-lg);
+  align-items: flex-end;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 160px;
+}
+
+.price-range {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.price-range input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.filter-group select {
+  padding: 0.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
   background: white;
-  border: 1px solid #ccc;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  max-height: 200px;
-  overflow-y: auto;
+  font-size: 1rem;
 }
 
-.tag-suggestion-item {
-  padding: 0.5em;
-  cursor: pointer;
-}
+@media (max-width: 768px) {
+  .filter-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
 
-.tag-suggestion-item:hover {
-  background-color: #f0f0f0;
+  .price-range {
+    flex-direction: column;
+  }
 }

@@ -29,18 +29,31 @@ class Tag {
     }
   }
 
-  public static function getServicesByPartialTag(string $tag, int $limit, int $offset): array {
+  public static function getServicesByPartialTag(string $tag, int $limit, int $offset, string $priceSort = '', string $ratingSort = ''): array {
     $db = Database::getInstance();
+
+    if (!empty($ratingSort)) {
+      $orderBy = "avgRating " . ($ratingSort === 'asc' ? 'ASC' : 'DESC');
+    } elseif (!empty($priceSort)) {
+      $orderBy = "BasePrice " . ($priceSort === 'asc' ? 'ASC' : 'DESC');
+    } else {
+      $orderBy = "s.CreatedAt DESC";
+    }
+
     $stmt = $db->prepare("
-      SELECT DISTINCT s.*
+      SELECT s.*, COALESCE(avgData.avgRating, 0) as avgRating
       FROM Service s
       JOIN ServiceTag st ON s.ServiceId = st.ServiceId
-      JOIN Tag t ON t.TagId = st.TagId
+      JOIN Tag t ON t.TagId = st.TagId LEFT JOIN (
+        SELECT ServiceId, AVG(Rating) as avgRating
+        FROM Comment
+        GROUP BY ServiceId
+      ) avgData ON s.ServiceId = avgData.ServiceId
       WHERE t.Name LIKE ?
         AND s.IsActive = 1
-      ORDER BY s.CreatedAt DESC
-      LIMIT ? OFFSET ?
-    ");
+      ORDER BY $orderBy
+      LIMIT ? OFFSET ? ");
+      
     $stmt->execute(['%' . $tag . '%', $limit, $offset]);
 
     $services = [];
