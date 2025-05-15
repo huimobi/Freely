@@ -56,84 +56,91 @@ class Service {
           return (int)$db->lastInsertId();
   }
 
-  public static function countByCategory(int $catId, string $priceFilter, string $deliveryFilter): int {
+  public static function countByCategory(int $catId): int {
     $db = Database::getInstance();
-
-    // build WHERE
-    $where = ['CategoryId = :cat'];
-    $params = [':cat' => $catId];
-
-    // delivery filter: “1–3 days” or “7+”
-    if ($deliveryFilter === '1') {
-      $where[] = 'DeliveryDays BETWEEN 1 AND 3';
-    } elseif ($deliveryFilter === '7') {
-      $where[] = 'DeliveryDays >= 7';
-    }
-
-    $sql = 'SELECT COUNT(*) FROM Service
-            WHERE ' . implode(' AND ', $where) . ' AND IsActive = 1';
-    $stmt = $db->prepare($sql);
-    $stmt->execute($params);
+    $stmt = $db->prepare("SELECT COUNT(*) FROM Service WHERE CategoryId = :cat AND IsActive = 1");
+    $stmt->execute([':cat' => $catId]);
     return (int)$stmt->fetchColumn();
   }
 
-  public static function getByCategory(
-      int $catId, int $limit, int $offset,
-      string $priceFilter, string $deliveryFilter
-    ): array {
-      $db = Database::getInstance();
+  public static function countAll(): int {
+    $db = Database::getInstance();
+    $stmt = $db->prepare("SELECT COUNT(*) FROM Service WHERE IsActive = 1");
+    $stmt->execute();
+    return (int)$stmt->fetchColumn();
+  }
 
-      $where = ['CategoryId = :cat'];
-      $params = [':cat' => $catId];
+  public static function getAll(int $limit, int $offset): array {
+    $db = Database::getInstance();
 
-      if ($deliveryFilter === '1') {
-        $where[] = 'DeliveryDays BETWEEN 1 AND 3';
-      } elseif ($deliveryFilter === '7') {
-        $where[] = 'DeliveryDays >= 7';
-      }
+    $stmt = $db->prepare("
+      SELECT ServiceId, SellerUserId, CategoryId, Title, Description,
+            BasePrice, Currency, DeliveryDays, Revisions, IsActive, CreatedAt
+      FROM Service
+      WHERE IsActive = 1
+      ORDER BY CreatedAt DESC
+      LIMIT :lim OFFSET :off
+    ");
+    $stmt->bindValue(':lim', $limit, PDO::PARAM_INT);
+    $stmt->bindValue(':off', $offset, PDO::PARAM_INT);
+    $stmt->execute();
 
-      // sort clause
-      $order = 'CreatedAt DESC';
-      if ($priceFilter === 'low') {
-        $order = 'BasePrice ASC';
-      } elseif ($priceFilter === 'high') {
-        $order = 'BasePrice DESC';
-      }
+    $services = [];
+    while ($row = $stmt->fetch()) {
+      $services[] = new self(
+        (int)$row['ServiceId'],
+        (int)$row['SellerUserId'],
+        (int)$row['CategoryId'],
+        $row['Title'],
+        $row['Description'],
+        (float)$row['BasePrice'],
+        $row['Currency'],
+        (int)$row['DeliveryDays'],
+        (int)$row['Revisions'],
+        (bool)$row['IsActive'],
+        $row['CreatedAt']
+      );
+    }
 
-      $sql = "
-        SELECT ServiceId, SellerUserId, CategoryId, Title, Description,
-              BasePrice, Currency, DeliveryDays, Revisions, IsActive, CreatedAt
-        FROM Service
-        WHERE " . implode(' AND ', $where) . " AND IsActive = 1
-        ORDER BY $order
-        LIMIT :lim OFFSET :off
-      ";
+    return $services;
+  }
 
-      $stmt = $db->prepare($sql);
-      foreach ($params as $k => $v) {
-        $stmt->bindValue($k, $v);
-      }
-      $stmt->bindValue(':lim', $limit,  PDO::PARAM_INT);
-      $stmt->bindValue(':off', $offset, PDO::PARAM_INT);
-      $stmt->execute();
+  public static function getByCategory(int $catId, int $limit, int $offset): array {
+    $db = Database::getInstance();
 
-      $out = [];
-      while ($row = $stmt->fetch()) {
-        $out[] = new self(
-          (int)$row['ServiceId'],
-          (int)$row['SellerUserId'],
-          (int)$row['CategoryId'],
-          $row['Title'],
-          $row['Description'],
-          (float)$row['BasePrice'],
-          $row['Currency'],
-          (int)$row['DeliveryDays'],
-          (int)$row['Revisions'],
-          (bool)$row['IsActive'],
-          $row['CreatedAt']
-        );
-      }
-      return $out;
+    $sql = "
+      SELECT ServiceId, SellerUserId, CategoryId, Title, Description,
+            BasePrice, Currency, DeliveryDays, Revisions, IsActive, CreatedAt
+      FROM Service
+      WHERE CategoryId = :cat AND IsActive = 1
+      ORDER BY CreatedAt DESC
+      LIMIT :lim OFFSET :off
+    ";
+
+    $stmt = $db->prepare($sql);
+    $stmt->bindValue(':cat', $catId, PDO::PARAM_INT);
+    $stmt->bindValue(':lim', $limit, PDO::PARAM_INT);
+    $stmt->bindValue(':off', $offset, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $out = [];
+    while ($row = $stmt->fetch()) {
+      $out[] = new self(
+        (int)$row['ServiceId'],
+        (int)$row['SellerUserId'],
+        (int)$row['CategoryId'],
+        $row['Title'],
+        $row['Description'],
+        (float)$row['BasePrice'],
+        $row['Currency'],
+        (int)$row['DeliveryDays'],
+        (int)$row['Revisions'],
+        (bool)$row['IsActive'],
+        $row['CreatedAt']
+      );
+    }
+
+    return $out;
   }
 
   public static function getTopRated(int $limit = 10): array {
@@ -160,30 +167,4 @@ class Service {
     return $services;
   }
 
-  public static function getAllActive(): array {
-    $db = Database::getInstance();
-    $stmt = $db->prepare("SELECT * FROM Service WHERE IsActive = 1 ORDER BY CreatedAt DESC");
-    $stmt->execute();
-    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    $services = [];
-    foreach ($rows as $row) {
-      $svc = new Service(
-        (int)$row['ServiceId'],
-        (int)$row['SellerUserId'],
-        (int)$row['CategoryId'],
-        $row['Title'],
-        $row['Description'],
-        (float)$row['BasePrice'],
-        $row['Currency'],
-        isset($row['DeliveryDays']) ? (int)$row['DeliveryDays'] : null,
-        (int)$row['Revisions'],
-        (bool)$row['IsActive'],
-        $row['CreatedAt']
-      );
-      $services[] = $svc;
-    }
-
-    return $services;
-  }
 }

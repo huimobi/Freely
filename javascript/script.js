@@ -23,7 +23,7 @@ document.querySelectorAll('dialog').forEach(dialog => {
 });
 
 
-// PROFILE DROPDOWN TOGGLE
+// PROFILE DROPDOWN 
 const profileBtn = document.getElementById('profileBtn');
 if (profileBtn) {
   const nav = profileBtn.closest('.profile-nav');

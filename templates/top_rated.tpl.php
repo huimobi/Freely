@@ -29,6 +29,6 @@ function drawTopRatedServices(array $services): void { ?>
     </section>
   </section>
 
-  <section class="view-more"> <a href="/pages/browse_services.php" class="btn btn--link">View All Services</a> </section>
+  <section class="view-more"> <a href="/pages/browse_all.php" class="btn btn--link">View All Services</a> </section>
 
 <?php }

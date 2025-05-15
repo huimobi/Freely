@@ -57,7 +57,7 @@
         Name TEXT NOT NULL UNIQUE
     );
 
-    CREATE TABLE IF NOT EXISTS ServiceTag (
+    CREATE TABLE IF ServiceTag (
         ServiceId INTEGER,
         TagId INTEGER,
         PRIMARY KEY (ServiceId, TagId),

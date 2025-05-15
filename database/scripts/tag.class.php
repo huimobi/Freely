@@ -28,42 +28,52 @@ class Tag {
     }
   }
 
-  public static function getServicesByPartialTag(string $tag): array {
+  public static function getServicesByPartialTag(string $tag, int $limit, int $offset): array {
     $db = Database::getInstance();
-    $tag = strtolower(trim($tag));
-
     $stmt = $db->prepare("
-        SELECT Service.* FROM Service
-        JOIN ServiceTag ON Service.ServiceId = ServiceTag.ServiceId
-        JOIN Tag ON Tag.TagId = ServiceTag.TagId
-        WHERE Tag.Name LIKE ?
-        GROUP BY Service.ServiceId
+      SELECT DISTINCT s.*
+      FROM Service s
+      JOIN ServiceTag st ON s.ServiceId = st.ServiceId
+      JOIN Tag t ON t.TagId = st.TagId
+      WHERE t.Name LIKE ?
+        AND s.IsActive = 1
+      ORDER BY s.CreatedAt DESC
+      LIMIT ? OFFSET ?
     ");
-    $stmt->execute(['%' . $tag . '%']);
+    $stmt->execute(['%' . $tag . '%', $limit, $offset]);
 
     $services = [];
     while ($row = $stmt->fetch()) {
-        $service = new Service(
-            $row['ServiceId'],
-            $row['SellerUserId'],
-            $row['CategoryId'],
-            $row['Title'],
-            $row['Description'],
-            $row['BasePrice'],
-            $row['Currency'],
-            $row['DeliveryDays'],
-            $row['Revisions'],
-            (bool)$row['IsActive'],
-            $row['CreatedAt']
-        );
-        $service->seller = User::getUser($row['SellerUserId']);
-
-        $services[] = $service;
+      $services[] = new Service(
+        (int)$row['ServiceId'],
+        (int)$row['SellerUserId'],
+        (int)$row['CategoryId'],
+        $row['Title'],
+        $row['Description'],
+        (float)$row['BasePrice'],
+        $row['Currency'],
+        (int)$row['DeliveryDays'],
+        (int)$row['Revisions'],
+        (bool)$row['IsActive'],
+        $row['CreatedAt']
+      );
     }
 
     return $services;
-}
+  }
 
-
+  public static function countServicesByPartialTag(string $term): int {
+    $db = Database::getInstance();
+    $stmt = $db->prepare("
+      SELECT COUNT(DISTINCT s.ServiceId)
+      FROM Service s
+      JOIN ServiceTag st ON s.ServiceId = st.ServiceId
+      JOIN Tag t ON t.TagId = st.TagId
+      WHERE t.Name LIKE ?
+        AND s.IsActive = 1
+    ");
+    $stmt->execute(['%' . $term . '%']);
+    return (int)$stmt->fetchColumn();
+  }
 }
 ?>
