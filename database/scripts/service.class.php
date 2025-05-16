@@ -242,7 +242,7 @@ class Service {
         return $services;
     }
 
-    public static function getByUserId(int $userId): array {
+    public static function getAllByUserId(int $userId): array {
         $db = Database::getInstance();
         $stmt = $db->prepare("SELECT * FROM Service WHERE SellerUserId = ?");
         $stmt->execute([$userId]);
@@ -311,7 +311,7 @@ class Service {
 
     public static function getTopRated(int $limit = 10): array {
         $db = Database::getInstance();
-        $stmt = $db->prepare("SELECT s.*, COALESCE(avgData.avgRating, 0) as avgRating FROM Service s LEFT JOIN ( SELECT ServiceId, AVG(Rating) as avgRating FROM Comment GROUP BY ServiceId ) avgData ON s.ServiceId = avgData.ServiceId ORDER BY avgRating DESC LIMIT ?");
+        $stmt = $db->prepare("SELECT s.*, COALESCE(avgData.avgRating, 0) as avgRating FROM Service s LEFT JOIN ( SELECT ServiceId, AVG(Rating) as avgRating FROM Comment GROUP BY ServiceId ) avgData ON s.ServiceId = avgData.ServiceId WHERE s.IsActive = 1 ORDER BY avgRating DESC LIMIT ?");
         $stmt->execute([$limit]);
 
         $services = [];

@@ -10,7 +10,7 @@ $user = $session->getUser();
 
 if (!$user) {header('Location: login.php'); exit;}
 
-$services = Service::getByUserId($user->id);
+$services = Service::getAllByUserId($user->id);
 
 drawHeader();
 drawServiceTable($services, true);
