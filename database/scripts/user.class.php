@@ -34,11 +34,7 @@
 
     public function save(): void {
       $db = Database::getInstance();
-      $stmt = $db->prepare('
-        UPDATE User
-        SET UserName = ?, FirstName = ?, LastName = ?, Email = ?, Headline = ?, Description = ?
-        WHERE UserId = ?
-      ');
+      $stmt = $db->prepare('UPDATE User SET UserName = ?, FirstName = ?, LastName = ?, Email = ?, Headline = ?, Description = ? WHERE UserId = ?');
       $stmt->execute([ $this->username, $this->firstName, $this->lastName, $this->email, $this->headline, $this->description, $this->id ]);
     }
 

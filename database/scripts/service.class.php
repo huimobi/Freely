@@ -56,6 +56,12 @@ class Service {
         return (int)$db->lastInsertId();
     }
 
+    public function save(): void {
+        $db = getDatabaseConnection();
+        $stmt = $db->prepare('UPDATE Service SET category_id = ?, title = ?, description = ?, base_price = ?, currency = ?, delivery_days = ?, revisions = ? WHERE id = ? ');
+        $stmt->execute([ $this->category_id, $this->title, $this->description, $this->base_price, $this->currency, $this->delivery_days, $this->revisions, $this->id]);
+    }
+
     public static function countByCategory(int $catId): int {
         $db = Database::getInstance();
         $stmt = $db->prepare("SELECT COUNT(*) FROM Service WHERE CategoryId = :cat AND IsActive = 1");
