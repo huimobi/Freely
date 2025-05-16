@@ -58,10 +58,24 @@ class Service {
     }
 
     public function save(): void {
-        $db = getDatabaseConnection();
-        $stmt = $db->prepare('UPDATE Service SET category_id = ?, title = ?, description = ?, base_price = ?, currency = ?, delivery_days = ?, revisions = ? WHERE id = ? ');
-        $stmt->execute([ $this->category_id, $this->title, $this->description, $this->base_price, $this->currency, $this->delivery_days, $this->revisions, $this->id]);
+        $db = Database::getInstance();
+        $stmt = $db->prepare('
+            UPDATE Service
+            SET CategoryId = ?, Title = ?, Description = ?, BasePrice = ?, Currency = ?, DeliveryDays = ?, Revisions = ?
+            WHERE ServiceId = ?
+        ');
+        $success = $stmt->execute([
+            $this->categoryId,
+            $this->title,
+            $this->description,
+            $this->basePrice,
+            $this->currency,
+            $this->deliveryDays,
+            $this->revisions,
+            $this->id
+        ]);
     }
+
 
     public static function countByCategory(int $catId): int {
         $db = Database::getInstance();
