@@ -22,7 +22,7 @@ function drawServiceTable(array $services, bool $editable): void { ?>
             <td><?= number_format($service->getAverageRating(), 1) ?> ★</td>
             <td><?= htmlspecialchars($service->createdAt) ?></td>
             <?php if ($editable): ?>
-              <td> <a href="edit_service.php?id=<?= $service->id ?>" class="btn btn--primary edit">Edit</a> </td>
+              <td> <a href="/pages/edit_service.php?id=<?= $service->id ?>" class="btn btn--primary edit">Edit</a> </td>
               <td>
                 <form method="post" action="../actions/action_deactivate_service.php">
                   <input type="hidden" name="serviceId" value="<?= $service->id ?>">

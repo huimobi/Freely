@@ -1,6 +1,7 @@
 <?php
     declare(strict_types = 1);
     require_once __DIR__ . '/database.php';
+    require_once __DIR__ . '/tag.class.php';
 class Service {
     public int $id;
     public int $sellerId;
@@ -272,6 +273,34 @@ class Service {
         return $services;
     }
 
+    public static function getTopRated(int $limit = 10): array {
+        $db = Database::getInstance();
+        $stmt = $db->prepare("SELECT s.*, COALESCE(avgData.avgRating, 0) as avgRating FROM Service s LEFT JOIN ( SELECT ServiceId, AVG(Rating) as avgRating FROM Comment GROUP BY ServiceId ) avgData ON s.ServiceId = avgData.ServiceId WHERE s.IsActive = 1 ORDER BY avgRating DESC LIMIT ?");
+        $stmt->execute([$limit]);
+
+        $services = [];
+        while ($row = $stmt->fetch()) {
+            $services[] = new Service(
+                (int)$row['ServiceId'],
+                (int)$row['SellerUserId'],
+                (int)$row['CategoryId'],
+                (string)$row['Title'],
+                (string)$row['Description'],
+                (float)$row['BasePrice'],
+                (string)$row['Currency'],
+                (int)$row['DeliveryDays'],
+                (int)$row['Revisions'],
+                (bool)$row['IsActive'],
+                (string)$row['CreatedAt']
+            );
+        }
+        return $services;
+    }
+
+    public function getTags(): array {
+        return Tag::getTagsForService($this->id);
+    }
+
     public static function getById(int $id): ?Service {
         $db = Database::getInstance();
         $stmt = $db->prepare('SELECT * FROM Service WHERE ServiceId = ?');
@@ -315,28 +344,5 @@ class Service {
         return (float)$stmt->fetchColumn() ?: 0.0;
     }
 
-    public static function getTopRated(int $limit = 10): array {
-        $db = Database::getInstance();
-        $stmt = $db->prepare("SELECT s.*, COALESCE(avgData.avgRating, 0) as avgRating FROM Service s LEFT JOIN ( SELECT ServiceId, AVG(Rating) as avgRating FROM Comment GROUP BY ServiceId ) avgData ON s.ServiceId = avgData.ServiceId WHERE s.IsActive = 1 ORDER BY avgRating DESC LIMIT ?");
-        $stmt->execute([$limit]);
-
-        $services = [];
-        while ($row = $stmt->fetch()) {
-            $services[] = new Service(
-                (int)$row['ServiceId'],
-                (int)$row['SellerUserId'],
-                (int)$row['CategoryId'],
-                (string)$row['Title'],
-                (string)$row['Description'],
-                (float)$row['BasePrice'],
-                (string)$row['Currency'],
-                (int)$row['DeliveryDays'],
-                (int)$row['Revisions'],
-                (bool)$row['IsActive'],
-                (string)$row['CreatedAt']
-            );
-        }
-        return $services;
-    }
 
 }

@@ -5,10 +5,7 @@ require_once __DIR__.'/../database/scripts/user.class.php';
 
 $session = Session::getInstance();
 $current = $session->getUser();
-if (!$current) {
-  header('Location: /');
-  exit;
-}
+if (!$current) { header('Location: /'); exit;}
 
 $userId = (int)($_POST['user_id'] ?? 0);
 $firstName = trim($_POST['first_name'] ?? '');
