@@ -50,6 +50,10 @@ header h1 a {
   padding: var(--spacing-lg);
 }
 
+h2 {
+  padding-bottom: var(--spacing-md);
+}
+
 /* -------------------- Search bar -------------------- */
 
 .search-bar {
@@ -538,4 +542,73 @@ select {
   .price-range {
     flex-direction: column;
   }
+}
+
+/* ---------- Styles for My Services page ---------- */
+
+.my-services {
+  margin: 2rem auto;
+  max-width: 900px;
+  background-color: #f7f7f7;
+  padding: 1rem;
+  border-radius: var(--radius-md);
+}
+
+.service-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.service-table th,
+.service-table td {
+  padding: var(--spacing-md);
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.service-table th {
+  background-color: #f0f0f0;
+}
+
+/* -------- Action Modifiers for Buttons -------- */
+
+.btn--primary.edit {
+  background-color: #e0e0e0;
+  color: #000;
+  text-decoration: none;
+}
+
+.btn--primary.edit:hover {
+  background-color: #d5d5d5;
+  color: #000;
+}
+
+.btn--primary.delete {
+  background-color: #f8d7da;
+  color: #842029;
+}
+
+.btn--primary.delete:hover {
+  background-color: #f1b0b7;
+  color: #58151c;
+}
+
+.btn--primary.active {
+  background-color: #d1e7dd;
+  color: #0f5132;
+}
+
+.btn--primary.active:hover {
+  background-color: #badbcc;
+  color: #0a3622;
+}
+
+.btn--primary.inactive {
+  background-color: #f8d7da;
+  color: #842029;
+}
+
+.btn--primary.inactive:hover {
+  background-color: #f1b0b7;
+  color: #58151c;
 }

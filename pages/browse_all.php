@@ -8,15 +8,15 @@ require_once __DIR__ . '/../database/scripts/service.class.php';
 require_once __DIR__ . '/../database/scripts/user.class.php';
 require_once __DIR__ . '/../database/scripts/comment.class.php';
 
-$page   = max(1, (int)($_GET['page'] ?? 1));
-$limit  = 10;
+$page = max(1, (int)($_GET['page'] ?? 1));
+$limit = 10;
 $offset = ($page - 1) * $limit;
 
-$sort       = $_GET['sort'] ?? '';
-$priceMin   = (isset($_GET['price_min']) && $_GET['price_min'] !== '') ? (float)$_GET['price_min'] : null;
-$priceMax   = (isset($_GET['price_max']) && $_GET['price_max'] !== '') ? (float)$_GET['price_max'] : null;
-$ratingMin  = (isset($_GET['rating_min']) && $_GET['rating_min'] !== '') ? (float)$_GET['rating_min'] : null;
-$ratingMax  = (isset($_GET['rating_max']) && $_GET['rating_max'] !== '') ? (float)$_GET['rating_max'] : null;
+$sort = $_GET['sort'] ?? '';
+$priceMin = (isset($_GET['price_min']) && $_GET['price_min'] !== '') ? (float)$_GET['price_min'] : null;
+$priceMax = (isset($_GET['price_max']) && $_GET['price_max'] !== '') ? (float)$_GET['price_max'] : null;
+$ratingMin = (isset($_GET['rating_min']) && $_GET['rating_min'] !== '') ? (float)$_GET['rating_min'] : null;
+$ratingMax = (isset($_GET['rating_max']) && $_GET['rating_max'] !== '') ? (float)$_GET['rating_max'] : null;
 
 $totalCount = Service::countAll();
 $totalPages = (int)ceil($totalCount / $limit);
