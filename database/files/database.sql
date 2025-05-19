@@ -165,6 +165,17 @@
     (1, 1, 'Web App Debugging', 'Advanced debugging for JS/PHP applications.', 55.0, 'EUR', 2, 0),
     (1, 1, 'Speed Optimization', 'Improve loading speed of your website (Lighthouse).', 90.0, 'EUR', 3, 1);
 
+    INSERT INTO Message (SenderUserId, ReceiverUserId, Content) VALUES
+    (1, 2, 'Hi Bruno! Just saw your frontend portfolio — very nice.'),
+    (2, 1, 'Thanks Ana! Let me know if you need a UI review.'),
+    (1, 3, 'Hey Carla, do you have time to pair on a JS bug?'),
+    (3, 1, 'Sure Ana, send me the code and I’ll take a look.'),
+    (4, 1, 'Ana, I refactored the PHP module you mentioned. Thoughts?'),
+    (1, 4, 'Thanks Daniel! I’ll review it tonight.'),
+    (5, 1, 'Hi Ana, I’d love to collaborate on a UI/UX project. Interested?'),
+    (1, 5, 'Hey Eva! Absolutely, your design work is excellent. Let’s plan.');
+
+
 
     INSERT INTO ServiceTag (ServiceId, TagId) SELECT ServiceId, 1 FROM Service WHERE SellerUserId = 1;
 

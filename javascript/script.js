@@ -87,3 +87,60 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+
+/* -------- Messages -------- */
+async function loadConversation(otherUserId) {
+  const response = await fetch(`/api/get_messages.php?with=${otherUserId}`);
+  const data = await response.json();
+
+  const container = document.getElementById('message-list');
+  container.innerHTML = '';
+
+  if (data.status === 'success') {
+    data.messages.forEach(msg => {
+      const wrapper = document.createElement('div');
+      const bubble = document.createElement('div');
+      bubble.classList.add('message');
+      wrapper.classList.add('message-wrapper');
+
+      if (msg.senderId === currentUserId) {
+        bubble.classList.add('sent');
+        wrapper.classList.add('sent');
+      } else {
+        bubble.classList.add('received');
+        wrapper.classList.add('received');
+      }
+
+      bubble.textContent = msg.content;
+      wrapper.appendChild(bubble);
+      container.appendChild(wrapper);
+    });
+
+    // Scroll to bottom
+    container.scrollTop = container.scrollHeight;
+  } else {
+    container.innerHTML = `<p class="error">${data.message}</p>`;
+  }
+}
+
+async function sendMessage() {
+  const content = document.getElementById('message-input').value.trim();
+  const response = await fetch('/actions/action_send_message.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ selectedUserId, content })
+  });
+
+  const result = await response.json();
+
+  if (result.status === 'success') {
+    loadConversation(selectedUserId);
+    document.getElementById('message-input').value = '';
+  } else {
+    alert('Message error: ' + result.message);
+  }
+}
+
+
+
