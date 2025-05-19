@@ -3,7 +3,7 @@
   --color-background:      #fff;
   --color-background-dark: #3a3a3a;
   --color-text:            #333;
-  --color-text-light:      #d7d7d7;
+  --color-text-light:      #fff;
   --color-border:          #b6b3b3;
   --color-hover:           #111111;
 
@@ -761,6 +761,18 @@ select {
 
 .chat-contacts-list::-webkit-scrollbar-thumb:hover {
   background-color: #a0aec0;
+}
+
+header.chat-header {
+  background-color: var(--color-background-dark);
+  padding: 1rem;
+  font-size: 1.2rem;
+}
+
+header.chat-header a {
+  color: var(--color-text-light);
+  text-decoration: none;
+  font-weight: bold;
 }
 
 

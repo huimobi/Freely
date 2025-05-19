@@ -11,6 +11,7 @@
   </aside>
 
   <div class="chat-main">
+    <header id="chat-header" class="chat-header"></header>
     <div id="message-list" class="messages-box"></div>
 
     <form id="message-form" class="message-form">
@@ -29,6 +30,12 @@
     loadConversation(selectedUserId);
     clearInterval(window.refreshInterval);
     window.refreshInterval = setInterval(() => loadConversation(selectedUserId), 5000);
+
+    const user = <?= json_encode(array_map(fn($u) => ['id' => $u->id, 'name' => $u->name()], $allUsers)) ?>.find(u => u.id === userId);
+    if (user) {
+      document.getElementById('chat-header').innerHTML =
+        `<a href="profile.php?id=${user.id}">${user.name}</a>`;
+    }
   }
 
   document.getElementById('message-form').addEventListener('submit', async e => {
