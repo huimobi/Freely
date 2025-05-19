@@ -18,6 +18,7 @@ function drawHeader() {
         <link rel="stylesheet" href="../css/cat_style.css">
         <link rel="stylesheet" href="../css/drop_down_style.css">
         <link rel="stylesheet" href="../css/style.css">
+        <link rel="stylesheet" href="../css/admin_panel.css">
 
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" 
@@ -36,6 +37,7 @@ function drawHeader() {
 
             <?php if ($user): ?>
                 <nav class="actions">
+                    <?php if ($user && $user->isAdmin($user->id)): ?> <button class="btn btn--link" type="button" onclick="window.location.href='/pages/admin_panel.php'">Admin Panel</button> <?php endif; ?>
                     <button class="btn btn--link" type="button" onclick="window.location.href='/pages/create_service.php'"> Create Service </button>
                 
                     <nav class="actions profile-nav">
@@ -45,7 +47,7 @@ function drawHeader() {
                         <ul id="profileMenu" class="dropdown-menu" aria-hidden="true">
                         <li><a href="/../pages/my_services.php">My Services</a></li>
                         <li><a href="/../pages/my_buys.php">My Buys</a></li>
-                        <li><a href="/../pages/messages.php?user=<?= $otherUserId ?>">Messages</a></li>
+                        <li><a href="/../pages/messages.php">Messages</a></li>
                         <li><a href="/../pages/edit_profile.php">Edit Profile</a></li>
                         </ul>
 

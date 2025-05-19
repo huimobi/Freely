@@ -1,0 +1,64 @@
+/* Layout */
+.admin-panel {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.admin-panel section {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+/* Section Headings */
+.admin-panel h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 0.5rem;
+}
+
+/* Tables */
+.admin-panel table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-panel th, .admin-panel td {
+  padding: 0.75rem 1rem;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.admin-panel th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+/* Buttons */
+.admin-panel button {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+
+.admin-panel form {
+  display: inline;
+}
+
+.admin-panel button:hover {
+  background-color: #e2e2e2;
+}
+
+/* Protected label */
+.admin-panel span[style*="gray"] {
+  font-style: italic;
+  color: #999 !important;
+}

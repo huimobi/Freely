@@ -154,5 +154,57 @@
       return $users;
     }
 
-  }
+    public static function everyUser(): array {
+      $db = Database::getInstance();
+      $stmt = $db->prepare('SELECT * FROM User');
+      $stmt->execute();
+
+      $users = [];
+      while ($row = $stmt->fetch()) {
+          $users[] = new User(
+            (int)$row['UserId'],
+            (string)$row['UserName'],
+            (string)$row['FirstName'],
+            (string)$row['LastName'],
+            (string)$row['Email'],
+            $row['Phone'] !== null ? (string)$row['Phone'] : null,
+            (string)$row['CreatedAt'],
+            (bool)$row['IsActive'],
+            $row['Headline'] ?? null,
+            $row['Description'] ?? null
+          );
+      }
+
+      return $users;
+    }
+
+    public static function toggleAdmin(int $userId): void {
+      $db = Database::getInstance();
+      $stmt = $db->prepare('SELECT 1 FROM Admin WHERE UserId = ?');
+      $stmt->execute([$userId]);
+
+      if ($stmt->fetch()) {
+        // Already admin, remove
+        $deleteStmt = $db->prepare('DELETE FROM Admin WHERE UserId = ?');
+        $deleteStmt->execute([$userId]);
+      } else {
+        // Not admin, add
+        $insertStmt = $db->prepare('INSERT INTO Admin (UserId) VALUES (?)');
+        $insertStmt->execute([$userId]);
+      }
+    }
+
+    public static function  toggleUser(int $userId): void {
+      $db = Database::getInstance();
+      $stmt = $db->prepare('UPDATE User SET IsActive = NOT IsActive WHERE UserId = ?');
+      $stmt->execute([$userId]);
+    }
+
+    public static function deleteUser(int $userId): void {
+      $db = Database::getInstance();
+      $stmt = $db->prepare('DELETE FROM User WHERE UserId = ?');
+      $stmt->execute([$userId]);
+    }
+
+  } 
 ?>

@@ -66,4 +66,16 @@ class Category {
       (string)$row['Description']
     );
   }
+
+  public static function delete(int $categoryId): void {
+    $db = Database::getInstance();
+    $stmt = $db->prepare('DELETE FROM Category WHERE CategoryId = ?');
+    $stmt->execute([$categoryId]);
+  }
+
+  public static function add(string $name, string $description = ''): void {
+    $db = Database::getInstance();
+    $stmt = $db->prepare('INSERT INTO Category (Name, Description) VALUES (?, ?)');
+    $stmt->execute([$name, $description]);
+  }
 }

@@ -11,7 +11,7 @@ if (!$user) { header('Location: /'); exit;}
 $serviceId = (int)$_POST['serviceId'];
 $service = Service::getById($serviceId);
 
-if ($service && $service->sellerId === $user->id) { $service->toggleActive();}
+if ($service && $service->sellerId === $user->id) { $service->toggleService($serviceId);}
 
-header('Location: ../pages/my_services.php');
-exit;
+header("Location: " . $_SERVER['HTTP_REFERER']);
+exit();

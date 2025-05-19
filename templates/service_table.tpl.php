@@ -24,7 +24,7 @@ function drawServiceTable(array $services, bool $editable): void { ?>
             <?php if ($editable): ?>
               <td> <a href="/pages/edit_service.php?id=<?= $service->id ?>" class="btn btn--primary edit">Edit</a> </td>
               <td>
-                <form method="post" action="../actions/action_deactivate_service.php">
+                <form method="post" action="../actions/action_toggle_service.php">
                   <input type="hidden" name="serviceId" value="<?= $service->id ?>">
                   <button class="btn btn--primary <?= $service->isActive ? 'active' : 'inactive' ?>" type="submit">
                     <?= $service->isActive ? 'Active' : 'Inactive' ?>
