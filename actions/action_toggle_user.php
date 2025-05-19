@@ -12,7 +12,7 @@ if (!$session->isLoggedIn() || (!$currentUser->isAdmin($currentUser->id) && $cur
     exit();
 }
 
-User::deactivateUser($targetUserId);
+User::toggleUser($targetUserId);
 
 if ($currentUser->id === $targetUserId) {
     $session->logout();

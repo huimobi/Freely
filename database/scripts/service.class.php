@@ -344,13 +344,6 @@ class Service {
         $stmt->execute([$id]);
     }
 
-    public function toggleActive(): void {
-        $db = Database::getInstance();
-        $this->isActive = !$this->isActive;
-        $stmt = $db->prepare('UPDATE Service SET IsActive = ? WHERE ServiceId = ?');
-        $stmt->execute([(int)$this->isActive, $this->id]);
-    }
-
     public function getAverageRating(): float {
         $db = Database::getInstance();
         $stmt = $db->prepare('SELECT AVG(Rating) FROM Comment WHERE ServiceId = ?');
@@ -387,5 +380,11 @@ class Service {
         $db = Database::getInstance();
         $stmt = $db->prepare('UPDATE Service SET CategoryId = ? WHERE CategoryId = ?');
         $stmt->execute([$toCategoryId, $fromCategoryId]);
+    }
+
+    public static function toggleService(int $serviceId): void {
+        $db = Database::getInstance();
+        $stmt = $db->prepare('UPDATE Service SET IsActive = NOT IsActive WHERE ServiceId = ?');
+        $stmt->execute([$serviceId]);
     }
 }

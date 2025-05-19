@@ -7,6 +7,7 @@ require_once __DIR__ . '/../templates/service_table.tpl.php';
 function drawAdminPanel(array $services, array $users, array $categories): void {
 ?>
   <main class="admin-panel">
+    <h1> Admin Panel </h1>
     <section>
         <h2>All Services</h2>
         <table class="table">
@@ -16,6 +17,7 @@ function drawAdminPanel(array $services, array $users, array $categories): void 
                 <th>Service Title</th>
                 <th>Avg Rating</th>
                 <th>Created At</th>
+                <th>Status</th>
                 <th>Actions</th>
                 </tr>
             </thead>
@@ -27,8 +29,9 @@ function drawAdminPanel(array $services, array $users, array $categories): void 
                 <td><?= htmlspecialchars($s->title) ?></td>
                 <td><?= number_format($s->avgRating ?? 0, 1) ?></td>
                 <td><?= $s->createdAt ?></td>
+                <td><?= $s->isActive ? 'Active' : 'Inactive' ?></td>
                 <td>
-                    <form method="post" action="../actions/action_deactivate_service.php"> <input type="hidden" name="id" value="<?= $s->id ?>"> <button type="submit"><?= $s->isActive ? 'Deactivate' : 'Activate' ?></button> </form>
+                    <form method="post" action="../actions/action_toggle_service.php"> <input type="hidden" name="serviceId" value="<?= $s->id ?>"> <button type="submit"><?= $s->isActive ? 'Deactivate' : 'Activate' ?></button> </form>
                     <form method="post" action="../actions/action_delete_service.php" onsubmit="return confirm('Are you sure you want to delete this service?')"> <input type="hidden" name="id" value="<?= $s->id ?>"><button>Delete</button> </form>
                 </td>
                 </tr>
@@ -45,6 +48,7 @@ function drawAdminPanel(array $services, array $users, array $categories): void 
                 <th>ID</th>
                 <th>Username</th>
                 <th>Created At</th>
+                <th>Status</th>
                 <th>Actions</th>
                 </tr>
             </thead>
@@ -55,9 +59,10 @@ function drawAdminPanel(array $services, array $users, array $categories): void 
                 <td><?= $u->id ?></td>
                 <td><?= htmlspecialchars($u->username) ?></td>
                 <td><?= $u->creationDate ?></td>
+                <td><?= $u->isActive ? 'Active' : 'Inactive' ?></td>
                 <td>
                     <form method="post" action="../actions/action_toggle_admin.php"><input type="hidden" name="id" value="<?= $u->id ?>"><button>Toggle Admin</button></form>
-                    <form method="post" action="../actions/action_deactivate_user.php"><input type="hidden" name="id" value="<?= $u->id ?>"><button>Deactivate</button></form>
+                    <form method="post" action="../actions/action_toggle_user.php"><input type="hidden" name="id" value="<?= $u->id ?>"><button>Deactivate</button></form>
                     <form method="post" action="../actions/action_delete_user.php"><input type="hidden" name="id" value="<?= $u->id ?>"><button>Delete</button></form>
                 </td>
                 </tr>

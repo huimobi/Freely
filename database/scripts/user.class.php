@@ -194,9 +194,9 @@
       }
     }
 
-    public static function deactivateUser(int $userId): void {
+    public static function  toggleUser(int $userId): void {
       $db = Database::getInstance();
-      $stmt = $db->prepare('UPDATE User SET isActive = 0 WHERE UserId = ?');
+      $stmt = $db->prepare('UPDATE User SET IsActive = NOT IsActive WHERE UserId = ?');
       $stmt->execute([$userId]);
     }
 

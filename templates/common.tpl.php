@@ -18,6 +18,7 @@ function drawHeader() {
         <link rel="stylesheet" href="../css/cat_style.css">
         <link rel="stylesheet" href="../css/drop_down_style.css">
         <link rel="stylesheet" href="../css/style.css">
+        <link rel="stylesheet" href="../css/admin_panel.css">
 
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" 
@@ -36,7 +37,7 @@ function drawHeader() {
 
             <?php if ($user): ?>
                 <nav class="actions">
-                    <?php if ($user && $user->isAdmin($user->id)): ?> <a href="../pages/admin_panel.php" class="nav-link">Admin Panel</a> <?php endif; ?>
+                    <?php if ($user && $user->isAdmin($user->id)): ?> <button class="btn btn--link" type="button" onclick="window.location.href='/pages/admin_panel.php'">Admin Panel</button> <?php endif; ?>
                     <button class="btn btn--link" type="button" onclick="window.location.href='/pages/create_service.php'"> Create Service </button>
                 
                     <nav class="actions profile-nav">
