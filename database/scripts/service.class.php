@@ -383,4 +383,9 @@ class Service {
         return $services;
     }
 
+    public static function reassignCategory(int $fromCategoryId, int $toCategoryId): void {
+        $db = Database::getInstance();
+        $stmt = $db->prepare('UPDATE Service SET CategoryId = ? WHERE CategoryId = ?');
+        $stmt->execute([$toCategoryId, $fromCategoryId]);
+    }
 }

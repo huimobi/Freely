@@ -22,8 +22,7 @@
 
     Create Table Admin(
         UserId INTEGER NOT NULL,
-        FOREIGN KEY (UserId) REFERENCES User (UserId)
-            ON DELETE NO ACTION ON UPDATE NO ACTION
+        FOREIGN KEY (UserId) REFERENCES User (UserId) ON DELETE CASCADE ON UPDATE NO ACTION
     );
 
     CREATE TABLE Service (
@@ -81,9 +80,9 @@
         ActualDeliveryDate TEXT,
         CompletionDate TEXT,
 
-        FOREIGN KEY (ServiceId) REFERENCES Service (ServiceId) ON UPDATE CASCADE ON DELETE RESTRICT,
-        FOREIGN KEY (BuyerUserId) REFERENCES User (UserId) ON UPDATE CASCADE ON DELETE RESTRICT,
-        FOREIGN KEY (SellerUserId) REFERENCES User (UserId) ON UPDATE CASCADE ON DELETE RESTRICT
+        FOREIGN KEY (ServiceId) REFERENCES Service (ServiceId) ON DELETE CASCADE ON UPDATE NO ACTION,
+        FOREIGN KEY (BuyerUserId) REFERENCES User (UserId) ON DELETE CASCADE ON UPDATE NO ACTION,
+        FOREIGN KEY (SellerUserId) REFERENCES User (UserId) ON DELETE CASCADE ON UPDATE NO ACTION
     );
 
     CREATE TABLE Comment (
@@ -95,9 +94,9 @@
         Description TEXT,
         CommentDate TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-        FOREIGN KEY (JobOrderId) REFERENCES JobOrder (JobOrderId) ON UPDATE CASCADE ON DELETE CASCADE,
-        FOREIGN KEY (BuyerUserId) REFERENCES User (UserId) ON UPDATE CASCADE ON DELETE NO ACTION,
-        FOREIGN KEY (ServiceId) REFERENCES Service (ServiceId) ON UPDATE CASCADE ON DELETE NO ACTION
+        FOREIGN KEY (JobOrderId) REFERENCES JobOrder (JobOrderId) ON DELETE CASCADE ON UPDATE NO ACTION,
+        FOREIGN KEY (BuyerUserId) REFERENCES User (UserId) ON DELETE CASCADE ON UPDATE NO ACTION,
+        FOREIGN KEY (ServiceId) REFERENCES Service (ServiceId) ON DELETE CASCADE ON UPDATE NO ACTION
     );
 
     CREATE TABLE Message (
@@ -107,8 +106,8 @@
         Content TEXT NOT NULL,
         Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
 
-        FOREIGN KEY (SenderUserId) REFERENCES User(UserId),
-        FOREIGN KEY (ReceiverUserId) REFERENCES User(UserId)
+        FOREIGN KEY (SenderUserId) REFERENCES User(UserId) ON DELETE CASCADE ON UPDATE NO ACTION,
+        FOREIGN KEY (ReceiverUserId) REFERENCES User(UserId) ON DELETE CASCADE ON UPDATE NO ACTION
     );
 
     -- --- Criação de Índices para Otimização ---
@@ -129,6 +128,8 @@
     --------------------------- Temporary seed data for testing ---------------------------
     PRAGMA foreign_keys = OFF;
     BEGIN TRANSACTION;
+
+    INSERT OR IGNORE INTO Category (CategoryId, Name, Description) VALUES (1, 'Other', 'Fallback for uncategorized services');
 
     INSERT INTO Category (Name, Description) VALUES
     ('Development & IT','All your coding needs'),
