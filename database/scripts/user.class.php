@@ -154,5 +154,30 @@
       return $users;
     }
 
+    public static function everyUser(): array {
+      $db = Database::getInstance();
+      $stmt = $db->prepare('SELECT * FROM User');
+      $stmt->execute();
+
+      $users = [];
+      while ($row = $stmt->fetch()) {
+          $users[] = new User(
+            (int)$row['UserId'],
+            (string)$row['UserName'],
+            (string)$row['FirstName'],
+            (string)$row['LastName'],
+            (string)$row['Email'],
+            $row['Phone'] !== null ? (string)$row['Phone'] : null,
+            (string)$row['CreatedAt'],
+            (bool)$row['IsActive'],
+            $row['Headline'] ?? null,
+            $row['Description'] ?? null
+          );
+      }
+
+      return $users;
+    }
+
+
   }
 ?>

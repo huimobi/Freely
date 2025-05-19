@@ -358,5 +358,29 @@ class Service {
         return (float)$stmt->fetchColumn() ?: 0.0;
     }
 
+    public static function everyService(): array {
+        $db = Database::getInstance();
+        $stmt = $db->prepare('SELECT * FROM Service');
+        $stmt->execute();
+
+        $services = [];
+        while ($row = $stmt->fetch()) {
+            $services[] = new Service(
+                (int)$row['ServiceId'],
+                (int)$row['SellerUserId'],
+                (int)$row['CategoryId'],
+                $row['Title'],
+                $row['Description'],
+                (float)$row['BasePrice'],
+                $row['Currency'],
+                (int)$row['DeliveryDays'],
+                (int)$row['Revisions'],
+                (bool)$row['IsActive'],
+                $row['CreatedAt']
+            );
+        }
+
+        return $services;
+    }
 
 }

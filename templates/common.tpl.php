@@ -36,6 +36,7 @@ function drawHeader() {
 
             <?php if ($user): ?>
                 <nav class="actions">
+                    <?php if ($user && $user->isAdmin($user->id)): ?> <a href="../pages/admin_panel.php" class="nav-link">Admin Panel</a> <?php endif; ?>
                     <button class="btn btn--link" type="button" onclick="window.location.href='/pages/create_service.php'"> Create Service </button>
                 
                     <nav class="actions profile-nav">
