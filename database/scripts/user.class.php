@@ -124,5 +124,35 @@
       $stmt->execute([$userId]);
       return (bool)$stmt->fetchColumn();
     }
+
+    public static function getMessagedUsers(int $userId): array {
+      $db = Database::getInstance();
+      $stmt = $db->prepare('
+        SELECT DISTINCT u.*
+        FROM User u
+        JOIN Message m ON (u.UserId = m.SenderUserId AND m.ReceiverUserId = ?) 
+                      OR (u.UserId = m.ReceiverUserId AND m.SenderUserId = ?)
+        WHERE u.UserId != ?
+      ');
+      $stmt->execute([$userId, $userId, $userId]);
+
+      $users = [];
+      while ($row = $stmt->fetch()) {
+        $users[] = new User(
+          intval($row['UserId']),
+          $row['UserName'],
+          $row['FirstName'],
+          $row['LastName'],
+          $row['Email'],
+          $row['Phone'],
+          $row['CreatedAt'],
+          boolval($row['IsActive']),
+          $row['Headline'],
+          $row['Description']
+        );
+      }
+      return $users;
+    }
+
   }
 ?>

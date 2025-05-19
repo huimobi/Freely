@@ -45,12 +45,8 @@ function drawHeader() {
                         <ul id="profileMenu" class="dropdown-menu" aria-hidden="true">
                         <li><a href="/../pages/my_services.php">My Services</a></li>
                         <li><a href="/../pages/my_buys.php">My Buys</a></li>
+                        <li><a href="/../pages/messages.php?user=<?= $otherUserId ?>">Messages</a></li>
                         <li><a href="/../pages/edit_profile.php">Edit Profile</a></li>
-                        <li>
-                            <form action="../actions/action_logout.php" method="post">
-                            <button class="btn btn--link" type="submit">Logout</button>
-                            </form>
-                        </li>
                         </ul>
 
                     </nav>
