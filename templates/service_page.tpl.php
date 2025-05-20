@@ -5,7 +5,7 @@
     <main class="service-page">
         <div class="service-left">
             <section class="service-header">
-                <h1><?= htmlspecialchars($SERVICE->title) ?></h1>
+                <h1><?= htmlspecialchars($SERVICE->title ?? '') ?></h1>
                 <section class="seller-overview">
                     <img src="/images/users/<?= $SERVICE->sellerId ?>.jpg" class="profile-picture"
                         onerror="this.src='/images/users/default.jpg'" alt="Seller">
@@ -17,7 +17,7 @@
                                 (<?= $SERVICE->numRatings ?? '100' ?>)</span>
                         </div>
 
-                        <?= htmlspecialchars($SERVICE->seller->headline) ?></p>
+                        <?= htmlspecialchars($SERVICE->seller->headline ?? '') ?></p>
                     </section>
                 </section>
             </section>
@@ -37,7 +37,7 @@
                     </div>
                     <section class="service-text-description">
                         <h2>About this service</h2>
-                        <p><?= (htmlspecialchars($SERVICE->description)) ?></p>
+                        <p><?= (htmlspecialchars($SERVICE->description ?? '')) ?></p>
                     </section>
 
                 </div>

@@ -45,10 +45,23 @@ $newServiceId = Service::create( $user->id,$catId, $title, $desc, (float)$basePr
 $rawTags = $_POST['tags'] ?? '';
 Tag::processTagsForService($newServiceId, $rawTags);
 
-if (isset($_FILES['photo']) && is_uploaded_file($_FILES['photo']['tmp_name'])) {
-    $targetDir = __DIR__ . '/../images/services/';
-    $targetPath = $targetDir . $newServiceId . '.jpg';
-    move_uploaded_file($_FILES['photo']['tmp_name'], $targetPath);
+if (isset($_FILES['photo']) && is_array($_FILES['photo']['tmp_name'])) {
+    $uploadDir = __DIR__ . '/../images/services/' . $newServiceId . '/';
+
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0755, true);
+    }
+
+    foreach ($_FILES['photo']['tmp_name'] as $index => $tmpName) {
+        if (is_uploaded_file($tmpName)) {
+            $fileType = mime_content_type($tmpName);
+            if (!in_array($fileType, ['image/jpeg', 'image/png'])) continue;
+
+            $ext = $fileType === 'image/png' ? 'png' : 'jpg';
+            $filename = $index . '.' . $ext;
+            move_uploaded_file($tmpName, $uploadDir . $filename);
+        }
+    }
 }
 
 header('Location: /');
