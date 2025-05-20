@@ -6,7 +6,7 @@
   --color-text-light: #d7d7d7;
   --color-border: #b6b3b3;
   --color-hover: #111111;
-  --card-background:#f7f7f7 ;
+  --card-background: #f7f7f7;
 
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
@@ -372,11 +372,13 @@ select {
   gap: var(--spacing-md);
   margin: var(--spacing-md) 0;
 }
+
 .filter-bar label {
   display: flex;
   flex-direction: column;
   font-size: 0.9rem;
 }
+
 .filter-bar select {
   margin-top: var(--spacing-xs);
   padding: var(--spacing-sm) var(--spacing-md);
@@ -395,12 +397,13 @@ select {
   flex-direction: column;
   max-width: 320px;
   background: white;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin: var(--spacing-sm);
 }
 
 .service-img {
   width: 100%;
+  box-sizing: border-box;
   height: 180px;
   object-fit: cover;
   border-radius: 0;
@@ -409,7 +412,7 @@ select {
 }
 
 .service-info {
-  padding: var(--spacing-sm) var(--spacing-md)  var(--spacing-md) var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md) var(--spacing-md) var(--spacing-md);
 }
 
 .service-title {
@@ -456,7 +459,7 @@ select {
 
 /* ---------------------- Service Card (link) ---------------------- */
 .service-card:hover {
-  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
   transform: translateY(-2px);
   transition: all 0.2s ease;
 }
@@ -473,95 +476,128 @@ select {
 
 /* ---------------------- Service page ---------------------- */
 
+.service-header          { grid-area: header; }
+.service-description     { grid-area: desc; }
+.service-comment-section { grid-area: comments; }
+.service-aside-menu      { grid-area: aside; }
+
 .service-page {
-  display: flex;
+  width:100%;
+  box-sizing: border-box;
+  /*display: flex;*/
   flex-direction: row;
-  gap: var(--spacing-lg);
+  display: grid;
+  grid-template-columns: 75% 25%;
+  grid-template-areas:
+    "header   aside"
+    "desc      aside"
+    "comments aside"
+    ;
+    column-gap: var(--spacing-lg);
 }
 
-.service-left{
-  width: 100%;
+@media (max-width: 900px) {
+  .service-aside-menu {
+   display: block;
+   width: 100%;
+   position: static;
+  }
+
+  .service-page{
+    grid-template-columns: 100%;
+    grid-template-areas:
+      "header"
+      "desc"
+      "aside"
+      "comments";
+  }
 }
+
 
 /* ----------------------- Service sidebar ---------------------- */
 
 .service-aside-menu {
-    background: var(--card-background );
-    border-radius: var(--radius-md);
-    padding: var(--spacing-lg) var(--spacing-md);
-    width: 30em;
-    margin: var(--spacing-lg) 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
-    position: sticky;
-    top: var(--spacing-md);
-    border : 2px solid var(--color-border);
-    align-self: flex-start; 
-    height: auto; 
+  background: var(--card-background);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg) var(--spacing-md);
+  margin: var(--spacing-lg) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  position: sticky;
+  top: var(--spacing-md);
+  border: 2px solid var(--color-border);
+  align-self: flex-start;
+  height: auto;
 }
+
 .service-aside-menu-info {
-    border-bottom: 1px solid var(--color-border);
-    padding-bottom: var(--spacing-md);
-    margin-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--spacing-md);
+  margin-bottom: 0;
 }
+
 .service-aside-menu-info p:first-child {
-    color: var(--color-background-dark);
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
-    letter-spacing: 0.5px;
-    border-bottom: 1px solid var(--color-background-dark);
+  color: var(--color-background-dark);
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--color-background-dark);
 }
-.service-aside-menu-info .service-delivery-text{
-    font-size: 1rem;
-    color: var(--color-text);
-    display: flex;
-    flex-direction: row;
-    gap: var(--spacing-sm);
+
+.service-aside-menu-info .service-delivery-text {
+  font-size: 1rem;
+  color: var(--color-text);
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing-sm);
 }
-.service-aside-menu-info p:last-child {
-    font-size: 2rem;
-    font-weight: bold;
-    color: var(--color-hover);
+
+.service-aside-menu-info .price {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--color-hover);
 }
+
 .service-actions {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
 }
-.pay-btn, .message-btn {
-    width: 100%;
-    padding: var(--spacing-md) 0;
-    border-radius: var(--radius-md);
-    font-size: 1.1rem;
-    cursor: pointer;
-}
-.pay-btn {
-    background: var(--color-text);
-    color: var(--color-text-light);
-    font-weight: 600;
-}
-.pay-btn:hover {
-    background: var(--color-hover);
-    color: white;
-}
+
+.pay-btn,
 .message-btn {
-    background: var(--color-background);
-    color: var(--color-hover);
-    font-weight:300;
+  width: 100%;
+  box-sizing: border-box;
+  padding: var(--spacing-md) 0;
+  border-radius: var(--radius-md);
+  font-size: 1.1rem;
+  cursor: pointer;
 }
+
+.pay-btn {
+  background: var(--color-text);
+  color: var(--color-text-light);
+  font-weight: 600;
+}
+
+.pay-btn:hover {
+  background: var(--color-hover);
+  color: white;
+}
+
+.message-btn {
+  background: var(--color-background);
+  color: var(--color-hover);
+  font-weight: 300;
+}
+
 .message-btn:hover {
-    background: var(--color-border);
+  background: var(--color-border);
 }
-@media (max-width: 900px) {
-    .service-aside-menu {
-    width: 100%;
-    margin-left: 0;
-    margin-top: var(--spacing-lg);
-    position: static;
-    max-height: none;
-    }
-}
+
+
+
 .service-header {
   background: var(--card-background);
   padding: var(--spacing-sm);
@@ -573,8 +609,9 @@ select {
   margin: var(--spacing-lg) 0;
 }
 
-.service-header h1{
+.service-header h1 {
   width: 100%;
+  box-sizing: border-box;
   font-size: 2rem;
   border-bottom: 1px solid var(--color-border);
   text-align: center;
@@ -582,6 +619,7 @@ select {
 
 .seller-overview {
   width: 100%;
+  box-sizing: border-box;
   display: flex;
   flex-direction: row;
   background: var(--card-background);
@@ -593,6 +631,24 @@ select {
   display: flex;
   flex-direction: row;
   gap: var(--spacing-lg);
+}
+
+.service-page p,h1 {
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: break-word; 
+}
+
+.seller-rating a{
+  text-decoration: none;
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.seller-rating a:hover {
+  color: var(--color-hover);
+  text-decoration: underline;
+  
 }
 
 .profile-picture {
@@ -617,8 +673,8 @@ select {
 }
 
 .main-photo img {
-  width: 400px;
-  height: auto;
+  max-width: 100%;
+  max-height: 500px;
   margin-bottom: 15px;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -651,8 +707,86 @@ select {
 }
 
 .service-text-description {
-  padding: var(--spacing-lg) 0;
+  padding: var(--spacing-md) 0;
   line-height: var(--spacing-lg);
 }
 
+.service-comment-section {
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg) 0 ;
+  box-shadow: 8px black;
+  
+}
+
+.service-comment-section h2 {
+  margin-bottom: var(--spacing-md);
+  color: var(--color-text);
+}
+
+.comments-list {
+  list-style: none;
+  background: var(--card-background);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+}
+
+.comment {
+  background: white;
+  margin-bottom: var(--spacing-md);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* --------------------TODO: WATCH THIS-----------------------------------*/ 
+.comment-user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.comment-user-info .profile-picture {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #e0e0e0;
+}
+
+.comment-username {
+  font-weight: 600;
+  color: #333;
+}
+
+.comment-rating {
+  margin-left: auto;
+  color: #f5b301;
+  font-size: 1.1em;
+  font-weight: 500;
+}
+
+.comment p {
+  margin: 0;
+  color: #444;
+  font-size: 1rem;
+}
+
+#show-more-comments {
+  display: block;
+  margin: 0 auto;
+  padding: 0.5rem 1.2rem;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+#show-more-comments:hover {
+  background: #0056b3;
+}
+
+/* -------------------- TODO(END) -------------------- */
 
