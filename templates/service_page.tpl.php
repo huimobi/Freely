@@ -82,9 +82,8 @@
                     <input type="hidden" name="service_id" value="<?= htmlspecialchars((string) $SERVICE->id) ?>">
                     <button type="submit" class="pay-btn">Proceed to Payment</button>
                 </form>
-                <button class="message-btn"
-                    onclick="window.location.href='/message.php?service_id=<?= urlencode((string) $SERVICE->id) ?>'">Message
-                    Provider</button>
+                <button class="message-btn" onclick="window.location.href='/pages/messages.php?user=<?= $SERVICE->sellerId ?>'">Message Provider</button>
+
             </div>
         </aside>
     </main>

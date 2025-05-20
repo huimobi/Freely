@@ -1,3 +1,7 @@
+<?php function drawMessagesPage(array $allUsers, ?int $preselectedUserId): void {
+  $session = Session::getInstance();
+?>
+
 <section id="messages" class="chat-layout">
   <aside class="chat-sidebar">
     <h2 class="sidebar-title">Previous Messages</h2>
@@ -49,4 +53,13 @@
     document.getElementById('message-input').value = '';
     loadConversation(selectedUserId);
   });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const preselectedUserId = <?= json_encode($preselectedUserId) ?>;
+    if (preselectedUserId) {
+      selectUser(preselectedUserId);
+    }
+  });
+
 </script> 
+<?php } ?>
