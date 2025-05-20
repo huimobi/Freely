@@ -182,4 +182,4 @@ function drawHeader() {
     <header class="minimal-header">
       <h1><a href="/index.php">Freely</a></h1>
     </header>
-<?php } ?>  
+<?php } ?>

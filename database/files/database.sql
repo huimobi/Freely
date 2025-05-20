@@ -155,16 +155,16 @@
     INSERT INTO Tag (Name) VALUES ('Web Development');
 
     INSERT INTO Service (SellerUserId, CategoryId, Title, Description, BasePrice, Currency, DeliveryDays, Revisions) VALUES
-    (1, 1, 'Landing Page Design', 'Clean and modern landing page built with HTML/CSS/JS.', 60.0, 'EUR', 3, 1),
-    (1, 1, 'Full Website with CMS', 'A complete dynamic website with admin panel (Laravel).', 250.0, 'EUR', 10, 2),
-    (1, 1, 'Bug Fixing and Code Review', 'I will fix bugs and review your code for quality.', 40.0, 'EUR', 2, 0),
-    (1, 1, 'E-commerce Website', 'Complete online store with cart, checkout, and admin.', 300.0, 'EUR', 12, 3),
-    (1, 1, 'Portfolio Website', 'Custom portfolio to showcase your work professionally.', 100.0, 'EUR', 5, 1),
-    (1, 1, 'Single Page Application', 'React-based SPA with smooth navigation and backend.', 180.0, 'EUR', 7, 2),
-    (1, 1, 'Database Design', 'Optimized relational database schema + ER diagram.', 70.0, 'EUR', 3, 1),
-    (1, 1, 'API Development', 'RESTful APIs using Node.js or PHP, with documentation.', 120.0, 'EUR', 4, 2),
-    (1, 1, 'Web App Debugging', 'Advanced debugging for JS/PHP applications.', 55.0, 'EUR', 2, 0),
-    (1, 1, 'Speed Optimization', 'Improve loading speed of your website (Lighthouse).', 90.0, 'EUR', 3, 1);
+    (1, 2, 'Landing Page Design', 'Clean and modern landing page built with HTML/CSS/JS.', 60.0, 'EUR', 3, 1),
+    (1, 2, 'Full Website with CMS', 'A complete dynamic website with admin panel (Laravel).', 250.0, 'EUR', 10, 2),
+    (1, 2, 'Bug Fixing and Code Review', 'I will fix bugs and review your code for quality.', 40.0, 'EUR', 2, 0),
+    (1, 2, 'E-commerce Website', 'Complete online store with cart, checkout, and admin.', 300.0, 'EUR', 12, 3),
+    (1, 2, 'Portfolio Website', 'Custom portfolio to showcase your work professionally.', 100.0, 'EUR', 5, 1),
+    (1, 3, 'Single Page Application', 'React-based SPA with smooth navigation and backend.', 180.0, 'EUR', 7, 2),
+    (1, 3, 'Database Design', 'Optimized relational database schema + ER diagram.', 70.0, 'EUR', 3, 1),
+    (1, 3, 'API Development', 'RESTful APIs using Node.js or PHP, with documentation.', 120.0, 'EUR', 4, 2),
+    (1, 3, 'Web App Debugging', 'Advanced debugging for JS/PHP applications.', 55.0, 'EUR', 2, 0),
+    (1, 3, 'Speed Optimization', 'Improve loading speed of your website (Lighthouse).', 90.0, 'EUR', 3, 1);
 
     INSERT INTO Message (SenderUserId, ReceiverUserId, Content) VALUES
     (1, 2, 'Hi Bruno! Just saw your frontend portfolio — very nice.'),
