@@ -3,23 +3,29 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../includes/session.php';
 require_once __DIR__ . '/../templates/common.tpl.php';
-require_once __DIR__ . '/../templates/browse_cat.tpl.php';
-require_once __DIR__ . '/../templates/service_card.tpl.php';
+require_once __DIR__ . '/../templates/browse_services.tpl.php';
 require_once __DIR__ . '/../database/scripts/category.class.php';
 require_once __DIR__ . '/../database/scripts/service.class.php';
+require_once __DIR__ . '/../database/scripts/user.class.php';
 require_once __DIR__ . '/../database/scripts/comment.class.php';
 
-$catId          = (int)($_GET['cat']      ?? 0);
-$priceFilter    = $_GET['price']    ?? '';   // '' | 'low' | 'high'
-$deliveryFilter = $_GET['delivery'] ?? '';   // '' | '1' | '7'
-
-$page   = max(1, (int)($_GET['page'] ?? 1));
-$limit  = 10;
+$catId = (int)($_GET['cat'] ?? 0);
+$page = max(1, (int)($_GET['page'] ?? 1));
+$limit = 10;
 $offset = ($page - 1) * $limit;
 
-$category   = Category::getById($catId);
-$totalCount = Service::countByCategory($catId, $priceFilter, $deliveryFilter);
-$services   = Service::getByCategory($catId, $limit, $offset, $priceFilter, $deliveryFilter);
+$category = Category::getById($catId);
+$totalCount = Service::countByCategory($catId);
+
+$sort = $_GET['sort'] ?? '';
+$priceMin = (isset($_GET['price_min']) && $_GET['price_min'] !== '') ? (float)$_GET['price_min'] : null;
+$priceMax = (isset($_GET['price_max']) && $_GET['price_max'] !== '') ? (float)$_GET['price_max'] : null;
+$ratingMin = (isset($_GET['rating_min']) && $_GET['rating_min'] !== '') ? (float)$_GET['rating_min'] : null;
+$ratingMax = (isset($_GET['rating_max']) && $_GET['rating_max'] !== '') ? (float)$_GET['rating_max'] : null;
+
+
+$services = Service::getByCategory($catId, $limit, $offset, $sort, $priceMin, $priceMax, $ratingMin, $ratingMax);
+
 $totalPages = (int)ceil($totalCount / $limit);
 
 foreach ($services as $svc) {
@@ -29,5 +35,5 @@ foreach ($services as $svc) {
 }
 
 drawHeader();
-drawBrowsePage($category, $services, $page, $totalPages, $catId, $priceFilter, $deliveryFilter);
+drawBrowseServicesPage($category->name, $services, $category->description, $page, $totalPages, "/pages/browse_cat.php?cat=$catId");
 drawFooter();

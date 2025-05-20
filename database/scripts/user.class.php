@@ -33,9 +33,16 @@
     }
 
     public function save(): void {
-      $db   = Database::getInstance();
-      $stmt = $db->prepare('UPDATE User SET FirstName = ?, LastName = ?, Email=?, Headline=?, Description=? WHERE UserId = ?');
-      $stmt->execute([$this->firstName, $this->lastName, $this->email, $this->headline, $this->description ,$this->id]);
+      $db = Database::getInstance();
+      $stmt = $db->prepare('UPDATE User SET UserName = ?, FirstName = ?, LastName = ?, Email = ?, Headline = ?, Description = ? WHERE UserId = ?');
+      $stmt->execute([ $this->username, $this->firstName, $this->lastName, $this->email, $this->headline, $this->description, $this->id ]);
+    }
+
+    public function updatePassword(string $newHash): void {
+      $db = Database::getInstance();
+      $stmt = $db->prepare('UPDATE User SET PasswordHash = ? WHERE UserId = ?');
+      $stmt->execute([$newHash, $this->id]);
+      $this->passwordHash = $newHash;
     }
     
     static function getUser(int $id) : ?User {
@@ -117,5 +124,87 @@
       $stmt->execute([$userId]);
       return (bool)$stmt->fetchColumn();
     }
-  }
+
+    public static function getMessagedUsers(int $userId): array {
+      $db = Database::getInstance();
+      $stmt = $db->prepare('
+        SELECT DISTINCT u.*
+        FROM User u
+        JOIN Message m ON (u.UserId = m.SenderUserId AND m.ReceiverUserId = ?) 
+                      OR (u.UserId = m.ReceiverUserId AND m.SenderUserId = ?)
+        WHERE u.UserId != ?
+      ');
+      $stmt->execute([$userId, $userId, $userId]);
+
+      $users = [];
+      while ($row = $stmt->fetch()) {
+        $users[] = new User(
+          intval($row['UserId']),
+          $row['UserName'],
+          $row['FirstName'],
+          $row['LastName'],
+          $row['Email'],
+          $row['Phone'],
+          $row['CreatedAt'],
+          boolval($row['IsActive']),
+          $row['Headline'],
+          $row['Description']
+        );
+      }
+      return $users;
+    }
+
+    public static function everyUser(): array {
+      $db = Database::getInstance();
+      $stmt = $db->prepare('SELECT * FROM User');
+      $stmt->execute();
+
+      $users = [];
+      while ($row = $stmt->fetch()) {
+          $users[] = new User(
+            (int)$row['UserId'],
+            (string)$row['UserName'],
+            (string)$row['FirstName'],
+            (string)$row['LastName'],
+            (string)$row['Email'],
+            $row['Phone'] !== null ? (string)$row['Phone'] : null,
+            (string)$row['CreatedAt'],
+            (bool)$row['IsActive'],
+            $row['Headline'] ?? null,
+            $row['Description'] ?? null
+          );
+      }
+
+      return $users;
+    }
+
+    public static function toggleAdmin(int $userId): void {
+      $db = Database::getInstance();
+      $stmt = $db->prepare('SELECT 1 FROM Admin WHERE UserId = ?');
+      $stmt->execute([$userId]);
+
+      if ($stmt->fetch()) {
+        // Already admin, remove
+        $deleteStmt = $db->prepare('DELETE FROM Admin WHERE UserId = ?');
+        $deleteStmt->execute([$userId]);
+      } else {
+        // Not admin, add
+        $insertStmt = $db->prepare('INSERT INTO Admin (UserId) VALUES (?)');
+        $insertStmt->execute([$userId]);
+      }
+    }
+
+    public static function  toggleUser(int $userId): void {
+      $db = Database::getInstance();
+      $stmt = $db->prepare('UPDATE User SET IsActive = NOT IsActive WHERE UserId = ?');
+      $stmt->execute([$userId]);
+    }
+
+    public static function deleteUser(int $userId): void {
+      $db = Database::getInstance();
+      $stmt = $db->prepare('DELETE FROM User WHERE UserId = ?');
+      $stmt->execute([$userId]);
+    }
+
+  } 
 ?>

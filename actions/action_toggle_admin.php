@@ -1,0 +1,15 @@
+<?php
+declare(strict_types=1);
+require_once __DIR__ . '/../includes/session.php';
+require_once __DIR__ . '/../database/scripts/user.class.php';
+
+$session = Session::getInstance();
+if (!$session->isLoggedIn() || !$session->getUser()->isAdmin($session->getUser()->id)) {
+    header('Location: ../index.php');
+    exit();
+}
+
+User::toggleAdmin(intval($_POST['id']));
+
+header("Location: " . $_SERVER['HTTP_REFERER']);
+exit();

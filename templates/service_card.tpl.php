@@ -4,7 +4,7 @@ declare(strict_types=1);
 function drawServiceCard($svc): void { ?>
   <a href="/pages/service.php?id=<?= $svc->id ?>" class="service-card-link">
     <article class="service-card">
-      <img src="/images/services/<?= $svc->id ?>.jpg" class="service-img"
+      <img src="/images/services/<?= $svc->id ?>/0.jpg" class="service-img"
           onerror="this.src='/images/services/default.jpg'" alt="Service">
 
       <div class="service-info">

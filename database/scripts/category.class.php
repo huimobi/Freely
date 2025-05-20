@@ -21,10 +21,8 @@ class Category {
     $db = Database::getInstance();
     $sql = "SELECT c.CategoryId AS id, c.Name AS name, COALESCE(AVG(cm.Rating),0) AS avgRating, COUNT(s.ServiceId) AS serviceCount
       FROM Category c
-      LEFT JOIN Service s
-        ON s.CategoryId = c.CategoryId
-      LEFT JOIN Comment cm
-        ON cm.ServiceId = s.ServiceId
+      LEFT JOIN Service s ON s.CategoryId = c.CategoryId  AND s.IsActive = 1
+      LEFT JOIN Comment cm ON cm.ServiceId = s.ServiceId
       WHERE c.ParentCategoryId IS NULL
       GROUP BY c.CategoryId, c.Name
       ORDER BY c.Name";
@@ -67,5 +65,17 @@ class Category {
       (int) $row['serviceCount'],
       (string)$row['Description']
     );
+  }
+
+  public static function delete(int $categoryId): void {
+    $db = Database::getInstance();
+    $stmt = $db->prepare('DELETE FROM Category WHERE CategoryId = ?');
+    $stmt->execute([$categoryId]);
+  }
+
+  public static function add(string $name, string $description = ''): void {
+    $db = Database::getInstance();
+    $stmt = $db->prepare('INSERT INTO Category (Name, Description) VALUES (?, ?)');
+    $stmt->execute([$name, $description]);
   }
 }
