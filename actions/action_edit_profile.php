@@ -29,11 +29,11 @@ if (strlen($description) > 1000) $errors[] = 'Description cannot exceed 1000 cha
 
 $user = User::getUser($userId);
 
-if ($user && $username !== $user->username) {
+if ($user && $username !== $user->userName) {
   if (User::usernameExists($username)) {
     $errors[] = 'Username already taken.';
   } else {
-    $user->username = $username;
+    $user->useNname = $username;
   }
 }
 

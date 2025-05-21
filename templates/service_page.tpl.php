@@ -11,7 +11,7 @@
                         onerror="this.src='/images/users/default.jpg'" alt="Seller">
                     <section class="seller-text">
                         <div class="seller-rating">
-                            <h2><a href="/pages/freelancer.php?id=<?= $SERVICE->sellerId ?>"><?= htmlspecialchars($SERVICE->seller->username) ?>
+                            <h2><a href="/pages/freelancer.php?id=<?= $SERVICE->sellerId ?>"><?= htmlspecialchars($SERVICE->seller->userName ?? '') ?>
                             </h2></a>
                             <span class="rating">⭐ <?= $SERVICE->rating ?? '4.9' ?>
                                 (<?= $SERVICE->numRatings ?? '100' ?>)</span>
@@ -52,7 +52,7 @@
                                 <article class="comment-user-info">
                                     <img src="/images/users/<?= htmlspecialchars($comment->user->id) ?>.jpg" class="profile-picture"
                                         onerror="this.src='/images/users/default.jpg'" alt="User">
-                                    <span class="comment-username"><?= htmlspecialchars($comment->user->username) ?></span>
+                                    <span class="comment-username"><?= htmlspecialchars($comment->user->userName) ?></span>
                                     <span class="comment-rating">⭐ <?= htmlspecialchars($comment->rating) ?></span>
                                 </article>
                                 <p><?= htmlspecialchars($comment->text) ?></p>

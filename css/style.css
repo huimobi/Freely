@@ -69,6 +69,10 @@ h2 {
   padding-bottom: var(--spacing-md);
 }
 
+.admin-panel {
+  padding: var(--spacing-md);
+}
+
 /* -------------------- Search bar -------------------- */
 
 .search-bar {
@@ -322,7 +326,6 @@ dialog#roleModal {
   font-size: 0.95rem;
 }
 
-
 /* ---------------------- Select Box----------------------- */
 
 select {
@@ -336,8 +339,6 @@ select {
   -webkit-appearance: none;
   -moz-appearance: none;
 }
-
-
 
 /* ---------------------- Category card ---------------------- */
 

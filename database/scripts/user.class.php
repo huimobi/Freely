@@ -17,7 +17,7 @@
     public function __construct(int $id, string $username, string $firstName,string $lastName, string $email, ?string $phone, string $creationDate, bool $isActive, ?string $headline, ?string $description)
     {
       $this->id = $id;
-      $this->username= $username;
+      $this->userName= $username;
       $this->firstName = $firstName;
       $this->lastName = $lastName;
       $this->email = $email;
@@ -35,7 +35,7 @@
     public function save(): void {
       $db = Database::getInstance();
       $stmt = $db->prepare('UPDATE User SET UserName = ?, FirstName = ?, LastName = ?, Email = ?, Headline = ?, Description = ? WHERE UserId = ?');
-      $stmt->execute([ $this->username, $this->firstName, $this->lastName, $this->email, $this->headline, $this->description, $this->id ]);
+      $stmt->execute([ $this->useName, $this->firstName, $this->lastName, $this->email, $this->headline, $this->description, $this->id ]);
     }
 
     public function updatePassword(string $newHash): void {

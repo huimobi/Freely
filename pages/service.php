@@ -23,8 +23,8 @@ $SERVICE->rating = Comment::averageForService($SERVICE->id);
 $SERVICE->numRatings = Comment::countForService($SERVICE->id);
 $SERVICE->category = Category::getById($SERVICE->categoryId);
 $SERVICE->comments = Comment::getByService($SERVICE->id);
-$SERVICE->$totalComments = Comment::countForService($SERVICE->id);
-$SERVICE->$commentsToShow = 10;
+$SERVICE->totalComments = Comment::countForService($SERVICE->id);
+$SERVICE->commentsToShow = 10;
 $SERVICE->photos = getPhotos($SERVICE->id);
 
 drawHeader();

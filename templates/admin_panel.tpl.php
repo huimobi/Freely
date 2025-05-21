@@ -6,102 +6,130 @@ require_once __DIR__ . '/../templates/service_table.tpl.php';
 
 function drawAdminPanel(array $services, array $users, array $categories): void {
 ?>
-  <main class="admin-panel">
-    <h1> Admin Panel </h1>
-    <section>
-        <h2>All Services</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                <th>ID</th>
-                <th>Service Title</th>
-                <th>Avg Rating</th>
-                <th>Created At</th>
-                <th>Status</th>
-                <th>Actions</th>
-                </tr>
-            </thead>
+<main class="admin-panel">
+  <h1>Admin Panel</h1>
 
-            <tbody>
-            <?php foreach ($services as $s): ?>
-                <tr>
-                <td><?= $s->id ?></td>
-                <td><?= htmlspecialchars($s->title) ?></td>
-                <td><?= number_format($s->avgRating ?? 0, 1) ?></td>
-                <td><?= $s->createdAt ?></td>
-                <td><?= $s->isActive ? 'Active' : 'Inactive' ?></td>
-                <td>
-                    <form method="post" action="../actions/action_toggle_service.php"> <input type="hidden" name="serviceId" value="<?= $s->id ?>"> <button type="submit"><?= $s->isActive ? 'Deactivate' : 'Activate' ?></button> </form>
-                    <form method="post" action="../actions/action_delete_service.php" onsubmit="return confirm('Are you sure you want to delete this service?')"> <input type="hidden" name="id" value="<?= $s->id ?>"><button>Delete</button> </form>
-                </td>
-                </tr>
-            <?php endforeach; ?>
-            </tbody>
-        </table>
-    </section>
+  <!-- Services -->
+  <section class="table-wrapper">
+    <h2>All Services</h2>
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Owner</th>
+            <th>Created At</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php foreach ($services as $s): ?>
+          <tr>
+            <td><?= $s->id ?></td>
+            <td><?= htmlspecialchars($s->title) ?></td>
+            <td>
+              <?php $owner = User::getUser($s->sellerId); ?>
+              <?= htmlspecialchars($owner?->userName ?? 'Unknown') ?>
+            </td>
+            <td><?= $s->createdAt ?></td>
+            <td>
+              <form method="post" action="/actions/action_toggle_service.php" style="display:inline;">
+                <input type="hidden" name="serviceId" value="<?= $s->id ?>">
+                <button type="submit" class="btn btn--primary <?= $s->isActive ? 'active' : 'inactive' ?>"><?= $s->isActive ? 'Active' : 'Inactive' ?></button>
+              </form>
+            </td>
+            <td>
+              <form method="post" action="/actions/action_delete_service.php" style="display:inline;">
+                <input type="hidden" name="serviceId" value="<?= $s->id ?>">
+                <button type="submit" class="btn btn--primary delete">Delete</button>
+              </form>
+            </td>
+          </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+    </div>
+  </section>
 
-    <section>
-        <h2>All Freelancers</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                <th>ID</th>
-                <th>Username</th>
-                <th>Created At</th>
-                <th>Status</th>
-                <th>Actions</th>
-                </tr>
-            </thead>
+  <!-- Users -->
+  <section class="table-wrapper">
+    <h2>All Freelancers</h2>
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Created At</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php foreach ($users as $u): ?>
+          <tr>
+            <td><?= $u->id ?></td>
+            <td><?= htmlspecialchars($u->userName ?? 'Unknown') ?></td>
+            <td><?= $u->creationDate ?></td>
+            <td>
+              <form method="post" action="/actions/action_toggle_user.php" style="display:inline;">
+                <input type="hidden" name="id" value="<?= $u->id ?>">
+                <button type="submit" class="btn btn--primary <?= $u->isActive ? 'active' : 'inactive' ?>"><?= $u->isActive ? 'Active' : 'Inactive' ?></button>
+              </form>
+            </td>
+            <td>
+              <?php if (isset($_SESSION['user_id']) && $u->id !== $_SESSION['user_id']): ?>
+                <form method="post" action="/actions/action_delete_user.php" style="display:inline;">
+                  <input type="hidden" name="id" value="<?= $u->id ?>">
+                  <button type="submit" class="btn btn--primary delete">Delete</button>
+                </form>
+              <?php else: ?>
+                <span class="text--muted">(You)</span>
+              <?php endif; ?>
+            </td>
+          </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+    </div>
+  </section>
 
-            <tbody>
-            <?php foreach ($users as $u): ?>
-                <tr>
-                <td><?= $u->id ?></td>
-                <td><?= htmlspecialchars($u->username) ?></td>
-                <td><?= $u->creationDate ?></td>
-                <td><?= $u->isActive ? 'Active' : 'Inactive' ?></td>
-                <td>
-                    <form method="post" action="../actions/action_toggle_admin.php"><input type="hidden" name="id" value="<?= $u->id ?>"><button>Toggle Admin</button></form>
-                    <form method="post" action="../actions/action_toggle_user.php"><input type="hidden" name="id" value="<?= $u->id ?>"><button>Deactivate</button></form>
-                    <form method="post" action="../actions/action_delete_user.php"><input type="hidden" name="id" value="<?= $u->id ?>"><button>Delete</button></form>
-                </td>
-                </tr>
-            <?php endforeach; ?>
-            </tbody>
-        </table>
-    </section>
+  <!-- Categories -->
+  <section class="table-wrapper">
+    <h2>All Categories</h2>
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php foreach ($categories as $c): ?>
+          <tr>
+            <td><?= $c->id ?></td>
+            <td><?= htmlspecialchars($c->name) ?></td>
+            <td>
+              <?php if ($c->id !== 1): ?>
+                <form method="post" action="/actions/action_delete_category.php" style="display:inline;">
+                  <input type="hidden" name="id" value="<?= $c->id ?>">
+                  <button type="submit" class="btn btn--primary delete">Delete</button>
+                </form>
+              <?php else: ?>
+                <span class="text--muted">(Protected)</span>
+              <?php endif; ?>
+            </td>
+          </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+    </div>
+  </section>
 
-    <section>
-        <h2>All Categories</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Actions</th>
-                </tr>
-            </thead>
-
-            <tbody>
-            <?php foreach ($categories as $c): ?>
-                <tr>
-                <td><?= $c->id ?></td>
-                <td><?= htmlspecialchars($c->name) ?></td>
-                <td>
-                   <?php if ($c->id !== 1): ?>
-                        <form method="post" action="../actions/action_delete_category.php">
-                            <input type="hidden" name="id" value="<?= $c->id ?>">
-                            <button>Delete</button>
-                        </form>
-                    <?php else: ?>
-                        <span style="color: gray;">(Protected)</span>
-                    <?php endif; ?>
-                </td>
-                </tr>
-            <?php endforeach; ?>
-            </tbody>
-        </table>
-    </section>
 </main>
 <?php
 }
