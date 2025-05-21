@@ -40,6 +40,26 @@ class JobOrder {
         return $orders;
     }
 
+    public static function getAllBySellerId(int $sellerId): array {
+        $db = Database::getInstance();
+        $stmt = $db->prepare('SELECT * FROM JobOrder WHERE SellerUserId = ? ORDER BY OrderDate DESC');
+        $stmt->execute([$sellerId]);
+
+        $orders = [];
+        while ($row = $stmt->fetch()) {
+            $orders[] = new JobOrder(
+                $row['JobOrderId'],
+                $row['BuyerUserId'],
+                $row['SellerUserId'],
+                $row['ServiceId'],
+                $row['Status'],
+                $row['OrderDate']
+            );
+        }
+
+        return $orders;
+    }
+
     public static function updateStatus(int $orderId, string $newStatus): void {
         $db = Database::getInstance();
         $stmt = $db->prepare('UPDATE JobOrder SET Status = ? WHERE JobOrderId = ?');

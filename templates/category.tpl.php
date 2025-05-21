@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../database/scripts/category.class.php';
 
-function drawCategoryList(): void {
+function drawCategoryList(): void {  
+    $session = Session::getInstance();
     $cats = Category::getAllWithStats();
 
     echo '<section class="category-browse">',
@@ -28,5 +29,37 @@ function drawCategoryList(): void {
         );
     }
 
-    echo '</ul></section>';
+    if ($session->isAdmin()) {
+      echo '<li>
+            <button type="button"
+                    class="category-card add-category-card"
+                    data-modal-open="addCategoryDialog">
+              <div class="add-icon">＋</div>
+              <h3>Add Category</h3>
+            </button>
+          </li>';
+    }
+
+    echo   '</ul>';
+    echo '</section>';
+
+    if ($session->isAdmin()) {
+        echo '<dialog id="addCategoryDialog">
+                <form method="post"action="/actions/action_add_category.php" class="modal-form">
+                  <h2>Add New Category</h2>
+                  <label>
+                    <span>Title</span>
+                    <input type="text" name="name" required>
+                  </label>
+                  <label>
+                    <span>Description</span>
+                    <textarea name="description" rows="4"></textarea>
+                  </label>
+                  <button type="submit">Create Category</button>
+                </form>
+                <menu>
+                  <button data-modal-close type="button">Close</button>
+                </menu>
+              </dialog>';
+    }
 }

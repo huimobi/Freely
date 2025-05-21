@@ -190,6 +190,13 @@
     (2, 1, 1, 250.0, 'EUR', 'Completed', 'Full website for a bakery with CMS.', '2025-05-03', '2025-05-13'),
     (3, 1, 1, 40.0, 'EUR', 'InProgress', 'Fix a critical bug in PHP login system.', '2025-05-05', '2025-05-07'),
     (4, 1, 1, 300.0, 'EUR', 'InProgress', 'Set up online store with cart and admin.', '2025-04-25', '2025-05-07'),
+    (5, 1, 1, 100.0, 'EUR', 'InProgress', 'Modern portfolio for a UX designer.', '2025-04-15', '2025-04-20'),
+
+    (5, 1, 1, 100.0, 'EUR', 'InProgress', 'Modern portfolio for a UX designer.', '2025-04-15', '2025-04-20'),
+    (5, 1, 1, 100.0, 'EUR', 'InProgress', 'Modern portfolio for a UX designer.', '2025-04-15', '2025-04-20'),
+    (5, 1, 1, 100.0, 'EUR', 'InProgress', 'Modern portfolio for a UX designer.', '2025-04-15', '2025-04-20'),
+    (5, 1, 1, 100.0, 'EUR', 'InProgress', 'Modern portfolio for a UX designer.', '2025-04-15', '2025-04-20'),
+    (5, 1, 1, 100.0, 'EUR', 'InProgress', 'Modern portfolio for a UX designer.', '2025-04-15', '2025-04-20'),
     (5, 1, 1, 100.0, 'EUR', 'InProgress', 'Modern portfolio for a UX designer.', '2025-04-15', '2025-04-20');
 
 

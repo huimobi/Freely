@@ -25,7 +25,7 @@ if (!is_numeric($orderId) || !in_array($newStatus, $validStatuses)) {
 
 try {
     JobOrder::updateStatus((int)$orderId, $newStatus);
-    header("Location: /pages/my_buys.php");
+    header("Location: " . $_SERVER['HTTP_REFERER']);
     exit;
 } catch (Exception $e) {
     http_response_code(500);

@@ -206,6 +206,12 @@ dialog form {
   gap: var(--spacing-md);
 }
 
+dialog form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
 dialog form input,
 dialog form button {
   width: 100%;
@@ -332,7 +338,111 @@ select {
 }
 
 
-/* --------------------------------------------------------- */
+
+/* ---------------------- Category card ---------------------- */
+
+/* Section wrapper */
+.category-browse {
+    margin: var(--spacing-lg) 0;
+  }
+  .category-browse h2 {
+    font-size: 1.75rem;
+    margin-bottom: var(--spacing-md);
+  }
+
+  .category-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px,1fr));
+    gap: var(--spacing-md);
+  }
+  
+  .category-grid li {
+    margin: 0;
+  }
+  
+  .category-card {
+    display: block;
+    background: #fafafa;
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    text-decoration: none;
+    color: var(--color-text);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .category-card:hover {
+    box-shadow: var(--shadow-lg);
+  }
+  
+
+  .category-card h3 {
+    margin: 0 0 var(--spacing-sm) 0;
+    font-size: 1.125rem;
+    line-height: 1.2;
+  }
+  
+  .stats {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+  }
+  .stats li {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  .stats .rating {
+    color: #14a800;
+  }
+  .stats .rating .star {
+    font-size: 1rem;
+  }
+
+  .category-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* ---------------------- Add Category card ----------------------- */
+
+  .category-card.add-category-card {
+    height: auto;
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: var(--spacing-md);
+    background: #fafafa;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .category-card.add-category-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* Make sure the + uses the same “secondary text” color */
+  .category-card.add-category-card .add-icon {
+    color: var(--color-text-secondary, #666);
+  }
+
+/* ---------------------- Service card ----------------------- */
+
 .category-header {
   margin: var(--spacing-lg) 0 var(--spacing-md);
 }
