@@ -142,6 +142,7 @@
 PRAGMA foreign_keys = OFF;
 BEGIN TRANSACTION;
 
+--not made by me, used ai to make seed data--
 -- Categories
 INSERT OR IGNORE INTO Category (CategoryId, Name, Description) VALUES (1, 'Other', 'Fallback for uncategorized services');
 INSERT INTO Category (Name, Description) VALUES
