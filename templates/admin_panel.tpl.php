@@ -55,7 +55,7 @@ function drawAdminPanel(array $services, array $users, array $categories): void 
 
   <!-- Users -->
   <section class="table-wrapper">
-    <h2>All Freelancers</h2>
+    <h2>All Users</h2>
     <div class="table-scroll">
       <table class="data-table">
         <thead>
