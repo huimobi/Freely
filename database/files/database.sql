@@ -72,7 +72,7 @@
 
         AgreedPrice REAL NOT NULL,
         Currency TEXT NOT NULL,
-        Status TEXT NOT NULL DEFAULT 'Pending' CHECK (Status IN ('Pending', 'Accepted', 'InProgress', 'Delivered', 'Revision', 'Completed', 'Disputed', 'Cancelled')), -- NVARCHAR(20)
+        Status TEXT NOT NULL DEFAULT 'InProgress' CHECK (Status IN ('InProgress', 'Revision', 'Completed','Cancelled')), -- NVARCHAR(20)
         Requirements TEXT,
         OrderDate TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
         StartDate TEXT,
@@ -151,7 +151,6 @@
     ('daniel_php', 'Daniel', 'Santos', 'daniel@example.com', 'hashed_pw4', 'PHP Expert', '10+ years writing scalable backend systems.', '915678901'),
     ('eva_uiux', 'Eva', 'Rocha', 'eva@example.com', 'hashed_pw5', 'UI/UX Designer', 'I design user-friendly and beautiful interfaces.', '916789012');
 
-
     INSERT INTO Tag (Name) VALUES ('Web Development');
 
     INSERT INTO Service (SellerUserId, CategoryId, Title, Description, BasePrice, Currency, DeliveryDays, Revisions) VALUES
@@ -160,11 +159,21 @@
     (1, 2, 'Bug Fixing and Code Review', 'I will fix bugs and review your code for quality.', 40.0, 'EUR', 2, 0),
     (1, 2, 'E-commerce Website', 'Complete online store with cart, checkout, and admin.', 300.0, 'EUR', 12, 3),
     (1, 2, 'Portfolio Website', 'Custom portfolio to showcase your work professionally.', 100.0, 'EUR', 5, 1),
-    (1, 3, 'Single Page Application', 'React-based SPA with smooth navigation and backend.', 180.0, 'EUR', 7, 2),
-    (1, 3, 'Database Design', 'Optimized relational database schema + ER diagram.', 70.0, 'EUR', 3, 1),
-    (1, 3, 'API Development', 'RESTful APIs using Node.js or PHP, with documentation.', 120.0, 'EUR', 4, 2),
-    (1, 3, 'Web App Debugging', 'Advanced debugging for JS/PHP applications.', 55.0, 'EUR', 2, 0),
-    (1, 3, 'Speed Optimization', 'Improve loading speed of your website (Lighthouse).', 90.0, 'EUR', 3, 1);
+    (1, 2, 'Single Page Application', 'React-based SPA with smooth navigation and backend.', 180.0, 'EUR', 7, 2),
+    (1, 2, 'Database Design', 'Optimized relational database schema + ER diagram.', 70.0, 'EUR', 3, 1),
+    (1, 2, 'API Development', 'RESTful APIs using Node.js or PHP, with documentation.', 120.0, 'EUR', 4, 2),
+    (1, 2, 'Web App Debugging', 'Advanced debugging for JS/PHP applications.', 55.0, 'EUR', 2, 0),
+    (1, 2, 'Speed Optimization', 'Improve loading speed of your website (Lighthouse).', 90.0, 'EUR', 3, 1),
+    (1, 2, 'Speed Optimization', 'Improve loading speed of your website (Lighthouse).', 90.0, 'EUR', 3, 1),
+    (1, 2, 'Speed Optimization', 'Improve loading speed of your website (Lighthouse).', 90.0, 'EUR', 3, 1),
+    (1, 2, 'Speed Optimization', 'Improve loading speed of your website (Lighthouse).', 90.0, 'EUR', 3, 1),
+    (1, 2, 'Speed Optimization', 'Improve loading speed of your website (Lighthouse).', 90.0, 'EUR', 3, 1),
+    (1, 2, 'Speed Optimization', 'Improve loading speed of your website (Lighthouse).', 90.0, 'EUR', 3, 1),
+    (1, 2, 'Speed Optimization', 'Improve loading speed of your website (Lighthouse).', 90.0, 'EUR', 3, 1),
+    (1, 2, 'Speed Optimization', 'Improve loading speed of your website (Lighthouse).', 90.0, 'EUR', 3, 1),
+    (1, 2, 'Speed Optimization', 'Improve loading speed of your website (Lighthouse).', 90.0, 'EUR', 3, 1),
+    (1, 2, 'Speed Optimization', 'Improve loading speed of your website (Lighthouse).', 90.0, 'EUR', 3, 1),
+    (1, 2, 'Speed Optimization', 'Improve loading speed of your website (Lighthouse).', 90.0, 'EUR', 3, 1);
 
     INSERT INTO Message (SenderUserId, ReceiverUserId, Content) VALUES
     (1, 2, 'Hi Bruno! Just saw your frontend portfolio — very nice.'),
@@ -176,6 +185,12 @@
     (5, 1, 'Hi Ana, I’d love to collaborate on a UI/UX project. Interested?'),
     (1, 5, 'Hey Eva! Absolutely, your design work is excellent. Let’s plan.');
 
+    INSERT INTO JobOrder (ServiceId, BuyerUserId, SellerUserId, AgreedPrice, Currency, Status, Requirements, StartDate, ExpectedDeliveryDate) VALUES
+    (1, 1, 1, 60.0, 'EUR', 'Revision', 'Please design a landing page for a new product.', '2025-05-01', '2025-05-04'),
+    (2, 1, 1, 250.0, 'EUR', 'Completed', 'Full website for a bakery with CMS.', '2025-05-03', '2025-05-13'),
+    (3, 1, 1, 40.0, 'EUR', 'InProgress', 'Fix a critical bug in PHP login system.', '2025-05-05', '2025-05-07'),
+    (4, 1, 1, 300.0, 'EUR', 'InProgress', 'Set up online store with cart and admin.', '2025-04-25', '2025-05-07'),
+    (5, 1, 1, 100.0, 'EUR', 'InProgress', 'Modern portfolio for a UX designer.', '2025-04-15', '2025-04-20');
 
 
     INSERT INTO ServiceTag (ServiceId, TagId) SELECT ServiceId, 1 FROM Service WHERE SellerUserId = 1;
