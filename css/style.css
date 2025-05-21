@@ -605,76 +605,6 @@ select {
   }
 }
 
-/* ---------- Styles for My Services page ---------- */
-
-.my-services {
-  margin: 2rem auto;
-  max-width: 900px;
-  background-color: #f7f7f7;
-  padding: 1rem;
-  border-radius: var(--radius-md);
-}
-
-.service-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.service-table th,
-.service-table td {
-  padding: var(--spacing-md);
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-}
-
-.service-table th {
-  background-color: #f0f0f0;
-}
-
-/* -------- Action Modifiers for Buttons -------- */
-
-.btn--primary.edit {
-  background-color: #e0e0e0;
-  color: #000;
-  text-decoration: none;
-}
-
-.btn--primary.edit:hover {
-  background-color: #d5d5d5;
-  color: #000;
-}
-
-.btn--primary.delete {
-  background-color: var(--color-red);
-  color: var(--color-text-red);
-}
-
-.btn--primary.delete:hover {
-  background-color: var(--color-red-hover);
-  color: var(--color-text-red-hover);
-}
-
-.btn--primary.active {
-  background-color: var(--color-green);
-  color: var(--color-text-green);
-}
-
-.btn--primary.active:hover {
-  background-color: var(--color-green-hover);
-  color: var(--color-text-green-hover);
-}
-
-.btn--primary.inactive {
-  background-color: var(--color-red);
-  color: var(--color-text-red);
-}
-
-.btn--primary.inactive:hover {
-  background-color: var(--color-red-hover);
-  color: var(--color-text-red-hover);
-}
-
-
 /* ---------------------- Chat Messages ---------------------- */
 .message {
   max-width: 60%;
@@ -1182,3 +1112,91 @@ header.chat-header a {
 }
 
 
+
+/* ---------- Generic Table Wrapper ---------- */
+.table-wrapper {
+  margin: 2rem auto;
+  max-width: 1000px;
+  background-color: #f7f7f7;
+  padding: 1rem;
+  border-radius: var(--radius-md);
+}
+
+/* ---------- Reusable Table Styling ---------- */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+  padding: var(--spacing-md);
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.data-table th {
+  background-color: #f0f0f0;
+}
+
+/* ---------- Reusable Button Modifiers ---------- */
+.btn--primary.edit {
+  background-color: #e0e0e0;
+  color: #000;
+  text-decoration: none;
+}
+
+.btn--primary.edit:hover {
+  background-color: #d5d5d5;
+  color: #000;
+}
+
+.btn--primary.delete {
+  background-color: var(--color-red);
+  color: var(--color-text-red);
+}
+
+.btn--primary.delete:hover {
+  background-color: var(--color-red-hover);
+  color: var(--color-text-red-hover);
+}
+
+.btn--primary.active {
+  background-color: var(--color-green);
+  color: var(--color-text-green);
+}
+
+.btn--primary.active:hover {
+  background-color: var(--color-green-hover);
+  color: var(--color-text-green-hover);
+}
+
+.btn--primary.inactive {
+  background-color: var(--color-red);
+  color: var(--color-text-red);
+}
+
+.btn--primary.inactive:hover {
+  background-color: var(--color-red-hover);
+  color: var(--color-text-red-hover);
+}
+
+/* Makes table body scrollable with fixed header */
+.table-scroll {
+  height: 65vh;
+  overflow-y: auto;
+  border-radius: var(--radius-sm);
+}
+
+.table-scroll table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table-scroll th {
+  position: sticky;
+  top: 0;
+  background-color: #f0f0f0;
+  z-index: 1;
+}

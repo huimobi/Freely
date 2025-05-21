@@ -1,8 +1,9 @@
 <?php
 function drawServiceTable(array $services, bool $editable): void { ?>
-  <section class="my-services">
+  <section class="table-wrapper">
     <h2>My Services</h2>
-    <table class="service-table">
+    <div class="table-scroll">
+    <table class="data-table">
       <thead>
         <tr>
           <th>Service Title</th>
@@ -24,17 +25,15 @@ function drawServiceTable(array $services, bool $editable): void { ?>
             <?php if ($editable): ?>
               <td> <a href="/pages/edit_service.php?id=<?= $service->id ?>" class="btn btn--primary edit">Edit</a> </td>
               <td>
-                <form method="post" action="../actions/action_toggle_service.php">
+                <form method="post" action="/actions/action_toggle_service.php" style="display:inline;">
                   <input type="hidden" name="serviceId" value="<?= $service->id ?>">
-                  <button class="btn btn--primary <?= $service->isActive ? 'active' : 'inactive' ?>" type="submit">
-                    <?= $service->isActive ? 'Active' : 'Inactive' ?>
-                  </button>
+                  <button type="submit" class="btn btn--primary <?= $service->isActive ? 'active' : 'inactive' ?>"> <?= $service->isActive ? 'Active' : 'Inactive' ?> </button>
                 </form>
               </td>
               <td>
-                <form method="post" action="../actions/action_delete_service.php">
+                <form method="post" action="/actions/action_delete_service.php" style="display:inline;">
                   <input type="hidden" name="serviceId" value="<?= $service->id ?>">
-                  <button class="btn btn--primary delete" type="submit">Delete</button>
+                  <button type="submit" class="btn btn--primary delete">Delete</button>
                 </form>
               </td>
             <?php endif; ?>
@@ -42,5 +41,6 @@ function drawServiceTable(array $services, bool $editable): void { ?>
         <?php endforeach; ?>
       </tbody>
     </table>
+    </div>
   </section>
-<?php }
+<?php } ?>
