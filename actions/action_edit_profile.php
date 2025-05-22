@@ -5,10 +5,7 @@ require_once __DIR__.'/../database/scripts/user.class.php';
 
 $session = Session::getInstance();
 $current = $session->getUser();
-if (!$current) {
-  header('Location: /');
-  exit;
-}
+if (!$current) { header('Location: /'); exit;}
 
 $userId = (int)($_POST['user_id'] ?? 0);
 $firstName = trim($_POST['first_name'] ?? '');
@@ -16,6 +13,8 @@ $lastName = trim($_POST['last_name']  ?? '');
 $email = trim($_POST['email']      ?? '');
 $headline = trim($_POST['headline']   ?? '');
 $description = trim($_POST['description']?? '');
+$username = trim($_POST['username'] ?? '');
+$newPassword = $_POST['new_password'] ?? '';
 
 $errors = [];
   
@@ -28,6 +27,15 @@ if ($email !== $current->email && User::emailExists($email)) $errors[] = 'That e
 if (strlen($headline) > 200) $errors[] = 'Headline cannot exceed 200 characters.';
 if (strlen($description) > 1000) $errors[] = 'Description cannot exceed 1000 characters.';
 
+$user = User::getUser($userId);
+
+if ($user && $username !== $user->userName) {
+  if (User::usernameExists($username)) {
+    $errors[] = 'Username already taken.';
+  } else {
+    $user->useNname = $username;
+  }
+}
 
 if ($errors) {
   $_SESSION['edit_errors'] = $errors;
@@ -35,7 +43,6 @@ if ($errors) {
   exit;
 }
 
-$user = User::getUser($userId);
 if ($user) {
   $user->firstName = $firstName;
   $user->lastName = $lastName;
@@ -49,6 +56,10 @@ if ($user) {
       move_uploaded_file($_FILES['photo']['tmp_name'], $targetFile);
   }
 
+  if (!empty($newPassword)) {
+    $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+    $user->updatePassword($hashedPassword);
+  }
   $user->save();
 }
 

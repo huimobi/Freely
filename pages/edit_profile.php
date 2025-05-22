@@ -7,10 +7,7 @@ require_once __DIR__.'/../templates/edit_profile.tpl.php';
 
 $session = Session::getInstance();
 $user = $session->getUser();
-if (!$user) {
-  header('Location: /');
-  exit;
-}
+if (!$user) { header('Location: /'); exit;}
 
 $errors = $_SESSION['edit_errors'] ?? [];
 unset($_SESSION['edit_errors']);

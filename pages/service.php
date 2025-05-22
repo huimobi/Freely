@@ -18,31 +18,37 @@ if (!$SERVICE) {
     exit;
 }
 
-$SERVICE->seller = User::getUser($SERVICE->sellerId);
-$SERVICE->rating = Comment::averageForService($SERVICE->id);
-$SERVICE->numRatings = Comment::countForService($SERVICE->id);
-$SERVICE->category = Category::getById($SERVICE->categoryId);
-$SERVICE->comments = Comment::getByService($SERVICE->id);
-$SERVICE->$totalComments = Comment::countForService($SERVICE->id);
-$SERVICE->$commentsToShow = 10;
-$SERVICE->photos = getPhotos($SERVICE->id);
+$SERVICE->seller = User::getUser($SERVICE->sellerId) ?? null;
+$SERVICE->rating = Comment::averageForService($SERVICE->id) ?? null;
+$SERVICE->numRatings = Comment::countForService($SERVICE->id) ?? null;
+$SERVICE->category = Category::getById($SERVICE->categoryId) ?? null;
+$SERVICE->comments = Comment::getByService($SERVICE->id) ?? null;
+$SERVICE->totalComments = Comment::countForService($SERVICE->id) ?? null;
+$SERVICE->commentsToShow = 10;
+
+$photos=getPhotos($SERVICE->id);
+$SERVICE->photos = $photos[0];
+$SERVICE->totalPhotos= $photos[1];
+
 
 drawHeader();
 drawServicePage($SERVICE);
 drawFooter();
 
 
-function getPhotos($id): array
+function getPhotos($id)
 {
     $photos = [];
+    $count=0;
     $dir = __DIR__ . '/../images/services/' . $id;
     if (is_dir($dir)) {
         $files = scandir($dir);
         foreach ($files as $file) {
             if ($file !== '.' && $file !== '..') {
                 $photos[] = '/images/services/' . $id . '/' . $file;
+                $count++;
             }
         }
     }
-    return $photos;
+    return [$photos,$count];
 }

@@ -3,10 +3,26 @@
   --color-background: #fff;
   --color-background-dark: #3a3a3a;
   --color-text: #333;
-  --color-text-light: #d7d7d7;
+  --color-text-light: #fff;
   --color-border: #b6b3b3;
   --color-hover: #111111;
-  --card-background: #f7f7f7;
+  --color-green: #d1e7dd;
+  --color-green-hover: #badbcc;
+  --color-text-green: #0f4411;
+  --color-text-green-hover: #0a3622;
+
+  --color-red: #f0c5c5;
+  ;
+  --color-red-hover: #ecacac;
+  --color-text-red: #842020;
+  ;
+  --color-text-red-hover: #581515;
+
+
+  --color-blue-text: #bfdbfd;
+  --color-green-text: #BBF7D0;
+
+
 
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
@@ -51,6 +67,14 @@ header h1 a {
   padding: var(--spacing-lg);
 }
 
+h2 {
+  padding-bottom: var(--spacing-md);
+}
+
+.admin-panel {
+  padding: var(--spacing-md);
+}
+
 /* -------------------- Search bar -------------------- */
 
 .search-bar {
@@ -65,6 +89,8 @@ header h1 a {
   border: 1px solid var(--color-border);
   border-right: none;
   border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+  box-shadow: 0;
+
 }
 
 .search-bar input:focus {
@@ -88,6 +114,29 @@ header h1 a {
   display: flex;
   gap: var(--spacing-md);
 }
+
+
+.tag-suggestions {
+  position: absolute;
+  z-index: 1000;
+  background: white;
+  border: 1px solid #ccc;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.tag-suggestion-item {
+  padding: 0.5em;
+  cursor: pointer;
+}
+
+.tag-suggestion-item:hover {
+  background-color: #f0f0f0;
+}
+
 
 /* -------------------- Buttons -------------------- */
 
@@ -162,6 +211,12 @@ dialog::backdrop {
 dialog form {
   display: grid;
   gap: var(--spacing-md);
+}
+
+dialog form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  resize: vertical;
 }
 
 dialog form input,
@@ -274,7 +329,6 @@ dialog#roleModal {
   font-size: 0.95rem;
 }
 
-
 /* ---------------------- Select Box----------------------- */
 
 select {
@@ -289,8 +343,115 @@ select {
   -moz-appearance: none;
 }
 
+/* ---------------------- Category card ---------------------- */
 
-/* --------------------------------------------------------- */
+/* Section wrapper */
+.category-browse {
+  margin: var(--spacing-lg) 0;
+}
+
+.category-browse h2 {
+  font-size: 1.75rem;
+  margin-bottom: var(--spacing-md);
+}
+
+.category-grid {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.category-grid li {
+  margin: 0;
+}
+
+.category-card {
+  display: block;
+  background: #fafafa;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+  color: var(--color-text);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.category-card:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+
+.category-card h3 {
+  margin: 0 0 var(--spacing-sm) 0;
+  font-size: 1.125rem;
+  line-height: 1.2;
+}
+
+.stats {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+
+.stats li {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.stats .rating {
+  color: #14a800;
+}
+
+.stats .rating .star {
+  font-size: 1rem;
+}
+
+.category-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ---------------------- Add Category card ----------------------- */
+
+.category-card.add-category-card {
+  height: auto;
+  width: 100%;
+  border: none;
+  outline: none;
+  padding: var(--spacing-md);
+  background: #fafafa;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.category-card.add-category-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Make sure the + uses the same “secondary text” color */
+.category-card.add-category-card .add-icon {
+  color: var(--color-text-secondary, #666);
+}
+
+/* ---------------------- Service card ----------------------- */
+
 .category-header {
   margin: var(--spacing-lg) 0 var(--spacing-md);
 }
@@ -387,32 +548,74 @@ select {
   background: var(--color-background);
 }
 
-/* ---------------------- Service Card ---------------------- */
-.service-card {
-  border: 1px solid #ddd;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  max-width: 320px;
-  background: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin: var(--spacing-sm);
+/* ---------------------- Service List ---------------------- */
+
+.top-rated h2 {
+  margin-bottom: 2rem;
 }
 
+.service-list {
+  background: var(--color-background);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, max-content));
+  justify-content: start;
+  gap: var(--spacing-md);
+}
+
+.view-more {
+  margin: 1rem;
+  text-align: center;
+}
+
+/* ---------------------- Service Card ---------------------- */
+.service-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  cursor: pointer;
+
+  min-height: 370px;
+  max-width: 320px;
+  margin: var(--spacing-sm);
+  padding: 0;
+
+  background: var(--color-background);
+  border: 1px solid #ddd;
+  border-radius: var(--radius-md);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.service-card:hover {
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+  transition: all 0.2s ease;
+}
+
+.service-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: inline-block;
+}
+
+/* ---------------------- Card Content ---------------------- */
 .service-img {
   width: 100%;
   box-sizing: border-box;
   height: 180px;
   object-fit: cover;
-  border-radius: 0;
   border-top-left-radius: var(--radius-md);
   border-top-right-radius: var(--radius-md);
 }
 
 .service-info {
-  padding: var(--spacing-sm) var(--spacing-md) var(--spacing-md) var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md) var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
 .service-title {
@@ -421,10 +624,17 @@ select {
   color: black;
   text-decoration: none;
   margin-bottom: var(--spacing-xs);
+  margin-bottom: var(--spacing-sm);
 }
 
 .service-desc {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
   font-size: 16px;
+  margin: var(--spacing-xs) 0;
+  color: var(--color-text);
 }
 
 .service-meta {
@@ -432,8 +642,11 @@ select {
   justify-content: space-between;
   font-size: 15px;
   margin-top: 4px;
+  color: var(--color-text-secondary, #666);
+  margin-top: auto;
 }
 
+/* ---------------------- Seller Info ---------------------- */
 .service-seller {
   display: flex;
   align-items: center;
@@ -456,54 +669,279 @@ select {
   object-fit: cover;
 }
 
+/* ---------- Filter Select Section ---------- */
 
-/* ---------------------- Service Card (link) ---------------------- */
-.service-card:hover {
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
-  transform: translateY(-2px);
-  transition: all 0.2s ease;
+.filters-bar {
+  background: #f7f7f7;
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
 }
 
-.service-card-link {
-  text-decoration: none;
-  color: inherit;
-  display: inline-block;
+.filters-bar h3 {
+  margin-bottom: var(--spacing-md);
 }
 
-.service-card {
+.filter-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-lg);
+  align-items: flex-end;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 160px;
+}
+
+.price-range {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.price-range input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.filter-group select {
+  padding: 0.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: white;
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .filter-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .price-range {
+    flex-direction: column;
+  }
+}
+
+/* ---------------------- Chat Messages ---------------------- */
+.message {
+  max-width: 60%;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-lg);
+  font-size: 1rem;
+  line-height: 1.5;
+
+  word-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+/* Sent by YOU */
+.message.sent {
+  background-color: var(--color-green-text);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 var(--radius-lg)
+}
+
+/* Received */
+.message.received {
+  background-color: var(--color-blue-text);
+  border-radius: var(--radius-lg) var(--radius-lg) var(--radius-lg) 0;
+}
+
+.message-wrapper {
+  display: flex;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.message-wrapper.sent {
+  justify-content: flex-end;
+}
+
+.message-wrapper.received {
+  justify-content: flex-start;
+}
+
+.messages-box {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 1.5rem;
+  flex: 1;
+  background-color: var(--color-background);
+  max-height: 700px;
+  scroll-behavior: smooth;
+}
+
+.message-form {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-top: 1px solid var(--color-border);
+  background-color: var(--color-background);
+}
+
+.message-form input[type="text"] {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+  font-size: 1rem;
+  background-color: #fff;
+}
+
+/* ---------------------- Chat Layout + Sidebar ---------------------- */
+
+.chat-layout {
+  display: flex;
+  flex-direction: row;
+  height: auto;
+  min-height: 775px;
+}
+
+.chat-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-sidebar {
+  width: 250px;
+  background-color: #f3f4f6;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.chat-sidebar ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.sidebar-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.chat-contact {
+  padding: 0.5rem;
+  border-radius: 0.375rem;
   cursor: pointer;
+  margin-bottom: 0.25rem;
+  transition: background-color 0.2s ease;
 }
+
+.chat-contact:hover {
+  background-color: #e5e7eb;
+}
+
+.chat-contacts-list {
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.chat-contacts-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-contacts-list::-webkit-scrollbar-thumb {
+  background-color: #cbd5e0;
+  border-radius: 4px;
+}
+
+.chat-contacts-list::-webkit-scrollbar-thumb:hover {
+  background-color: #a0aec0;
+}
+
+header.chat-header {
+  background-color: var(--color-background-dark);
+  padding: 1rem;
+  font-size: 1.2rem;
+}
+
+header.chat-header a {
+  color: var(--color-text-light);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+
+@media (max-width: 768px) {
+  .chat-layout {
+    flex-direction: column;
+  }
+
+  .chat-sidebar {
+    width: 100%;
+    order: 2;
+  }
+
+  .chat-main {
+    order: 1;
+  }
+}
+
 
 /* ---------------------- Service page ---------------------- */
 
-.service-header          { grid-area: header; }
-.service-description     { grid-area: desc; }
-.service-comment-section { grid-area: comments; }
-.service-aside-menu      { grid-area: aside; }
+
+
+.service-description {
+  grid-area: desc;
+}
+
+
+.service-aside-edit{
+  background: var(--color-background-dark);
+  color: var(--color-text-light);
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+}
+
+
+.service-aside-edit:hover{
+  background: var(--color-hover);
+  color:var(--color-text-light);
+}
 
 .service-page {
-  width:100%;
+  width: 100%;
   box-sizing: border-box;
-  /*display: flex;*/
   flex-direction: row;
   display: grid;
-  grid-template-columns: 75% 25%;
+  grid-template-columns: calc(75% - 10px) calc(25% - 10px);
   grid-template-areas:
     "header   aside"
     "desc      aside"
     "comments aside"
-    ;
-    column-gap: var(--spacing-lg);
+  ;
+  gap:20px;
+}
+
+.service-page a {
+  text-decoration: none;
+  color: var(--color-text)
 }
 
 @media (max-width: 900px) {
   .service-aside-menu {
-   display: block;
-   width: 100%;
-   position: static;
+    display: block;
+    width: 100%;
+    position: static;
   }
 
-  .service-page{
+  .service-page {
     grid-template-columns: 100%;
     grid-template-areas:
       "header"
@@ -511,14 +949,17 @@ select {
       "aside"
       "comments";
   }
+
 }
 
 
 /* ----------------------- Service sidebar ---------------------- */
 
 .service-aside-menu {
+  grid-area: aside;
   background: var(--card-background);
   border-radius: var(--radius-md);
+  border: 2px solid var(--color-border);
   padding: var(--spacing-lg) var(--spacing-md);
   margin: var(--spacing-lg) 0;
   display: flex;
@@ -526,9 +967,18 @@ select {
   gap: var(--spacing-md);
   position: sticky;
   top: var(--spacing-md);
-  border: 2px solid var(--color-border);
   align-self: flex-start;
   height: auto;
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow-wrap: break-word;
+
+}
+
+.service-aside-menu:hover{
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+  transition: all 0.2s ease;
 }
 
 .service-aside-menu-info {
@@ -566,10 +1016,10 @@ select {
 }
 
 .pay-btn,
-.message-btn {
+.message-btn{
   width: 100%;
   box-sizing: border-box;
-  padding: var(--spacing-md) 0;
+  padding: var(--spacing-md);
   border-radius: var(--radius-md);
   font-size: 1.1rem;
   cursor: pointer;
@@ -598,34 +1048,38 @@ select {
 
 
 
-.service-header {
-  background: var(--card-background);
-  padding: var(--spacing-sm);
-  border-radius: var(--radius-md);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  margin: var(--spacing-lg) 0;
-}
-
-.service-header h1 {
-  width: 100%;
-  box-sizing: border-box;
-  font-size: 2rem;
-  border-bottom: 1px solid var(--color-border);
-  text-align: center;
-}
-
 .seller-overview {
   width: 100%;
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
   background: var(--card-background);
-  border-radius: var(--radius-md);
   padding: var(--spacing-sm);
+  grid-area: header;
+  border-radius: var(--radius-md);
+  margin: var(--spacing-lg) var(--spacing-md) var(--spacing-lg) 0;
+  border: 2px solid var(--color-border);
 }
+
+.seller-overview:hover{
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+  transition: all 0.2s ease;
+}
+
+
+
+.service-description h1 {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 2rem;
+  text-align: center;
+  
+}
+
+
+
+
 
 .seller-rating {
   display: flex;
@@ -633,13 +1087,18 @@ select {
   gap: var(--spacing-lg);
 }
 
-.service-page p,h1 {
-  white-space: normal;
-  overflow-wrap: break-word;
-  word-break: break-word; 
+.seller-rating h2 {
+  padding-bottom: 0;
 }
 
-.seller-rating a{
+.service-page p,
+h1 {
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.seller-rating a {
   text-decoration: none;
   color: var(--color-text);
   font-weight: 600;
@@ -648,7 +1107,6 @@ select {
 .seller-rating a:hover {
   color: var(--color-hover);
   text-decoration: underline;
-  
 }
 
 .profile-picture {
@@ -713,9 +1171,9 @@ select {
 
 .service-comment-section {
   border-radius: var(--radius-md);
-  padding: var(--spacing-lg) 0 ;
+  padding: var(--spacing-lg) 0;
   box-shadow: 8px black;
-  
+  grid-area: comments;
 }
 
 .service-comment-section h2 {
@@ -739,7 +1197,7 @@ select {
   gap: 0.5rem;
 }
 
-/* --------------------TODO: WATCH THIS-----------------------------------*/ 
+/* --------------------TODO: WATCH THIS-----------------------------------*/
 .comment-user-info {
   display: flex;
   align-items: center;
@@ -789,4 +1247,317 @@ select {
 }
 
 /* -------------------- TODO(END) -------------------- */
+/* ---------------------- Freelancer Page ---------------------- */
+.freelancer-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+}
+
+.freelancer-header {
+  background: var(--card-background);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.freelancer-profile {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+}
+
+.freelancer-profile .profile-picture {
+  width: 270px;
+  height: 270px;
+  border-radius: 25px;
+  object-fit: cover;
+}
+
+.freelancer-info {
+  flex: 1;
+  padding-top: var(--spacing-sm);
+  position: relative;
+  /* Adicionado para posicionar o botão de contato */
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-wrapper {
+  margin-top: var(--spacing-md);
+  align-self: flex-end;
+  /* Alinha o botão à direita */
+}
+
+.contact-btn {
+  padding: var(--spacing-lg) var(--spacing-lg);
+  background-color: var(--color-background-dark);
+  color: var(--color-text-light);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  min-width: 250px;
+  /* Aumentado de 180px */
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.contact-btn:hover {
+  background-color: var(--color-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.contact-btn i {
+  font-size: 1.5rem;
+}
+
+.contact-btn:hover {
+  background-color: var(--color-hover);
+}
+
+.freelancer-info h1 {
+  font-size: 2.6rem;
+  margin-bottom: var(--spacing-xs);
+}
+
+.freelancer-info .headline {
+  font-size: 1.2rem;
+  font-weight: normal;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-sm);
+}
+
+.freelancer-info .rating {
+  font-size: 1rem;
+  color: var(--color-text);
+}
+
+.freelancer-description {
+  background: var(--color-background);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+  line-height: 1.6;
+}
+
+.freelancer-services {
+  margin-bottom: var(--spacing-lg);
+}
+
+.freelancer-services h2,
+.freelancer-reviews h2 {
+  margin-bottom: var(--spacing-md);
+}
+
+.reviews-list {
+  list-style: none;
+  padding: 0;
+}
+
+.reviews-list .review {
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var (--spacing-md);
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--spacing-sm);
+  gap: var(--spacing-sm);
+}
+
+.reviewer-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.reviewer-name {
+  font-weight: bold;
+  flex: 1;
+}
+
+.review-rating {
+  color: var(--color-text);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .freelancer-profile {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .contact-wrapper {
+    align-self: center;
+    /* Centraliza o botão em telas menores */
+    margin-top: var(--spacing-lg);
+  }
+
+  .freelancer-services .service-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+/* ---------- Generic Table Wrapper ---------- */
+.table-wrapper {
+  margin: 2rem auto;
+  max-width: 1000px;
+  background-color: #f7f7f7;
+  padding: 1rem;
+  border-radius: var(--radius-md);
+}
+
+/* ---------- Reusable Table Styling ---------- */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+  padding: var(--spacing-md);
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.data-table th {
+  background-color: #f0f0f0;
+}
+
+/* ---------- Reusable Button Modifiers ---------- */
+.btn--primary.edit {
+  background-color: #e0e0e0;
+  color: #000;
+  text-decoration: none;
+}
+
+.btn--primary.edit:hover {
+  background-color: #d5d5d5;
+  color: #000;
+}
+
+.btn--primary.delete {
+  background-color: var(--color-red);
+  color: var(--color-text-red);
+}
+
+.btn--primary.delete:hover {
+  background-color: var(--color-red-hover);
+  color: var(--color-text-red-hover);
+}
+
+.btn--primary.active {
+  background-color: var(--color-green);
+  color: var(--color-text-green);
+}
+
+.btn--primary.active:hover {
+  background-color: var(--color-green-hover);
+  color: var(--color-text-green-hover);
+}
+
+.btn--primary.inactive {
+  background-color: var(--color-red);
+  color: var(--color-text-red);
+}
+
+.btn--primary.inactive:hover {
+  background-color: var(--color-red-hover);
+  color: var(--color-text-red-hover);
+}
+
+/* Makes table body scrollable with fixed header */
+.table-scroll {
+  height: 65vh;
+  overflow-y: auto;
+  border-radius: var(--radius-sm);
+}
+
+.table-scroll table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table-scroll th {
+  position: sticky;
+  top: 0;
+  background-color: #f0f0f0;
+  z-index: 1;
+}
+
+/*-----------------------------------Payment Page--------------------------------------*/
+/*TODO: CHANGE THIS*/
+.payment-page {
+  max-width: 600px;
+  margin: var(--spacing-md) auto;
+  background-color: var(--color-background);
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.payment-page h1{
+  padding: 0 var(--spacing-md)  var(--spacing-md) var(--spacing-md);
+  text-align: center;
+}
+
+.payment-summary {
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  padding: 15px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.payment-summary p {
+  margin: 8px 0;
+}
+
+.payment-page form label {
+  display: block;
+  margin-bottom: 0.3em;
+  font-size: 0.95em;
+}
+
+.payment-page form input[type="text"],
+form input[type="month"],
+form input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 1.2em;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  font-size: 1em;
+}
+
+.payment-page form button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  background-color: #222;
+  color: #fff;
+  font-size: 1.1em;
+  cursor: pointer;
+}
+
+.payment-page form button:hover {
+  background-color: #444;
+}
 

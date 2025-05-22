@@ -3,24 +3,26 @@ declare(strict_types=1);
 
 function drawEditProfileForm($user, array $errors): void { ?>
 <main class="form-page">
-    <h2>Edit Your Profile</h2>
+  <h2>Edit Your Profile</h2>
 
-    <?php if ($errors): ?>
+  <?php if ($errors): ?>
     <ul class="form-error-list">
         <?php foreach ($errors as $e): ?>
         <li class="form-error"><?= htmlspecialchars($e) ?></li>
         <?php endforeach; ?>
     </ul>
-    <?php endif; ?>
+  <?php endif; ?>
 
-    <form action="/actions/action_edit_profile.php" method="post" class="edit-profile__form" enctype="multipart/form-data">
-        <input type="hidden" name="user_id" value="<?= $user->id ?>">
+  <form action="/actions/action_edit_profile.php" method="post" class="edit-profile__form" enctype="multipart/form-data">
+    <input type="hidden" name="user_id" value="<?= $user->id ?>">
 
-    <label> First Name <input type="text" name="first_name" value="<?= htmlspecialchars($user->firstName) ?> "maxlength="30" required> </label>
-    <label> Last Name <input type="text" name="last_name" value="<?= htmlspecialchars($user->lastName) ?> "maxlength="30" required> </label>
-    <label> Email <input type="email" name="email" value="<?= htmlspecialchars($user->email) ?> "maxlength="30" required> </label>
-    <label> Headline <textarea name="headline" maxlength="200" required><?= htmlspecialchars($user->headline  ?? '') ?></textarea> </label>
-    <label> Description <textarea name="description" maxlength="1000" required><?= htmlspecialchars($user->description  ?? '') ?></textarea> </label>
+    <label> First Name<input type="text" name="first_name" value="<?= htmlspecialchars($user->firstName) ?> "maxlength="30" required> </label>
+    <label> Last Name<input type="text" name="last_name" value="<?= htmlspecialchars($user->lastName) ?> "maxlength="30" required> </label>
+    <label> Username<input type="text" name="username" value="<?= htmlspecialchars($user->useName) ?>" maxlength="30" required> </label>
+    <label> Email<input type="email" name="email" value="<?= htmlspecialchars($user->email) ?> "maxlength="30" required> </label>
+    <label> New Password<input type="password" name="new_password" placeholder="Leave blank to keep current password"> </label>
+    <label> Headline<textarea name="headline" maxlength="200" required><?= htmlspecialchars($user->headline  ?? '') ?></textarea> </label>
+    <label> Description<textarea name="description" maxlength="1000" required><?= htmlspecialchars($user->description  ?? '') ?></textarea> </label>
 
     <img src="/images/users/<?= $user->id ?>.jpg" alt="Profile picture" width="150" height="150" onerror="this.src='/images/users/default.jpg'"><br>
     <label>Profile Photo: <input type="file" name="photo" accept="image/jpeg,image/png"></label>
@@ -35,9 +37,5 @@ function drawEditProfileForm($user, array $errors): void { ?>
     <input type="hidden" name="user_id" value="<?= $user->id ?>">
     <button type="submit" class="btn btn--danger">Delete Account</button>
   </form>
-
-
 </main>
-<?php
-}
-?>
+<?php } ?>

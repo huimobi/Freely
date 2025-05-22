@@ -6,11 +6,8 @@ require_once __DIR__ . '/../templates/create_service.tpl.php';
 require_once __DIR__ . '/../database/scripts/category.class.php';
 
 $session = Session::getInstance();
-$user    = $session->getUser();
-if (!$user) {
-  header('Location: /');
-  exit;
-}
+$user = $session->getUser();
+if (!$user) { header('Location: /'); exit;}
 $errors = $_SESSION['create_service_errors'] ?? [];
 unset($_SESSION['create_service_errors']);
 

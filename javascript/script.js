@@ -23,7 +23,7 @@ document.querySelectorAll('dialog').forEach(dialog => {
 });
 
 
-// PROFILE DROPDOWN TOGGLE
+// PROFILE DROPDOWN 
 const profileBtn = document.getElementById('profileBtn');
 if (profileBtn) {
   const nav = profileBtn.closest('.profile-nav');
@@ -41,8 +41,107 @@ if (profileBtn) {
       nav.classList.remove('open');
       menu.setAttribute('aria-hidden', 'true');
     }
-  })
+  });
 }
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const searchInput = document.querySelector('#q');
+  const suggestionBox = document.createElement('ul');
+  suggestionBox.id = 'tag-suggestions';
+  suggestionBox.classList.add('tag-suggestions');
+  document.body.appendChild(suggestionBox);
+
+  searchInput.addEventListener('input', async () => {
+    const query = searchInput.value.trim();
+    if (query.length === 0) {
+      suggestionBox.innerHTML = '';
+      return;
+    }
+
+    const rect = searchInput.getBoundingClientRect();
+    suggestionBox.style.top = `${rect.bottom + window.scrollY}px`;
+    suggestionBox.style.left = `${rect.left + window.scrollX}px`;
+    suggestionBox.style.width = `${rect.width}px`;
+
+    const res = await fetch(`../api/search_tags.php?q=${encodeURIComponent(query)}`);
+    const tags = await res.json();
+
+    suggestionBox.innerHTML = '';
+    for (const tag of tags) {
+      const li = document.createElement('li');
+      li.textContent = tag;
+      li.classList.add('tag-suggestion-item');
+      li.addEventListener('click', () => {
+        searchInput.value = tag;
+        suggestionBox.innerHTML = '';
+        searchInput.form.submit();
+      });
+      suggestionBox.appendChild(li);
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!suggestionBox.contains(e.target) && e.target !== searchInput) {
+      suggestionBox.innerHTML = '';
+    }
+  });
+});
+
+
+/* -------- Messages -------- */
+async function loadConversation(otherUserId) {
+  const response = await fetch(`/api/get_messages.php?with=${otherUserId}`);
+  const data = await response.json();
+
+  const container = document.getElementById('message-list');
+  container.innerHTML = '';
+
+  if (data.status === 'success') {
+    data.messages.forEach(msg => {
+      const wrapper = document.createElement('div');
+      const bubble = document.createElement('div');
+      bubble.classList.add('message');
+      wrapper.classList.add('message-wrapper');
+
+      if (msg.senderId === currentUserId) {
+        bubble.classList.add('sent');
+        wrapper.classList.add('sent');
+      } else {
+        bubble.classList.add('received');
+        wrapper.classList.add('received');
+      }
+
+      bubble.textContent = msg.content;
+      wrapper.appendChild(bubble);
+      container.appendChild(wrapper);
+    });
+
+    // Scroll to bottom
+    container.scrollTop = container.scrollHeight;
+  } else {
+    container.innerHTML = `<p class="error">${data.message}</p>`;
+  }
+}
+
+async function sendMessage() {
+  const content = document.getElementById('message-input').value.trim();
+  const response = await fetch('/actions/action_send_message.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ selectedUserId, content })
+  });
+
+  const result = await response.json();
+
+  if (result.status === 'success') {
+    loadConversation(selectedUserId);
+    document.getElementById('message-input').value = '';
+  } else {
+    alert('Message error: ' + result.message);
+  }
+}
+
 
 //select photo on service page
     const mainPhoto = document.getElementById('selected-photo');

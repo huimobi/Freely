@@ -15,7 +15,6 @@ function drawHeader() {
         <title>Freely</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link rel="stylesheet" href="../css/cat_style.css">
         <link rel="stylesheet" href="../css/drop_down_style.css">
         <link rel="stylesheet" href="../css/style.css">
 
@@ -29,13 +28,14 @@ function drawHeader() {
         <header>
             <h1><a href="../index.php">Freely</a></h1>
 
-            <form action="../search.php" method="get" class="search-bar">
-                <input id="q" name="q" type="search" placeholder="Search freelancers…" required>
+            <form action="../pages/search.php" method="get" class="search-bar">
+                <input id="q" name="q" type="search" placeholder="Search by tags…" autocomplete="off" required>
                 <button type="submit" aria-label="Search"><i class="fa fa-search"></i></button>
             </form>
 
             <?php if ($user): ?>
                 <nav class="actions">
+                    <?php if ($user && $user->isAdmin($user->id)): ?> <button class="btn btn--link" type="button" onclick="window.location.href='/pages/admin_panel.php'">Admin Panel</button> <?php endif; ?>
                     <button class="btn btn--link" type="button" onclick="window.location.href='/pages/create_service.php'"> Create Service </button>
                 
                     <nav class="actions profile-nav">
@@ -43,14 +43,10 @@ function drawHeader() {
                         Profile <i class="fa fa-chevron-down profile-caret"></i>
                         </button>
                         <ul id="profileMenu" class="dropdown-menu" aria-hidden="true">
-                        <li><a href="/pages/my_services.php">My Services</a></li>
-                        <li><a href="/pages/my_buys.php">My Buys</a></li>
-                        <li><a href="/pages/edit_profile.php">Edit Profile</a></li>
-                        <li>
-                            <form action="../actions/action_logout.php" method="post">
-                            <button class="btn btn--link" type="submit">Logout</button>
-                            </form>
-                        </li>
+                        <li><a href="/../pages/my_services.php">My Services</a></li>
+                        <li><a href="/../pages/my_buys.php">My Buys</a></li>
+                        <li><a href="/../pages/messages.php">Messages</a></li>
+                        <li><a href="/../pages/edit_profile.php">Edit Profile</a></li>
                         </ul>
 
                     </nav>
@@ -184,4 +180,4 @@ function drawHeader() {
     <header class="minimal-header">
       <h1><a href="/index.php">Freely</a></h1>
     </header>
-<?php } ?>  
+<?php } ?>
