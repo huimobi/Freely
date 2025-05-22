@@ -45,7 +45,7 @@ function drawCategoryList(): void {
 
     if ($session->isAdmin()) {
         echo '<dialog id="addCategoryDialog">
-                <form method="post"action="/actions/action_add_category.php" class="modal-form">
+                <form method="post"action="/actions/action_create_category.php" class="modal-form">
                   <h2>Add New Category</h2>
                   <label>
                     <span>Title</span>

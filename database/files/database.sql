@@ -233,7 +233,24 @@ INSERT INTO Service (SellerUserId, CategoryId, Title, Description, BasePrice, Cu
   (9,10,'Contract Drafting','Drafting and review of legal contracts',300.0,'EUR',7,1),
   (9,10,'Legal Consultation Session','One-hour legal advice session',150.0,'EUR',1,0),
   (10,11,'Personal Training Plan','Customized 4-week fitness training plan',100.0,'EUR',7,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',80.0,'EUR',5,0);
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',81.0,'EUR',5,0),
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',82.0,'EUR',5,0),
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',83.0,'EUR',5,0),
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',84.0,'EUR',5,0),
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',85.0,'EUR',5,0),
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',86.0,'EUR',5,0),
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',87.0,'EUR',5,0),
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',88.0,'EUR',5,0),
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',89.0,'EUR',5,0),
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',90.0,'EUR',5,0),
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',91.0,'EUR',5,0),
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',92.0,'EUR',5,0),
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',93.0,'EUR',5,0),
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',94.0,'EUR',5,0),
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',95.0,'EUR',5,0),
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',96.0,'EUR',5,0),
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',97.0,'EUR',5,0);
+
 
 -- Messages
 INSERT INTO Message (SenderUserId, ReceiverUserId, Content) VALUES
@@ -288,6 +305,51 @@ INSERT INTO ServiceTag (ServiceId, TagId) VALUES
 INSERT INTO Admin (UserId) VALUES
   (1),
   (4);
+
+
+
+COMMIT;
+PRAGMA foreign_keys = ON;
+
+
+
+
+PRAGMA foreign_keys = OFF;
+BEGIN TRANSACTION;
+
+-- 1) Insert 25 new services
+INSERT INTO Service (SellerUserId, CategoryId, Title, Description, BasePrice, Currency, DeliveryDays, Revisions) VALUES
+  (2, 2, 'Web Dev Service 1',  'Custom web development task #1', 201.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 2',  'Custom web development task #2', 202.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 3',  'Custom web development task #3', 203.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 4',  'Custom web development task #4', 204.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 5',  'Custom web development task #5', 205.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 6',  'Custom web development task #6', 206.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 7',  'Custom web development task #7', 207.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 8',  'Custom web development task #8', 208.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 9',  'Custom web development task #9', 209.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 10', 'Custom web development task #10',210.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 11', 'Custom web development task #11',220.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 12', 'Custom web development task #12',230.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 13', 'Custom web development task #13',240.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 14', 'Custom web development task #14',250.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 15', 'Custom web development task #15',260.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 16', 'Custom web development task #16',270.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 17', 'Custom web development task #17',280.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 18', 'Custom web development task #18',290.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 19', 'Custom web development task #19',300.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 20', 'Custom web development task #20',400.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 21', 'Custom web development task #21',500.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 22', 'Custom web development task #22',600.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 23', 'Custom web development task #23',700.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 24', 'Custom web development task #24',800.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 25', 'Custom web development task #25',900.0, 'EUR', 7, 2);
+
+-- 2) Tag all of those new services with TagId = 2 (web development)
+INSERT INTO ServiceTag (ServiceId, TagId)
+SELECT ServiceId, 2
+  FROM Service
+ WHERE Title LIKE 'Web Dev Service %';
 
 COMMIT;
 PRAGMA foreign_keys = ON;

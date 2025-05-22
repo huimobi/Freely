@@ -2,7 +2,7 @@
 declare(strict_types=1);
 require_once __DIR__ . '/service_card.tpl.php';
 
-function drawBrowseServicesPage(string $title, array $services, ?string $categoryDescription = null, int $page = 1, int $totalPages = 1, ?string $baseUrl = null): void { ?>
+function drawBrowseServicesPage(string  $title, array   $services, ?string $categoryDescription = null, int $page = 1, int $totalPages = 1, ?string $baseUrl = null): void {?>
   <section class="category-header">
     <h2><?= htmlspecialchars($title) ?></h2>
     <?php if ($categoryDescription): ?>

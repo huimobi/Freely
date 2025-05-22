@@ -32,9 +32,7 @@ function drawEditServiceForm($service, array $cats, array $errors): void { ?>
     <label> Currency<input type="text" name="currency" maxlength="3" value="<?= htmlspecialchars($service->currency) ?>" required> </label>
     <label> Delivery Days<input type="number" name="deliveryDays" min="1" value="<?= number_format($service->deliveryDays) ?>" required> </label>
     <label> Revisions<input type="number" name="revisions" min="0" value="<?= number_format($service->revisions) ?>" required> </label>
-            
-    <img src="/images/services/<?= $service->id ?>.jpg" alt="Service image" width="150" height="150" onerror="this.src='/images/services/default.jpg'"><br>
-    <label> Change Image (optional)<input type="file" name="photo" accept="image/jpeg,image/png"> </label>
+    <label> Change Images (optional)<input type="file" name="photo[]" accept="image/jpeg,image/png" multiple> </label>
 
     <button type="submit" class="btn btn--primary">Save Changes</button>
   </form>

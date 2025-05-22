@@ -35,8 +35,26 @@ if (!empty($searchTerm)) {
   }
 }
 
-drawHeader("Search Results");
-$des = !empty($searchTerm) ? "Results for '$searchTerm'" : "Search Results";
+
+$queryParams = [
+    'q'          => $searchTerm,
+    'sort'       => $sort,
+    'price_min'  => $priceMin,
+    'price_max'  => $priceMax,
+    'rating_min' => $ratingMin,
+    'rating_max' => $ratingMax,
+];
+foreach ($queryParams as $key => $val) {
+    if ($val === null || $val === '') {
+        unset($queryParams[$key]);
+    }
+}
+$baseUrl = '/pages/search.php?' . http_build_query($queryParams);
+
+
+$description = !empty($searchTerm) ? "Results for '" . htmlspecialchars($searchTerm, ENT_QUOTES) . "'" : "Search Results";
 $title = "Services";
-drawBrowseServicesPage($title, $services, $des, $page, $totalPages, "/pages/search.php?q=" . urlencode($searchTerm));
+
+drawHeader("Search Results");
+drawBrowseServicesPage($title, $services, $desciption, $page, $totalPages, $baseUrl);
 drawFooter();

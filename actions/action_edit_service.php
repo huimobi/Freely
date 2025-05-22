@@ -53,9 +53,29 @@ $service->currency = $currency;
 $service->deliveryDays = $deliveryDays;
 $service->revisions = $revisions;
 
-if (isset($_FILES['photo']) && is_uploaded_file($_FILES['photo']['tmp_name'])) {
-  $path = Service::storeImage($_FILES['photo']);
-  $service->updateImage($path);
+if (isset($_FILES['photo']) && is_array($_FILES['photo']['tmp_name']) && count(array_filter($_FILES['photo']['tmp_name'])) > 0) {
+    $uploadDir = __DIR__ . '/../images/services/' . $service->id . '/';
+
+    // Delete old images if they exist
+    if (is_dir($uploadDir)) {
+        $oldFiles = glob($uploadDir . '*');
+        foreach ($oldFiles as $file) {
+            if (is_file($file)) unlink($file);
+        }
+    } else {
+        mkdir($uploadDir, 0755, true);
+    }
+
+    foreach ($_FILES['photo']['tmp_name'] as $index => $tmpName) {
+        if (is_uploaded_file($tmpName)) {
+            $fileType = mime_content_type($tmpName);
+            if (!in_array($fileType, ['image/jpeg', 'image/png'])) continue;
+
+            $ext = $fileType === 'image/png' ? 'png' : 'jpg';
+            $filename = $index . '.' . $ext;
+            move_uploaded_file($tmpName, $uploadDir . $filename);
+        }
+    }
 }
 
 $service->save();
