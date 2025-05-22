@@ -123,6 +123,29 @@
         FOREIGN KEY (ReceiverUserId) REFERENCES User(UserId) ON DELETE CASCADE ON UPDATE NO ACTION
     );
 
+    DROP TABLE IF EXISTS Offer;
+
+    CREATE TABLE Offer (
+      OfferId        INTEGER PRIMARY KEY AUTOINCREMENT,
+      SellerUserId   INTEGER NOT NULL,
+      BuyerUserId    INTEGER NOT NULL,
+      ServiceId      INTEGER NOT NULL,
+      Requirements   TEXT,
+      Price          REAL    NOT NULL,
+      Currency       TEXT    NOT NULL DEFAULT 'EUR',
+      Status         TEXT    NOT NULL DEFAULT 'pending',  -- 'pending','accepted','declined'
+      CreatedAt      DATETIME DEFAULT CURRENT_TIMESTAMP,
+      UpdatedAt      DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+      FOREIGN KEY (SellerUserId) REFERENCES User(UserId)    ON DELETE CASCADE,
+      FOREIGN KEY (BuyerUserId)  REFERENCES User(UserId)    ON DELETE CASCADE,
+      FOREIGN KEY (ServiceId)    REFERENCES Service(ServiceId) ON DELETE CASCADE
+    );
+
+    CREATE INDEX idx_offer_seller ON Offer(SellerUserId);
+    CREATE INDEX idx_offer_buyer  ON Offer(BuyerUserId);
+    CREATE INDEX idx_offer_status ON Offer(Status);
+
     -- --- Criação de Índices para Otimização ---
     CREATE INDEX idx_service_seller ON Service(SellerUserId);
     CREATE INDEX idx_service_category ON Service(CategoryId);
@@ -160,7 +183,7 @@ INSERT INTO Category (Name, Description) VALUES
 -- Users
 INSERT INTO User (UserName, FirstName, LastName, Email, PasswordHash, Headline, Description, Phone) VALUES
   ('alice_smith','Alice','Smith','1@example.com','$2y$10$aAcWsrPCydUOca8RkrwBJevKrY0/GMtsIaRU6Pq1w2cYtYrSX93K6','Creative Graphic Designer','Over 5 years in branding and logo design.','912345001'),
-  ('bob_dev','Bob','Johnson','bob.johnson@example.com','hashed_pw2','Full-Stack Developer','Building scalable applications with Node.js and React.','912345002'),
+  ('bob_dev','Bob','Johnson','2@example.com','$2y$10$aAcWsrPCydUOca8RkrwBJevKrY0/GMtsIaRU6Pq1w2cYtYrSX93K6','Full-Stack Developer','Building scalable applications with Node.js and React.','912345002'),
   ('carol_writer','Carol','Williams','carol.williams@example.com','hashed_pw3','Content Strategist','Expert in SEO and engaging copywriting.','912345003'),
   ('david_marketer','David','Brown','david.brown@example.com','hashed_pw4','Digital Marketer','Specialist in PPC campaigns and social media.','912345004'),
   ('emma_account','Emma','Davis','emma.davis@example.com','hashed_pw5','Certified Accountant','10+ years in bookkeeping and tax preparation.','912345005'),
