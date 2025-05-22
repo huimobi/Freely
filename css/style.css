@@ -1,5 +1,4 @@
 :root {
-
   --color-background: #fff;
   --color-background-dark: #3a3a3a;
   --color-text:            #333;
@@ -7,14 +6,14 @@
   --color-border:          #b6b3b3;
   --color-hover:           #111111;
 
-  --color-green: #d1e7dd;;
+  --color-green: #d1e7dd;
   --color-green-hover:#badbcc;
   --color-text-green:#0f4411;
   --color-text-green-hover:#0a3622;
 
-  --color-red:#f0c5c5;;
+  --color-red:#f0c5c5;
   --color-red-hover:#ecacac;
-  --color-text-red:#842020;;
+  --color-text-red:#842020;
   --color-text-red-hover:#581515;
 
 
@@ -480,6 +479,7 @@ select {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   overflow: hidden;
   margin: var(--spacing-xs) 0;
   color: var(--color-text);
@@ -620,6 +620,7 @@ select {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   overflow: hidden;
   font-size: 16px;
   margin: var(--spacing-xs) 0;
@@ -778,7 +779,7 @@ select {
 
 .message-form input[type="text"] {
   flex: 1;
-  padding: 0.75rem 1rem;
+  padding: var(--spacing-sm);
   border-radius: 0.5rem;
   border: 1px solid #d1d5db;
   font-size: 1rem;
@@ -1310,4 +1311,37 @@ header.chat-header a {
   top: 0;
   background-color: #f0f0f0;
   z-index: 1;
+}
+
+/* ---------- Offer ---------- */
+
+.offer-wrapper {
+  display: flex;
+  margin: 0.5em;
+}
+.offer-wrapper.sent   { justify-content: flex-end; }
+.offer-wrapper.received { justify-content: flex-start; }
+
+.offer-bubble {
+  background: #f0f8ff;
+  border: 1px solid #bee1f7;
+  border-radius: 8px;
+  padding: 0.75em;
+  max-width: 60%;
+}
+.offer-bubble h4 {
+  margin: 0 0 0.5em;
+  font-size: 1em;
+}
+.offer-status {
+  margin-top: 0.5em;
+}
+.offer-badge {
+  font-weight: bold;
+  text-transform: capitalize;
+}
+.btn--small {
+  font-size: 0.85em;
+  padding: 0.25em 0.5em;
+  margin-right: 0.5em;
 }

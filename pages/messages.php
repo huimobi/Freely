@@ -5,10 +5,14 @@ require_once __DIR__ . '/../includes/session.php';
 require_once __DIR__ . '/../database/scripts/user.class.php';
 require_once __DIR__ . '/../templates/common.tpl.php';
 
+require_once __DIR__ . '/../database/scripts/service.class.php';
+require_once __DIR__ . '/../database/scripts/offer.class.php';
+
 require_once __DIR__ . '/../templates/messages.tpl.php';
 
 $session = Session::getInstance();
 $allUsers = User::getMessagedUsers($session->getUser()->id);
+$myServices = Service::getAllByUserId($session->getUser()->id);
 $preselectedUserId = isset($_GET['user']) ? intval($_GET['user']) : null;
 
 if ($preselectedUserId !== null) {
@@ -22,6 +26,6 @@ if ($preselectedUserId !== null) {
 }
 
 drawHeader();
-drawMessagesPage($allUsers, $preselectedUserId);
+drawMessagesPage($allUsers, $preselectedUserId, $myServices);
 drawFooter();
 
