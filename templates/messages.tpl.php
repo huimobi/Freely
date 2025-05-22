@@ -19,7 +19,7 @@
     <div id="message-list" class="messages-box"></div>
 
     <form id="message-form" class="message-form">
-      <button type="button" data-modal-open="offer-modal" class="btn-offer">Offer Service</button>  
+      <button type="button" data-modal-open="offer-modal" class="btn btn--link">Offer Service</button>  
       <input type="text" id="message-input" placeholder="Type a message..." required>
       <button type="submit" class="btn btn--primary">Send</button>
     </form>
@@ -51,8 +51,8 @@
           </select>
 
           <menu>
-            <button type="submit">Send Offer</button>
-            <button type="button" data-modal-close>Cancel</button>
+            <button type="submit" class="btn btn--primary">Send Offer</button>
+            <button type="button" class="btn btn--primary" data-modal-close>Cancel</button>
           </menu>
         </form>
       </dialog>

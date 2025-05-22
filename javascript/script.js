@@ -156,7 +156,7 @@ async function loadConversation(otherUserId) {
       if (item.status === 'pending' && currentUserId === item.receiverId) {
         const accept = document.createElement('button');
         accept.textContent = 'Accept';
-        accept.classList.add('btn', 'btn--small', 'btn--success');
+        accept.classList.add('btn--small','btn--primary','active');
         accept.onclick = async () => {
           await fetch(`/api/offer.php?action=accept`, {
             method: 'POST',
@@ -168,7 +168,7 @@ async function loadConversation(otherUserId) {
 
         const decline = document.createElement('button');
         decline.textContent = 'Decline';
-        decline.classList.add('btn', 'btn--small', 'btn--danger');
+        decline.classList.add('btn--small','btn--primary','delete');
         decline.onclick = async () => {
           await fetch(`/api/offer.php?action=decline`, {
             method: 'POST',

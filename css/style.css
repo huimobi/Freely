@@ -779,7 +779,7 @@ select {
 
 .message-form input[type="text"] {
   flex: 1;
-  padding: 0.75rem 1rem;
+  padding: var(--spacing-sm);
   border-radius: 0.5rem;
   border: 1px solid #d1d5db;
   font-size: 1rem;
