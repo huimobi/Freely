@@ -85,6 +85,19 @@
         FOREIGN KEY (SellerUserId) REFERENCES User (UserId) ON DELETE CASCADE ON UPDATE NO ACTION
     );
 
+    CREATE TRIGGER trg_JobOrder_SetActualDeliveryDate
+    AFTER UPDATE OF Status ON JobOrder
+    FOR EACH ROW
+    WHEN
+        NEW.Status = 'Completed'
+        AND OLD.Status != 'Completed'
+        AND NEW.ActualDeliveryDate IS NULL
+    BEGIN
+        UPDATE JobOrder
+        SET ActualDeliveryDate = DATETIME('now')
+        WHERE JobOrderId = NEW.JobOrderId;
+    END;
+
     CREATE TABLE Comment (
         CommentId INTEGER PRIMARY KEY AUTOINCREMENT,
         JobOrderId INTEGER UNIQUE NOT NULL,
@@ -110,6 +123,29 @@
         FOREIGN KEY (ReceiverUserId) REFERENCES User(UserId) ON DELETE CASCADE ON UPDATE NO ACTION
     );
 
+    DROP TABLE IF EXISTS Offer;
+
+    CREATE TABLE Offer (
+      OfferId        INTEGER PRIMARY KEY AUTOINCREMENT,
+      SellerUserId   INTEGER NOT NULL,
+      BuyerUserId    INTEGER NOT NULL,
+      ServiceId      INTEGER NOT NULL,
+      Requirements   TEXT,
+      Price          REAL    NOT NULL,
+      Currency       TEXT    NOT NULL DEFAULT 'EUR',
+      Status         TEXT    NOT NULL DEFAULT 'pending',  -- 'pending','accepted','declined'
+      CreatedAt      DATETIME DEFAULT CURRENT_TIMESTAMP,
+      UpdatedAt      DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+      FOREIGN KEY (SellerUserId) REFERENCES User(UserId)    ON DELETE CASCADE,
+      FOREIGN KEY (BuyerUserId)  REFERENCES User(UserId)    ON DELETE CASCADE,
+      FOREIGN KEY (ServiceId)    REFERENCES Service(ServiceId) ON DELETE CASCADE
+    );
+
+    CREATE INDEX idx_offer_seller ON Offer(SellerUserId);
+    CREATE INDEX idx_offer_buyer  ON Offer(BuyerUserId);
+    CREATE INDEX idx_offer_status ON Offer(Status);
+
     -- --- Criação de Índices para Otimização ---
     CREATE INDEX idx_service_seller ON Service(SellerUserId);
     CREATE INDEX idx_service_category ON Service(CategoryId);
@@ -126,84 +162,194 @@
 
 
     --------------------------- Temporary seed data for testing ---------------------------
-    PRAGMA foreign_keys = OFF;
-    BEGIN TRANSACTION;
+PRAGMA foreign_keys = OFF;
+BEGIN TRANSACTION;
 
-    INSERT OR IGNORE INTO Category (CategoryId, Name, Description) VALUES (1, 'Other', 'Fallback for uncategorized services');
+--not made by me, used ai to make seed data--
+-- Categories
+INSERT OR IGNORE INTO Category (CategoryId, Name, Description) VALUES (1, 'Other', 'Fallback for uncategorized services');
+INSERT INTO Category (Name, Description) VALUES
+  ('Development & IT','All your coding needs'),
+  ('Design & Creative','Logos, graphics, UI/UX'),
+  ('Writing & Translation','Copywriting, translation'),
+  ('Sales & Marketing','Ad campaigns, SEO'),
+  ('Finance & Accounting','Bookkeeping, CFO services'),
+  ('Video & Animation','Explainers, commercials, motion graphics'),
+  ('Music & Audio','Voice‐overs, jingles, editing'),
+  ('Business Consulting','Strategy, operations, market research'),
+  ('Legal Services','Contracts, IP, compliance'),
+  ('Lifestyle','Cooking, fitness, crafts');
 
-    INSERT INTO Category (Name, Description) VALUES
-    ('Development & IT','All your coding needs'),
-    ('Design & Creative','Logos, graphics, UI/UX'),
-    ('Writing & Translation','Copywriting, translation'),
-    ('Sales & Marketing','Ad campaigns, SEO'),
-    ('Finance & Accounting','Bookkeeping, CFO services'),
-    ('Video & Animation',     'Explainers, commercials, motion graphics'),
-    ('Music & Audio',         'Voice‐overs, jingles, editing'),
-    ('Business Consulting',   'Strategy, operations, market research'),
-    ('Legal Services',        'Contracts, IP, compliance'),
-    ('Lifestyle',             'Cooking, fitness, crafts');
+-- Users
+INSERT INTO User (UserName, FirstName, LastName, Email, PasswordHash, Headline, Description, Phone) VALUES
+  ('alice_smith','Alice','Smith','1@example.com','$2y$10$aAcWsrPCydUOca8RkrwBJevKrY0/GMtsIaRU6Pq1w2cYtYrSX93K6','Creative Graphic Designer','Over 5 years in branding and logo design.','912345001'),
+  ('bob_dev','Bob','Johnson','2@example.com','$2y$10$aAcWsrPCydUOca8RkrwBJevKrY0/GMtsIaRU6Pq1w2cYtYrSX93K6','Full-Stack Developer','Building scalable applications with Node.js and React.','912345002'),
+  ('carol_writer','Carol','Williams','carol.williams@example.com','hashed_pw3','Content Strategist','Expert in SEO and engaging copywriting.','912345003'),
+  ('david_marketer','David','Brown','david.brown@example.com','hashed_pw4','Digital Marketer','Specialist in PPC campaigns and social media.','912345004'),
+  ('emma_account','Emma','Davis','emma.davis@example.com','hashed_pw5','Certified Accountant','10+ years in bookkeeping and tax preparation.','912345005'),
+  ('frank_video','Frank','Miller','frank.miller@example.com','hashed_pw6','Video Producer','Animations, editing, and motion graphics.','912345006'),
+  ('grace_voice','Grace','Wilson','grace.wilson@example.com','hashed_pw7','Voice Over Artist','Professional voiceovers in multiple accents.','912345007'),
+  ('hank_consult','Hank','Moore','hank.moore@example.com','hashed_pw8','Business Consultant','Process optimization and market research.','912345008'),
+  ('ivy_legal','Ivy','Taylor','ivy.taylor@example.com','hashed_pw9','Legal Advisor','Contracts, IP, and compliance services.','912345009'),
+  ('jack_coach','Jack','Anderson','jack.anderson@example.com','hashed_pw10','Fitness Coach','Personal training and nutrition guidance.','912345010');
 
-    -- 5 Users with extra fields
-    INSERT INTO User (UserName, FirstName, LastName, Email, PasswordHash, Headline, Description, Phone) VALUES 
-    ('ana_dev', 'Ana', 'Silva', 'ana@example.com', '$2y$10$aAcWsrPCydUOca8RkrwBJevKrY0/GMtsIaRU6Pq1w2cYtYrSX93K6', 'Full-Stack Developer', 'I build robust web applications with modern tech.', '912345678'),
-    ('bruno_code', 'Bruno', 'Pereira', 'bruno@example.com', 'hashed_pw2', 'Frontend Specialist', 'Passionate about clean UI and smooth UX.', '913456789'),
-    ('carla_js', 'Carla', 'Oliveira', 'carla@example.com', 'hashed_pw3', 'JavaScript Enthusiast', 'I solve problems using code and creativity.', '914567890'),
-    ('daniel_php', 'Daniel', 'Santos', 'daniel@example.com', 'hashed_pw4', 'PHP Expert', '10+ years writing scalable backend systems.', '915678901'),
-    ('eva_uiux', 'Eva', 'Rocha', 'eva@example.com', 'hashed_pw5', 'UI/UX Designer', 'I design user-friendly and beautiful interfaces.', '916789012');
+-- Tags
+INSERT INTO Tag (Name) VALUES
+  ('graphic design'),
+  ('web development'),
+  ('seo'),
+  ('content writing'),
+  ('digital marketing'),
+  ('mobile app'),
+  ('e-commerce'),
+  ('data analysis'),
+  ('video editing'),
+  ('voice over'),
+  ('bookkeeping'),
+  ('tax'),
+  ('business strategy'),
+  ('legal'),
+  ('fitness'),
+  ('nutrition');
 
-    INSERT INTO Tag (Name) VALUES ('Web Development');
-
-    INSERT INTO Service (SellerUserId, CategoryId, Title, Description, BasePrice, Currency, DeliveryDays, Revisions) VALUES
-    (1, 2, 'Landing Page Design', 'Clean and modern landing page built with HTML/CSS/JS.', 60.0, 'EUR', 3, 1),
-    (1, 2, 'Full Website with CMS', 'A complete dynamic website with admin panel (Laravel).', 250.0, 'EUR', 10, 2),
-    (1, 2, 'Bug Fixing and Code Review', 'I will fix bugs and review your code for quality.', 40.0, 'EUR', 2, 0),
-    (1, 2, 'E-commerce Website', 'Complete online store with cart, checkout, and admin.', 300.0, 'EUR', 12, 3),
-    (1, 2, 'Portfolio Website', 'Custom portfolio to showcase your work professionally.', 100.0, 'EUR', 5, 1),
-    (1, 2, 'Single Page Application', 'React-based SPA with smooth navigation and backend.', 180.0, 'EUR', 7, 2),
-    (1, 2, 'Database Design', 'Optimized relational database schema + ER diagram.', 70.0, 'EUR', 3, 1),
-    (1, 2, 'API Development', 'RESTful APIs using Node.js or PHP, with documentation.', 120.0, 'EUR', 4, 2),
-    (1, 2, 'Web App Debugging', 'Advanced debugging for JS/PHP applications.', 55.0, 'EUR', 2, 0),
-    (1, 2, 'Speed Optimization', 'Improve loading speed of your website (Lighthouse).', 90.0, 'EUR', 3, 1),
-    (1, 2, 'Speed Optimization', 'Improve loading speed of your website (Lighthouse).', 90.0, 'EUR', 3, 1),
-    (1, 2, 'Speed Optimization', 'Improve loading speed of your website (Lighthouse).', 90.0, 'EUR', 3, 1),
-    (1, 2, 'Speed Optimization', 'Improve loading speed of your website (Lighthouse).', 90.0, 'EUR', 3, 1),
-    (1, 2, 'Speed Optimization', 'Improve loading speed of your website (Lighthouse).', 90.0, 'EUR', 3, 1),
-    (1, 2, 'Speed Optimization', 'Improve loading speed of your website (Lighthouse).', 90.0, 'EUR', 3, 1),
-    (1, 2, 'Speed Optimization', 'Improve loading speed of your website (Lighthouse).', 90.0, 'EUR', 3, 1),
-    (1, 2, 'Speed Optimization', 'Improve loading speed of your website (Lighthouse).', 90.0, 'EUR', 3, 1),
-    (1, 2, 'Speed Optimization', 'Improve loading speed of your website (Lighthouse).', 90.0, 'EUR', 3, 1),
-    (1, 2, 'Speed Optimization', 'Improve loading speed of your website (Lighthouse).', 90.0, 'EUR', 3, 1),
-    (1, 2, 'Speed Optimization', 'Improve loading speed of your website (Lighthouse).', 90.0, 'EUR', 3, 1);
-
-    INSERT INTO Message (SenderUserId, ReceiverUserId, Content) VALUES
-    (1, 2, 'Hi Bruno! Just saw your frontend portfolio — very nice.'),
-    (2, 1, 'Thanks Ana! Let me know if you need a UI review.'),
-    (1, 3, 'Hey Carla, do you have time to pair on a JS bug?'),
-    (3, 1, 'Sure Ana, send me the code and I’ll take a look.'),
-    (4, 1, 'Ana, I refactored the PHP module you mentioned. Thoughts?'),
-    (1, 4, 'Thanks Daniel! I’ll review it tonight.'),
-    (5, 1, 'Hi Ana, I’d love to collaborate on a UI/UX project. Interested?'),
-    (1, 5, 'Hey Eva! Absolutely, your design work is excellent. Let’s plan.');
-
-    INSERT INTO JobOrder (ServiceId, BuyerUserId, SellerUserId, AgreedPrice, Currency, Status, Requirements, StartDate, ExpectedDeliveryDate) VALUES
-    (1, 1, 1, 60.0, 'EUR', 'Revision', 'Please design a landing page for a new product.', '2025-05-01', '2025-05-04'),
-    (2, 1, 1, 250.0, 'EUR', 'Completed', 'Full website for a bakery with CMS.', '2025-05-03', '2025-05-13'),
-    (3, 1, 1, 40.0, 'EUR', 'InProgress', 'Fix a critical bug in PHP login system.', '2025-05-05', '2025-05-07'),
-    (4, 1, 1, 300.0, 'EUR', 'InProgress', 'Set up online store with cart and admin.', '2025-04-25', '2025-05-07'),
-    (5, 1, 1, 100.0, 'EUR', 'InProgress', 'Modern portfolio for a UX designer.', '2025-04-15', '2025-04-20'),
-
-    (5, 1, 1, 100.0, 'EUR', 'InProgress', 'Modern portfolio for a UX designer.', '2025-04-15', '2025-04-20'),
-    (5, 1, 1, 100.0, 'EUR', 'InProgress', 'Modern portfolio for a UX designer.', '2025-04-15', '2025-04-20'),
-    (5, 1, 1, 100.0, 'EUR', 'InProgress', 'Modern portfolio for a UX designer.', '2025-04-15', '2025-04-20'),
-    (5, 1, 1, 100.0, 'EUR', 'InProgress', 'Modern portfolio for a UX designer.', '2025-04-15', '2025-04-20'),
-    (5, 1, 1, 100.0, 'EUR', 'InProgress', 'Modern portfolio for a UX designer.', '2025-04-15', '2025-04-20'),
-    (5, 1, 1, 100.0, 'EUR', 'InProgress', 'Modern portfolio for a UX designer.', '2025-04-15', '2025-04-20');
-
-
-    INSERT INTO ServiceTag (ServiceId, TagId) SELECT ServiceId, 1 FROM Service WHERE SellerUserId = 1;
-
-    INSERT INTO Admin (UserId) VALUES (1);
+-- Services
+INSERT INTO Service (SellerUserId, CategoryId, Title, Description, BasePrice, Currency, DeliveryDays, Revisions) VALUES
+  (1,3,'Modern Logo Design','Unique logo concepts with unlimited revisions',80.0,'EUR',2,3),
+  (1,3,'Social Media Graphics','Custom graphics for Facebook, Instagram, and LinkedIn',50.0,'EUR',1,2),
+  (2,2,'Full-Stack Web Application','Complete web app with frontend and backend development',1000.0,'EUR',14,5),
+  (2,2,'REST API Development','Design and implement RESTful APIs with documentation',300.0,'EUR',7,2),
+  (3,4,'Blog Post Writing','SEO-friendly blog posts up to 1000 words',25.0,'EUR',3,1),
+  (3,4,'Website Copywriting','Engaging website copy for your landing pages',100.0,'EUR',5,2),
+  (4,5,'Google Ads Campaign Setup','Targeted Google Ads setup and optimization',200.0,'EUR',5,1),
+  (4,5,'Social Media Management','Monthly management of Facebook and Instagram accounts',500.0,'EUR',30,4),
+  (5,6,'Monthly Bookkeeping','Reconciliation and monthly financial reports',150.0,'EUR',30,0),
+  (5,6,'Tax Consultation','One-hour tax consultation session',200.0,'EUR',7,1),
+  (6,7,'Promotional Video Editing','Editing raw footage into a polished promo video',250.0,'EUR',10,2),
+  (6,7,'2D Animation Explainer','Animated explainer video up to 60 seconds',400.0,'EUR',15,3),
+  (7,8,'American English Voice Over','Clear and professional voiceover in American accent',100.0,'EUR',2,1),
+  (7,8,'British Accent Narration','Professional British English narration',120.0,'EUR',2,1),
+  (8,9,'Business Plan Development','Comprehensive business plan for startups',500.0,'EUR',10,2),
+  (8,9,'Market Research Report','Detailed market analysis and opportunities report',700.0,'EUR',14,1),
+  (9,10,'Contract Drafting','Drafting and review of legal contracts',300.0,'EUR',7,1),
+  (9,10,'Legal Consultation Session','One-hour legal advice session',150.0,'EUR',1,0),
+  (10,11,'Personal Training Plan','Customized 4-week fitness training plan',100.0,'EUR',7,0),
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',81.0,'EUR',5,0),
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',82.0,'EUR',5,0),
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',83.0,'EUR',5,0),
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',84.0,'EUR',5,0),
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',85.0,'EUR',5,0),
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',86.0,'EUR',5,0),
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',87.0,'EUR',5,0),
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',88.0,'EUR',5,0),
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',89.0,'EUR',5,0),
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',90.0,'EUR',5,0),
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',91.0,'EUR',5,0),
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',92.0,'EUR',5,0),
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',93.0,'EUR',5,0),
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',94.0,'EUR',5,0),
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',95.0,'EUR',5,0),
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',96.0,'EUR',5,0),
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',97.0,'EUR',5,0);
 
 
-    COMMIT;
-    PRAGMA foreign_keys = ON;
+-- Messages
+INSERT INTO Message (SenderUserId, ReceiverUserId, Content) VALUES
+  (1,2,'Hi Bob, could you review my portfolio website?'),
+  (2,1,'Sure, send me the link when you have it.'),
+  (1,2,'Here it is: https://aliceportfolio.com'),
+  (3,4,'Hey David, interested in a content marketing campaign?'),
+  (4,3,'Absolutely, let''s discuss your goals over a call.'),
+  (6,7,'Grace, can you record a promotional voiceover for our new product?'),
+  (7,6,'Yes, I''d love to! Let me know the script details.'),
+  (5,8,'Hank, I need last quarter''s financial analysis by next week.'),
+  (8,5,'I''ll send the market analysis report by Friday.');
+
+-- Job Orders
+INSERT INTO JobOrder (ServiceId, BuyerUserId, SellerUserId, AgreedPrice, Currency, Status, Requirements, StartDate, ExpectedDeliveryDate, ActualDeliveryDate, CompletionDate) VALUES
+  (1,3,1,80.0,'EUR','Completed','Logo for tech startup','2025-04-01','2025-04-03','2025-04-02 10:15:00','2025-04-02 10:15:00'),
+  (5,4,3,25.0,'EUR','Completed','Two blog posts about web design','2025-03-20','2025-03-23','2025-03-22 14:30:00','2025-03-22 14:30:00'),
+  (7,3,4,200.0,'EUR','InProgress','Setup Google Ads for product launch','2025-05-10','2025-05-15',NULL,NULL),
+  (2,4,1,50.0,'EUR','Revision','Graphics for upcoming Instagram campaign','2025-05-05','2025-05-06',NULL,NULL),
+  (12,10,6,400.0,'EUR','Cancelled','Explainer animation for new service',NULL,NULL,NULL,NULL),
+  (3,10,2,1000.0,'EUR','InProgress','Full-stack application for client portal','2025-05-01','2025-05-15',NULL,NULL),
+  (4,1,2,300.0,'EUR','Completed','API integration for mobile app','2025-04-10','2025-04-17','2025-04-16 09:00:00','2025-04-16 09:00:00'),
+  (6,5,3,100.0,'EUR','InProgress','High-conversion landing page copy','2025-05-12','2025-05-17',NULL,NULL),
+  (13,2,7,100.0,'EUR','Revision','Voiceover for social media ads','2025-05-08','2025-05-10',NULL,NULL),
+  (14,5,7,120.0,'EUR','Completed','Narration for corporate video','2025-03-28','2025-03-30','2025-03-29 16:45:00','2025-03-29 16:45:00'),
+  (15,6,8,500.0,'EUR','InProgress','Business plan for fundraising round','2025-05-03','2025-05-13',NULL,NULL),
+  (17,2,9,300.0,'EUR','Completed','Draft contract for partnership agreement','2025-02-14','2025-02-21','2025-02-20 11:20:00','2025-02-20 11:20:00');
+
+-- Service Tags
+INSERT INTO ServiceTag (ServiceId, TagId) VALUES
+  (1,1),
+  (2,1),(2,5),
+  (3,2),(3,6),
+  (4,2),(4,8),
+  (5,4),(5,3),
+  (6,4),(6,3),
+  (7,5),(7,3),
+  (8,5),(8,3),
+  (9,8),
+  (10,12),
+  (11,9),(11,5),
+  (12,9),
+  (13,10),
+  (14,10),
+  (15,13),
+  (16,8),
+  (17,14),
+  (19,15),
+  (20,16);
+
+-- Admins
+INSERT INTO Admin (UserId) VALUES
+  (1),
+  (4);
+
+
+
+COMMIT;
+PRAGMA foreign_keys = ON;
+
+
+
+
+PRAGMA foreign_keys = OFF;
+BEGIN TRANSACTION;
+
+-- 1) Insert 25 new services
+INSERT INTO Service (SellerUserId, CategoryId, Title, Description, BasePrice, Currency, DeliveryDays, Revisions) VALUES
+  (2, 2, 'Web Dev Service 1',  'Custom web development task #1', 201.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 2',  'Custom web development task #2', 202.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 3',  'Custom web development task #3', 203.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 4',  'Custom web development task #4', 204.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 5',  'Custom web development task #5', 205.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 6',  'Custom web development task #6', 206.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 7',  'Custom web development task #7', 207.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 8',  'Custom web development task #8', 208.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 9',  'Custom web development task #9', 209.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 10', 'Custom web development task #10',210.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 11', 'Custom web development task #11',220.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 12', 'Custom web development task #12',230.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 13', 'Custom web development task #13',240.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 14', 'Custom web development task #14',250.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 15', 'Custom web development task #15',260.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 16', 'Custom web development task #16',270.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 17', 'Custom web development task #17',280.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 18', 'Custom web development task #18',290.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 19', 'Custom web development task #19',300.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 20', 'Custom web development task #20',400.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 21', 'Custom web development task #21',500.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 22', 'Custom web development task #22',600.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 23', 'Custom web development task #23',700.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 24', 'Custom web development task #24',800.0, 'EUR', 7, 2),
+  (2, 2, 'Web Dev Service 25', 'Custom web development task #25',900.0, 'EUR', 7, 2);
+
+-- 2) Tag all of those new services with TagId = 2 (web development)
+INSERT INTO ServiceTag (ServiceId, TagId)
+SELECT ServiceId, 2
+  FROM Service
+ WHERE Title LIKE 'Web Dev Service %';
+
+COMMIT;
+PRAGMA foreign_keys = ON;

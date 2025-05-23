@@ -55,7 +55,7 @@ function drawAdminPanel(array $services, array $users, array $categories): void 
 
   <!-- Users -->
   <section class="table-wrapper">
-    <h2>All Freelancers</h2>
+    <h2>All Users</h2>
     <div class="table-scroll">
       <table class="data-table">
         <thead>
@@ -64,6 +64,7 @@ function drawAdminPanel(array $services, array $users, array $categories): void 
             <th>Username</th>
             <th>Created At</th>
             <th>Status</th>
+            <th>Admin</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -77,6 +78,13 @@ function drawAdminPanel(array $services, array $users, array $categories): void 
               <form method="post" action="/actions/action_toggle_user.php" style="display:inline;">
                 <input type="hidden" name="id" value="<?= $u->id ?>">
                 <button type="submit" class="btn btn--primary <?= $u->isActive ? 'active' : 'inactive' ?>"><?= $u->isActive ? 'Active' : 'Inactive' ?></button>
+              </form>
+            </td>
+             <td>
+              <form method="post" action="/actions/action_toggle_admin.php" style="display:inline;">
+                <input type="hidden" name="id" value="<?= $u->id ?>">
+                <?php $admin = User::isAdmin($u->id); ?>
+                <button type="submit" class="btn btn--primary <?= $admin ? 'active' : 'inactive' ?>"><?= $admin ? 'Admin' : 'User' ?></button>
               </form>
             </td>
             <td>

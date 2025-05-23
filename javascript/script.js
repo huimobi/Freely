@@ -91,38 +91,112 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /* -------- Messages -------- */
 async function loadConversation(otherUserId) {
-  const response = await fetch(`/api/get_messages.php?with=${otherUserId}`);
-  const data = await response.json();
+  // 1) fetch messages and offers in parallel
+  const [msgRes, offRes] = await Promise.all([
+    fetch(`/api/get_messages.php?with=${otherUserId}`),
+    fetch(`/api/offer.php?action=list&with=${otherUserId}`)
+  ]);
 
+  const msgData = await msgRes.json();
+  const offData = await offRes.json();
+
+  if (msgData.status !== 'success' || offData.status !== 'success') {
+    console.error('Failed to load convo:', msgData, offData);
+    return;
+  }
+
+  // 2) tag and merge
+  const taggedMsgs = msgData.messages.map(m => ({ ...m, type: 'message' }));
+  const taggedOffs = offData.offers.map(o => ({ ...o, type: 'offer' }));
+  const convo = [...taggedMsgs, ...taggedOffs]
+    .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+  // 3) render
   const container = document.getElementById('message-list');
   container.innerHTML = '';
-
-  if (data.status === 'success') {
-    data.messages.forEach(msg => {
+  for (const item of convo) {
+    if (item.type === 'message') {
+      // your existing message bubble logic:
       const wrapper = document.createElement('div');
+      wrapper.classList.add('message-wrapper', item.senderId === currentUserId ? 'sent' : 'received');
       const bubble = document.createElement('div');
-      bubble.classList.add('message');
-      wrapper.classList.add('message-wrapper');
-
-      if (msg.senderId === currentUserId) {
-        bubble.classList.add('sent');
-        wrapper.classList.add('sent');
-      } else {
-        bubble.classList.add('received');
-        wrapper.classList.add('received');
-      }
-
-      bubble.textContent = msg.content;
+      bubble.classList.add('message', item.senderId === currentUserId ? 'sent' : 'received');
+      bubble.textContent = item.content;
       wrapper.appendChild(bubble);
       container.appendChild(wrapper);
-    });
 
-    // Scroll to bottom
-    container.scrollTop = container.scrollHeight;
-  } else {
-    container.innerHTML = `<p class="error">${data.message}</p>`;
+    } else if (item.type === 'offer') {
+      // NEW: offer bubble
+      const wrapper = document.createElement('div');
+      wrapper.classList.add('offer-wrapper', item.senderId === currentUserId ? 'sent' : 'received');
+
+      const box = document.createElement('div');
+      box.classList.add('offer-bubble');
+
+      // service title
+      const svc = myServices.find(s => s.id === item.serviceId);
+      const title = document.createElement('h4');
+      title.textContent = svc ? svc.title : `Service #${item.serviceId}`;
+      box.appendChild(title);
+
+      // requirements
+      const req = document.createElement('p');
+      req.textContent = `Requirements: ${item.requirements}`;
+      box.appendChild(req);
+
+      // price
+      const price = document.createElement('p');
+      price.textContent = `Price: ${item.currency} ${item.price.toFixed(2)}`;
+      box.appendChild(price);
+
+      // status / actions
+      const statusWrap = document.createElement('div');
+      statusWrap.classList.add('offer-status');
+
+      if (item.status === 'pending' && currentUserId === item.receiverId) {
+        const accept = document.createElement('button');
+        accept.textContent = 'Accept';
+        accept.classList.add('btn--small','btn--primary','active');
+        accept.onclick = async () => {
+          await fetch(`/api/offer.php?action=accept`, {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({ offerId: item.offerId })
+          });
+          loadConversation(otherUserId);
+        };
+
+        const decline = document.createElement('button');
+        decline.textContent = 'Decline';
+        decline.classList.add('btn--small','btn--primary','delete');
+        decline.onclick = async () => {
+          await fetch(`/api/offer.php?action=decline`, {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({ offerId: item.offerId })
+          });
+          loadConversation(otherUserId);
+        };
+
+        statusWrap.append(accept, decline);
+
+      } else {
+        const badge = document.createElement('span');
+        badge.textContent = item.status.charAt(0).toUpperCase() + item.status.slice(1);
+        badge.classList.add('offer-badge', `offer-${item.status}`);
+        statusWrap.appendChild(badge);
+      }
+
+      box.appendChild(statusWrap);
+      wrapper.appendChild(box);
+      container.appendChild(wrapper);
+    }
   }
+
+  // 4) scroll
+  container.scrollTop = container.scrollHeight;
 }
+
 
 async function sendMessage() {
   const content = document.getElementById('message-input').value.trim();

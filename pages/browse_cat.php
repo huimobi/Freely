@@ -23,10 +23,24 @@ $priceMax = (isset($_GET['price_max']) && $_GET['price_max'] !== '') ? (float)$_
 $ratingMin = (isset($_GET['rating_min']) && $_GET['rating_min'] !== '') ? (float)$_GET['rating_min'] : null;
 $ratingMax = (isset($_GET['rating_max']) && $_GET['rating_max'] !== '') ? (float)$_GET['rating_max'] : null;
 
-
 $services = Service::getByCategory($catId, $limit, $offset, $sort, $priceMin, $priceMax, $ratingMin, $ratingMax);
-
 $totalPages = (int)ceil($totalCount / $limit);
+
+
+$queryParams = [
+    'cat' => $catId,
+    'sort' => $sort,
+    'price_min' => $priceMin,
+    'price_max' => $priceMax,
+    'rating_min' => $ratingMin,
+    'rating_max' => $ratingMax,
+];
+foreach ($queryParams as $key => $val) {
+    if ($val === null || $val === '') {
+        unset($queryParams[$key]);
+    }
+}
+$baseUrl = '/pages/browse_cat.php?' . http_build_query($queryParams);
 
 foreach ($services as $svc) {
     $svc->seller = User::getUser($svc->sellerId);
@@ -35,5 +49,5 @@ foreach ($services as $svc) {
 }
 
 drawHeader();
-drawBrowseServicesPage($category->name, $services, $category->description, $page, $totalPages, "/pages/browse_cat.php?cat=$catId");
+drawBrowseServicesPage($category->name, $services, $category->description, $page, $totalPages, $baseUrl);
 drawFooter();

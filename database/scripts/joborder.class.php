@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/database.php';
+require_once __DIR__ . '/offer.class.php';
 
 class JobOrder
 {
@@ -78,5 +79,11 @@ VALUES (?, ?, ?, ?, ?);"
         $db = Database::getInstance();
         $stmt = $db->prepare('UPDATE JobOrder SET Status = ? WHERE JobOrderId = ?');
         $stmt->execute([$newStatus, $orderId]);
+    }
+
+    public static function createFromOffer(Offer $offer): void {
+        $db = Database::getInstance();
+        $stmt = $db->prepare('INSERT INTO JobOrder (ServiceId, BuyerUserId, SellerUserId, AgreedPrice, Currency, Requirements) VALUES (?, ?, ?, ?, ?, ?)');
+        $stmt->execute([$offer->serviceId, $offer->buyerId, $offer->sellerId, $offer->price, $offer->currency, $offer->requirements]);
     }
 }

@@ -18,7 +18,7 @@ function drawEditProfileForm($user, array $errors): void { ?>
 
     <label> First Name<input type="text" name="first_name" value="<?= htmlspecialchars($user->firstName) ?> "maxlength="30" required> </label>
     <label> Last Name<input type="text" name="last_name" value="<?= htmlspecialchars($user->lastName) ?> "maxlength="30" required> </label>
-    <label> Username<input type="text" name="username" value="<?= htmlspecialchars($user->useName) ?>" maxlength="30" required> </label>
+    <label> Username<input type="text" name="username" value="<?= htmlspecialchars($user->userName) ?>" maxlength="30" required> </label>
     <label> Email<input type="email" name="email" value="<?= htmlspecialchars($user->email) ?> "maxlength="30" required> </label>
     <label> New Password<input type="password" name="new_password" placeholder="Leave blank to keep current password"> </label>
     <label> Headline<textarea name="headline" maxlength="200" required><?= htmlspecialchars($user->headline  ?? '') ?></textarea> </label>

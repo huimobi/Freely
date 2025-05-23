@@ -29,6 +29,24 @@ foreach ($services as $svc) {
   $svc->numRatings = Comment::countForService($svc->id);
 }
 
+$queryParams = [
+    'sort' => $sort,
+    'price_min' => $priceMin,
+    'price_max' => $priceMax,
+    'rating_min' => $ratingMin,
+    'rating_max' => $ratingMax,
+];
+foreach ($queryParams as $key => $val) {
+    if ($val === null || $val === '') {
+        unset($queryParams[$key]);
+    }
+}
+$baseUrl = '/pages/browse_all.php?';
+if (!empty($queryParams)) {
+    $baseUrl .= http_build_query($queryParams) . '&';
+}
+
+
 drawHeader("All Services");
-drawBrowseServicesPage("All Services", $services, null, $page, $totalPages, "/pages/browse_all.php");
+drawBrowseServicesPage("All Services", $services, null, $page, $totalPages, $baseUrl);
 drawFooter();

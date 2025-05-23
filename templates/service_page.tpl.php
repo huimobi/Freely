@@ -4,11 +4,13 @@
 {
     $Photos = $SERVICE->photos ?? null;
     $totalPhotos = $SERVICE->totalPhotos ?? 0;
+    $profilePic="../images/users/{$SERVICE->sellerId}.jpg";
+    if (!file_exists($profilePic)) {$profilePic = "/images/users/default.jpg";}
     ?>
     <main class="service-page">
         <a href="/pages/freelancer.php?id=<?= $SERVICE->sellerId ?>">
             <article class="seller-overview">
-                <img src="<?= htmlspecialchars($SERVICE->seller->profilePic ?? 'error') ?>" class="profile-picture"
+                <img src="<?= htmlspecialchars($profilePic) ?>" class="profile-picture"
                     onerror="this.src='/images/users/default.jpg'" alt="Seller">
                 <section class="seller-text">
                     <div class="seller-rating">
