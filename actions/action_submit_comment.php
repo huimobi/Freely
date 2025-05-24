@@ -35,5 +35,5 @@ if ($errors) {
 }
 $newCommentId = Comment::create($jobOrderId, $buyerUserId, $serviceId, $rating, $desc);
 
-header('Location: /service.php?id=' . $serviceId);
+header('Location: /pages/service.php?id=' . $serviceId);
 exit;

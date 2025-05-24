@@ -45,30 +45,6 @@
     </section>
     <section class="service-comment-section">
 
-      <?php if(true): ?>
-
-      <section class="service-add-comment-section">
-        <h2>Leave a Comment</h2>
-        <form action="/actions/action_submit_comment.php" method="post" class="add-comment-form">
-          <input type="hidden" name="service_id" value="<?= $SERVICE->id ?>">
-          <div class="star-rating" id="star-rating">
-
-            <?php for ($i = 5; $i >= 1; $i--): ?>
-
-              <input type="radio" id="star<?= $i ?>" name="rating" value="<?= $i ?>" required>
-              <label for="star<?= $i ?>" title="<?= $i ?> stars">&#9733;</label>
-
-            <?php endfor; ?>
-
-          </div>
-          <textarea id="comment-text" name="text" rows="3" maxlength="500" required
-            placeholder="Write your comment here..."></textarea>
-          <button type="submit" class="submit-comment-btn">Submit Comment</button>
-        </form>
-      </section>
-
-      <?php endif;?>
-
       <h2>Some comments about this service</h2>
 
       <ul class="comments-list" id="comments-list">

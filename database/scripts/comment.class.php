@@ -95,7 +95,7 @@ class Comment
     return (int) $stmt->fetchColumn();
   }
 
-  public static function canComment($jobOrderId):bool{
+  public static function hasComment($jobOrderId):bool{
     $db = Database::getInstance();
     $stmt = $db->prepare("SELECT * FROM Comment WHERE Comment.jobOrderId=?");
     $stmt->execute([$jobOrderId]);
