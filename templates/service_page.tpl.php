@@ -1,35 +1,31 @@
-<?php declare(strict_types=1); ?>
-
-<?php function drawServicePage(Service $SERVICE, User $SELLER): void
+<?php declare(strict_types=1); 
+function drawServicePage(array $SERVICE_INFO, array $SELLER_INFO): void
 {
-  $Photos = $SERVICE->photos ?? null;
-  $totalPhotos = $SERVICE->totalPhotos ?? 0;
   ?>
   <main class="service-page">
-    <a href="/pages/freelancer.php?id=<?= $SELLER->id ?>">
+    <a href="/pages/freelancer.php?id=<?=$SELLER_INFO['seller']->id ?>">
       <article class="seller-overview">
-        <img src="<?= htmlspecialchars($SELLER->profilePic) ?>" class="profile-picture"
-          onerror="this.src='/images/users/default.jpg'" alt="Seller">
+        <img src="<?= htmlspecialchars($SELLER_INFO['profilePic']) ?>" class="profile-picture" alt="Seller">
         <div class="seller-text">
-          <h2><?= htmlspecialchars($SELLER->userName ?? 'error') ?></h2>
+          <h2><?= htmlspecialchars($SELLER_INFO['seller']->userName ?? 'error') ?></h2>
           <p>
-            <?= htmlspecialchars($SELLER->headline ?? ($SERVICE->sellerId == $_SESSION['user_id'] ? 'Tip: Add a headline in your profile to show here!' : '')) ?>
+            <?= htmlspecialchars($SELLER_INFO['seller']->headline ?? ($SERVICE_INFO['service']->sellerId == $_SESSION['user_id'] ? 'Tip: Add a headline in your profile to show here!' : '')) ?>
           </p>
         </div>
-        <span class="rating">Service Rating ⭐ <?= $SERVICE->rating ?? '0' ?>
-          (<?= $SERVICE->numRatings ?? '0' ?>)</span>
+        <span class="rating"><strong>Service Rating</strong>⭐ <?= $SERVICE_INFO['service']->rating ?? '0' ?>
+          (<?= $SERVICE_INFO['service']->numRatings ?? '0' ?>)</span>
       </article>
     </a>
     <section class="service-description">
-      <h1><?= htmlspecialchars($SERVICE->title) ?></h1>
+      <h1><?= htmlspecialchars($SERVICE_INFO['service']->title) ?></h1>
       <div class="service-photo-description">
-        <?php if ($totalPhotos > 0): ?>
+        <?php if ($SERVICE_INFO['totalPhotos'] > 0): ?>
           <div class="photo-displayer">
             <div class="main-photo">
-              <img id="selected-photo" src="<?= htmlspecialchars($Photos[0]) ?>" alt="Selected Photo">
+              <img id="selected-photo" src="<?= htmlspecialchars($SERVICE_INFO['photos'][0]) ?>" alt="Selected Photo">
             </div>
             <div class="thumbnail-photos">
-              <?php foreach ($Photos as $index => $photo): ?>
+              <?php foreach ($SERVICE_INFO['photos'] as $index => $photo): ?>
                 <img class="thumbnail" src="<?= htmlspecialchars($photo) ?>" alt="Thumbnail" <?= $index === 0 ? 'data-selected="true"' : '' ?>>
               <?php endforeach; ?>
             </div>
@@ -37,7 +33,7 @@
         </div>
         <section class="service-text-description">
           <h2>About this service</h2>
-          <p><?= (htmlspecialchars($SERVICE->description)) ?></p>
+          <p><?= (htmlspecialchars($SERVICE_INFO['service']->description)) ?></p>
         </section>
 
       </div>
@@ -49,15 +45,14 @@
 
       <ul class="comments-list" id="comments-list">
 
-        <?php if ($SERVICE->totalComments > 0): 
-          foreach ($SERVICE->comments as $comment): ?>
+        <?php if ($SERVICE_INFO['totalComments'] > 0): 
+          foreach ($SERVICE_INFO['service']->comments as $comment): ?>
 
         <li class="comment">
           <article class="comment-user-info">
-            <img src="/images/users/<?=$comment->buyerUserId ?>.jpg" class="profile-picture"
-          onerror="this.src='/images/users/default.jpg'" alt="User">
+            <img src=<?=$comment->userPorfilePic?> alt="User">
             <span class="comment-username"><?= htmlspecialchars($comment->user->userName) ?></span>
-            <span class="comment-rating">⭐ <?= $comment->rating ?></span>
+            <span class="rating">⭐ <?= $comment->rating ?></span>
           </article>
           <p><?= htmlspecialchars($comment->description)?></p>
         </li>
@@ -66,34 +61,32 @@
           <p id='no_comments'>No comments yet.</p>
         <?php endif; ?>
       </ul>
-      <?php if ($SERVICE->totalComments > $SERVICE->commentsToShow): ?>
-        <button id="show-more-comments" type="button">Show more comments</button>
-      <?php endif; ?>
     </section>
     <?php
     ?>
     <aside class="service-aside-menu">
       <div class="service-aside-menu-info">
-        <p><?= htmlspecialchars($SERVICE->category->name) ?></p>
-        <div class="price"><?= $SERVICE->currency ?><?= number_format($SERVICE->basePrice, 2) ?></div>
+        <p><?= htmlspecialchars($SERVICE_INFO['category']->name) ?></p>
+        <div class="price"><?= $SERVICE_INFO['service']->currency ?><?= number_format($SERVICE_INFO['service']->basePrice, 2) ?></div>
         <span class="service-delivery-text"><i class="fa fa-clock"> </i> Delivered in
-          <?= $SERVICE->deliveryDays ?>
-          day<?= $SERVICE->deliveryDays > 1 ? 's' : '' ?></span>
-        <span class="service-revisions-text"><i class="fa fa-refresh"> </i> <?= $SERVICE->revisions ?>
-          revision<?= $SERVICE->revisions > 1 ? 's' : '' ?></span>
+          <?= $SERVICE_INFO['service']->deliveryDays ?>
+          day<?= $SERVICE_INFO['service']->deliveryDays > 1 ? 's' : '' ?></span>
+        <span class="service-revisions-text"><i class="fa fa-refresh"> </i> <?= $SERVICE_INFO['service']->revisions ?>
+          revision<?= $SERVICE_INFO['service']->revisions > 1 ? 's' : '' ?></span>
       </div>
-      <?php if ($SERVICE->sellerId != $_SESSION['user_id']): ?>
+      <?php if ( $SERVICE_INFO['service']->sellerId != $_SESSION['user_id'] ): ?>
         <div class="service-actions">
-          <form action="../pages/payment.php" method="get">
-            <input type="hidden" name="service_id" value="<?= $SERVICE->id ?>">
+          <form action="../pages/payment.php" method="post">
+            <input type="hidden" name="service_id" value="<?= $SERVICE_INFO['service']->id ?>">
             <button type="submit" class="pay-btn">Proceed to Payment</button>
           </form>
           <button class="message-btn"
-            onclick="window.location.href='/pages/messages.php?user=<?= $SERVICE->sellerId ?>'">Message
+            onclick="window.location.href='/pages/messages.php?user=<?= $SERVICE_INFO['service']->sellerId ?>'">Message
             Provider</button>
         </div>
       <?php else: ?>
-        <a href="/pages/edit_service.php?id=<?= $SERVICE->id ?>" class="service-aside-edit">Edit</a>
+        <button class="edit-btn"
+            onclick="window.location.href='/pages/edit_service.php?id=<?= $SERVICE_INFO['service']->id ?>'">Edit</button>
       <?php endif; ?>
     </aside>
   </main>

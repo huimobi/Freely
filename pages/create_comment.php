@@ -18,4 +18,3 @@ if(Comment::hasComment($jobOrderId)|| !$user ||!$serviceId) {
 
 drawSimpleHeader();
 drawCreateCommentForm($serviceId,$jobOrderId);
-drawFooter();

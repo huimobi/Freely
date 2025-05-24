@@ -10,7 +10,7 @@ require_once __DIR__ . '/../database/scripts/comment.class.php';
 require_once __DIR__ . '/../templates/service_page.tpl.php';
 require_once __DIR__ . '/../templates/payment_page.tpl.php';
 
-$service_id = (int) $_GET['service_id']; //TODO CHANGE TO POST
+$service_id = (int) $_POST ['service_id'];
 
 $Service = SERVICE::getById($service_id) ?? null;
 $Service->seller = USER::getUser($Service->sellerId) ?? null;
@@ -23,8 +23,7 @@ if (!$Service || !$Buyer) {
     exit;
 }
 
-drawHeader();
+drawSimpleHeader();
 drawPaymentPage($Service, $Buyer);
-drawFooter();
 
 ?>

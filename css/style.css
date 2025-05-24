@@ -912,7 +912,7 @@ header.chat-header a {
 }
 
 
-.service-aside-edit {
+.edit-btn {
   background: var(--color-background-dark);
   color: var(--color-text-light);
   font-weight: 600;
@@ -923,7 +923,7 @@ header.chat-header a {
 }
 
 
-.service-aside-edit:hover {
+.edit-btn:hover {
   background: var(--color-hover);
   color: var(--color-text-light);
 }
@@ -942,7 +942,7 @@ header.chat-header a {
   gap: 20px;
 }
 
-.service-page a {
+.service-page > a {
   text-decoration: none;
   color: var(--color-text)
 }
@@ -1012,7 +1012,7 @@ header.chat-header a {
 }
 
 .pay-btn,
-.message-btn {
+.message-btn,.edit-btn {
   width: 100%;
   box-sizing: border-box;
   padding: var(--spacing-md);
@@ -1090,9 +1090,8 @@ h1 {
   word-break: break-word;
 }
 
-.rating {
+.service-page .rating {
   margin-left: auto;
-  font-weight: bold;
 }
 
 .seller-rating a {
@@ -1167,23 +1166,13 @@ h1 {
 }
 
 .service-add-comment-section {
-  background: var(--color-mono-background);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
   padding: var(--spacing-md);
-  margin-bottom: 2em;
-  box-shadow: 0 2px 8px rgba(34, 34, 34, 0.03);
 }
 
 .add-comment-form {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
-}
-
-.add-comment-form label {
-  color: var(--color-hover);
-  font-size: 1em;
 }
 
 .add-comment-form textarea {
@@ -1194,17 +1183,14 @@ h1 {
   background: var(--color-background);
   color: var(--color-background-dark);
   transition: border 0.2s;
+  resize: vertical;
+  min-height: 60px;
+  max-height: 200px;
 }
 
 .add-comment-form textarea:focus {
   border-color: var(--color-hover);
   outline: none;
-}
-
-.add-comment-form textarea {
-  resize: vertical;
-  min-height: 60px;
-  max-height: 200px;
 }
 
 .submit-comment-btn {
@@ -1226,8 +1212,8 @@ h1 {
 
 .star-rating {
   display: flex;
+  justify-content: center;
   flex-direction: row-reverse;
-  justify-content: flex-start;
   gap: var(--spacing-sm);
   font-size: var(--star-size);
 }
@@ -1236,7 +1222,7 @@ h1 {
   display: none;
 }
 
-.star-rating label {
+.form-page .star-rating label {
   color: var(--star-color);
   cursor: pointer;
   transition: color 0.2s;
@@ -1288,13 +1274,6 @@ h1 {
 .comment-username {
   font-weight: bold;
   color: var(--color-text);
-}
-
-.comment-rating {
-  margin-left: auto;
-  color: gold;
-  font-size: 1.1em;
-  font-weight: bold;
 }
 
 .comments-list .comment p {
@@ -1351,6 +1330,10 @@ h1 {
       "desc"
       "aside"
       "comments";
+  }
+
+  .service-aside-menu-info{
+    border:none;
   }
 
 }
@@ -1619,7 +1602,6 @@ h1 {
 }
 
 /*-----------------------------------Payment Page--------------------------------------*/
-/*TODO: CHANGE THIS*/
 .payment-page {
   max-width: 600px;
   margin: var(--spacing-md) auto;

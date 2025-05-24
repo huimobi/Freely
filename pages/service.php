@@ -14,44 +14,47 @@ $id = (int) $_GET['id'] ?? null;
 
 
 $SERVICE = SERVICE::getService($id);
-$USER= SESSION::getInstance()->getUser();
+$SELLER = User::getUser($SERVICE->sellerId) ?? null;
 
-if (!$SERVICE) {
+if (!$SERVICE || !$SELLER) {
     header('Location: /');
     exit;
 }
 
-$SELLER = User::getUser($SERVICE->sellerId) ?? null;
-if($SELLER) {
-$SELLER->rating = Comment::averageForSeller($SELLER->id); 
-$SELLER->reviewsCount= Comment::countForSeller($SELLER->id); 
-$SELLER->totalServices=count(SERVICE::getAllByUserId($SELLER->id));
-$SELLER->totalOrders=count(JobOrder::getAllBySellerId($SELLER->id));
-$SELLER->profilePic=file_exists("../images/users/{$SERVICE->sellerId}.jpg") ? "../images/users/{$SERVICE->sellerId}.jpg" :"/images/users/default.jpg";
-}
+//seller info
+$sellerInfo=[
+    'seller'=>$SELLER,
+    'rating' => Comment::averageForSeller($SELLER->id),
+    'totalServices' => count(SERVICE::getAllByUserId($SELLER->id)),
+    'totalOrders' => count(JobOrder::getAllBySellerId($SELLER->id)),
+    'profilePic' => (file_exists("../images/users/{$SERVICE->sellerId}.jpg") ? "../images/users/{$SERVICE->sellerId}.jpg" : "../images/users/default.jpg"),
+];
 
-$SERVICE->rating = Comment::averageForService($SERVICE->id) ?? 0;
-$SERVICE->numRatings = Comment::countForService($SERVICE->id) ?? 0;
-$SERVICE->category = Category::getById($SERVICE->categoryId) ?? null;
-$SERVICE->comments = Comment::getByService($SERVICE->id) ?? null;
-if($SERVICE->comments){
-    foreach($SERVICE->comments as $comment){
-        $comment->user=User::getUser($comment->buyerUserId)??null;
-    }
+//service info
+$serviceComments=Comment::getByService($SERVICE->id);
+foreach ($serviceComments as $comment) {
+    $comment->user = User::getUser($comment->buyerUserId) ?? null;
+    $comment->userProfilePic = file_exists("/images/users/" . $comment->buyerUserId . ".jpg") ? "/images/users/" . $comment->buyerUserId . ".jpg" : "/images/users/default.jpg";
 }
-$SERVICE->totalComments = Comment::countForService($SERVICE->id) ?? null;
-$SERVICE->commentsToShow = 10;
 
 $photos=getPhotos($SERVICE->id);
-$SERVICE->photos = $photos;
-$SERVICE->totalPhotos= count($photos);
+$serviceInfo=[
+    'service'=> $SERVICE,
+    'rating' => Comment::averageForService($SERVICE->id) ?? 0,
+    'numRatings' => Comment::countForService($SERVICE->id) ?? 0,
+    'category' => Category::getById($SERVICE->categoryId) ?? null,
+    'comments' => $serviceComments,
+    'totalComments' => Comment::countForService($SERVICE->id) ?? 0,
+    'photos' => $photos,
+    'totalPhotos' => count($photos) ??0,
+];
 
 drawHeader();
-drawServicePage($SERVICE,$SELLER);
+drawServicePage($serviceInfo,$sellerInfo);
 drawFooter();
 
 
-function getPhotos($id) :array
+function getPhotos($id): array
 {
     $photos = [];
     $dir = __DIR__ . '/../images/services/' . $id;
