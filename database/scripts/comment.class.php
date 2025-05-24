@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/database.php';
 
-class Comment {
+class Comment
+{
   public int $id;
   public int $jobOrderId;
   public int $buyerUserId;
@@ -13,7 +14,6 @@ class Comment {
   public string $commentDate;
 
   public function __construct(
-    int $id,
     int $jobOrderId,
     int $buyerUserId,
     int $serviceId,
@@ -21,7 +21,6 @@ class Comment {
     string $description,
     string $commentDate
   ) {
-    $this->id = $id;
     $this->jobOrderId = $jobOrderId;
     $this->buyerUserId = $buyerUserId;
     $this->serviceId = $serviceId;
@@ -29,7 +28,7 @@ class Comment {
     $this->description = $description;
     $this->commentDate = $commentDate;
   }
-  
+
 
   public static function create(
     int $jobOrderId,
@@ -41,39 +40,65 @@ class Comment {
     $db = Database::getInstance();
     $stmt = $db->prepare("INSERT INTO Comment (JobOrderId, BuyerUserId, ServiceId, Rating, Description) VALUES (?, ?, ?, ?, ?)");
     $stmt->execute([$jobOrderId, $buyerUserId, $serviceId, $rating, $description]);
-    return (int)$db->lastInsertId();
+    return (int) $db->lastInsertId();
   }
-  
-  public static function getByService(int $id): ?Comment {
+
+  public static function getByService(int $id): array
+  {
     $db = Database::getInstance();
     $stmt = $db->prepare('SELECT * FROM Comment WHERE ServiceId = ?');
     $stmt->execute([$id]);
-    $row = $stmt->fetch();
-    if ($row) {
-      return new Comment(
-        (int)$row['CommentId'],
-        (int)$row['JobOrderId'],
-        (int)$row['BuyerUserId'],
-        (int)$row['ServiceId'],
-        (int)$row['Rating'],
-        (string)$row['Description'],
-        (string)$row['CommentDate']
+
+    $services = [];
+        while ($row = $stmt->fetch()) {
+        $services[]= new Comment(
+        (int) $row['JobOrderId'],
+        (int) $row['BuyerUserId'],
+        (int) $row['ServiceId'],
+        (int) $row['Rating'],
+        (string) $row['Description'],
+        (string) $row['CommentDate']
       );
     }
-    return null;
+    return $services;
   }
 
-  public static function averageForService(int $serviceId): float {
+  public static function averageForService(int $serviceId): float
+  {
     $db = Database::getInstance();
     $stmt = $db->prepare("SELECT AVG(Rating) FROM Comment WHERE ServiceId = ?");
     $stmt->execute([$serviceId]);
-    return round((float)$stmt->fetchColumn(), 1);
+    return round((float) $stmt->fetchColumn(), 1);
   }
 
-  public static function countForService(int $serviceId): int {
+  public static function countForService(int $serviceId): int
+  {
     $db = Database::getInstance();
     $stmt = $db->prepare("SELECT COUNT(*) FROM Comment WHERE ServiceId = ?");
     $stmt->execute([$serviceId]);
-    return (int)$stmt->fetchColumn();
+    return (int) $stmt->fetchColumn();
+  }
+
+  public static function averageForSeller(int $sellerId): float
+  {
+    $db = Database::getInstance();
+    $stmt = $db->prepare("SELECT AVG(Rating) FROM Comment JOIN Service on Comment.ServiceId=Service.ServiceId WHERE Service.SellerUserId = ?");
+    $stmt->execute([$sellerId]);
+    return round((float) $stmt->fetchColumn(), 1);
+  }
+
+  public static function countForSeller(int $sellerId): int
+  {
+    $db = Database::getInstance();
+    $stmt = $db->prepare("SELECT Count(*) FROM Comment JOIN Service on Comment.ServiceId=Service.ServiceId WHERE Service.SellerUserId = ?");
+    $stmt->execute([$sellerId]);
+    return (int) $stmt->fetchColumn();
+  }
+
+  public static function canComment($jobOrderId):bool{
+    $db = Database::getInstance();
+    $stmt = $db->prepare("SELECT * FROM Comment WHERE Comment.jobOrderId=?");
+    $stmt->execute([$jobOrderId]);
+    return (bool) $stmt->fetchColumn();
   }
 }

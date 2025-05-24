@@ -31,8 +31,10 @@ function drawCreateServiceForm(array $cats, array $errors): void {
     <label> Currency <input type="text" name="currency" maxlength="3" value="EUR" required> </label>
     <label> Delivery Days <input type="number" name="delivery_days" min="1" required> </label>
     <label> Revisions <input type="number" name="revisions" min="0" value="1" required> </label>
-    <label> Service Image <input type="file" name="photo[]" accept="image/jpeg,image/png" multiple> </label>
-
+    <label> Service Images
+      <input type="file" accept="image/jpeg,image/png" class="image-input" name="photos[]" multiple>
+    </label>
+    <div class="image-preview"></div>
 
     <button type="submit" class="btn btn--primary">Create Service</button>
 
