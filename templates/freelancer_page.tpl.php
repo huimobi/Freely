@@ -1,9 +1,11 @@
 <?php declare(strict_types=1);
 require_once __DIR__ . "/comment_list.php";
+require_once __DIR__ ."/../database/scripts/comment.class.php";
 ?>
 
 <?php function drawFreelancerPage(array $freelancerInfo, array $services = []): void
-{ ?>
+{ 
+    ?>
     <main class="freelancer-page">
         <section class="freelancer-header">
             <div class="freelancer-profile">
@@ -19,8 +21,8 @@ require_once __DIR__ . "/comment_list.php";
                                 <dt>Name</dt>
                                 <dd><?= htmlspecialchars($freelancerInfo['freelancer']->name()) ?></dd>
                                 <dt>Rating</dt>
-                                <dd>⭐ <?= $freelancerInfo['freelancer']->rating ?? '0.0' ?>
-                                    (<?= $freelancerInfo['freelancer']->numReviews ?? '0' ?> comments)</dd>
+                                <dd>⭐ <?= $freelancerInfo['rating'] ?? '0.0' ?>
+                                    (<?= count($freelancerInfo['comments']) ?? '0' ?> <?=count($freelancerInfo['comments'])===1 ?"comment":"comments" ?>)</dd>
                                 <dt>Member Since</dt>
                                 <dd><?= $freelancerInfo['freelancer']->getCreationDate() ?></dd>
                             </div>
@@ -45,7 +47,7 @@ require_once __DIR__ . "/comment_list.php";
 
         <section class="freelancer-description">
             <h2>About <?= htmlspecialchars($freelancerInfo['freelancer']->firstName) ?></h2>
-            <p><?= htmlspecialchars($freelancerInfo['freelancer']->description ?? 'No description') ?></p>
+            <p><?= nl2br(htmlspecialchars($freelancerInfo['freelancer']->description ?? 'No description')) ?></p>
         </section>
 
         <?php if (!empty($services)): ?>

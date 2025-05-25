@@ -13,8 +13,8 @@ function drawServicePage(array $SERVICE_INFO, array $SELLER_INFO): void
             <?= htmlspecialchars($SELLER_INFO['seller']->headline ?? ($SERVICE_INFO['service']->sellerId == $_SESSION['user_id'] ? 'Tip: Add a headline in your profile to show here!' : '')) ?>
           </p>
         </div>
-        <span class="rating"><strong>Service Rating</strong>⭐ <?= $SERVICE_INFO['service']->rating ?? '0' ?>
-          (<?= count($SERVICE_INFO['comments']) ?? '0' ?>)</span>
+        <span class="rating"><strong>Service Rating</strong>⭐ <?= $SERVICE_INFO['rating'] ?? '0' ?>
+          (<?= count($SERVICE_INFO['comments']) ?? '0'?> <?=count($SERVICE_INFO['comments'])===1 ?"comment":"comments" ?>)</span>
       </article>
     </a>
     <section class="service-description">
@@ -34,7 +34,7 @@ function drawServicePage(array $SERVICE_INFO, array $SELLER_INFO): void
         </div>
         <section class="service-text-description">
           <h2>About this service</h2>
-          <p><?= (htmlspecialchars($SERVICE_INFO['service']->description)) ?></p>
+          <p><?= nl2br(htmlspecialchars($SERVICE_INFO['service']->description)) ?></p>
         </section>
       </div>
     </section>

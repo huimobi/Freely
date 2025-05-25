@@ -1235,6 +1235,11 @@ h1 {
   transition: color 0.2s;
   font-size: var(--star-size);
 }
+.form-page img{
+  margin:0 auto;
+  display: block;
+  border-radius: var(--radius-lg);
+}
 
 .star-rating input[type="radio"]:checked~label,
 .star-rating label:hover,
@@ -1276,7 +1281,7 @@ h1 {
   gap: var(--spacing-sm);
 }
 
-.comment-user-info .profile-picture {
+.comment-user-info img {
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -1437,7 +1442,7 @@ h1 {
 @media (max-width: 768px) {
   .freelancer-profile {
     flex-direction: column;
-    text-align: center;
+    align-items: center;
   }
 
   .contact-wrapper {
