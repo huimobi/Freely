@@ -1,4 +1,4 @@
-    PRAGMA foreign_keys = ON;
+PRAGMA foreign_keys = ON;
     DROP TABLE IF EXISTS Service;
     DROP TABLE IF EXISTS User;
     DROP TABLE IF EXISTS FreeLancer;
@@ -192,6 +192,49 @@ INSERT INTO User (UserName, FirstName, LastName, Email, PasswordHash, Headline, 
   ('hank_consult','Hank','Moore','hank.moore@example.com','hashed_pw8','Business Consultant','Process optimization and market research.','912345008'),
   ('ivy_legal','Ivy','Taylor','ivy.taylor@example.com','hashed_pw9','Legal Advisor','Contracts, IP, and compliance services.','912345009'),
   ('jack_coach','Jack','Anderson','jack.anderson@example.com','hashed_pw10','Fitness Coach','Personal training and nutrition guidance.','912345010');
+
+-- Additional Freelancers by Category
+INSERT INTO User (UserName, FirstName, LastName, Email, PasswordHash, Headline, Description, Phone) VALUES
+  -- Development & IT
+  ('dev_alex_ramos','Alex','Ramos','alex.ramos@dev.example.com','hashed_pw31','Full-Stack Developer','Desenvolvimento de aplicações web completas com React, Node.js e banco de dados SQL. Experiência em microserviços.','912345031'),
+  ('dev_bruna_santos','Bruna','Santos','bruna.santos@dev.example.com','hashed_pw32','Software Engineer','Especialista em sistemas distribuídos e escalabilidade. Estudo de arquiteturas serverless e CI/CD.','912345032'),
+  ('dev_carlos_moura','Carlos','Moura','carlos.moura@dev.example.com','hashed_pw33','Backend Developer','Focado em design de APIs RESTful e otimização de queries em bancos NoSQL e SQL.','912345033'),
+  -- Design & Creative
+  ('design_luiza_coelho','Luiza','Coelho','luiza.coelho@design.example.com','hashed_pw34','UI/UX Designer','Design de interfaces responsivas e prototipagem de alta fidelidade com Figma e Adobe XD.','912345034'),
+  ('design_marcos_almeida','Marcos','Almeida','marcos.almeida@design.example.com','hashed_pw35','Graphic Designer','Criação de identidades visuais, logotipos e material para impressão. Experiência em branding.','912345035'),
+  ('design_naomi_silva','Naomi','Silva','naomi.silva@design.example.com','hashed_pw36','Illustrator','Ilustração vetorial e arte digital para campanhas, livros infantis e produtos.','912345036'),
+  -- Writing & Translation
+  ('write_fernanda_paulo','Fernanda','Paulo','fernanda.paulo@write.example.com','hashed_pw37','Copywriter','Redação publicitária com foco em storytelling e conversão para sites e anúncios.','912345037'),
+  ('write_gabriel_oliveira','Gabriel','Oliveira','gabriel.oliveira@write.example.com','hashed_pw38','Technical Writer','Documentação técnica clara e detalhada, guias de usuário e whitepapers.','912345038'),
+  ('write_helena_rodrigues','Helena','Rodrigues','helena.rodrigues@write.example.com','hashed_pw39','Translator','Tradução do inglês para o português e vice-versa, revisões e localização de conteúdo.','912345039'),
+  -- Sales & Marketing
+  ('market_igor_rocha','Igor','Rocha','igor.rocha@market.example.com','hashed_pw40','Marketing Strategist','Planejamento de campanhas de marketing digital, SEO e inbound marketing.','912345040'),
+  ('market_julia_costa','Julia','Costa','julia.costa@market.example.com','hashed_pw41','Social Media Manager','Gestão de perfis em redes sociais, criação de calendário editorial e anúncios.','912345041'),
+  ('market_kevin_araujo','Kevin','Araujo','kevin.araujo@market.example.com','hashed_pw42','PPC Specialist','Otimização de campanhas Google Ads e Facebook Ads com foco em ROI e CPA.','912345042'),
+  -- Finance & Accounting
+  ('finance_leonardo_fernandes','Leonardo','Fernandes','leonardo.fernandes@finance.example.com','hashed_pw43','Accountant','Serviços de contabilidade, fechamento mensal, balanços e assessoria fiscal.','912345043'),
+  ('finance_manuela_barbosa','Manuela','Barbosa','manuela.barbosa@finance.example.com','hashed_pw44','Financial Analyst','Análise financeira, projeções de fluxo de caixa e relatórios gerenciais.','912345044'),
+  ('finance_nicolas_pereira','Nicolas','Pereira','nicolas.pereira@finance.example.com','hashed_pw45','Tax Consultant','Consultoria tributária, planejamento fiscal e declarações de imposto de renda.','912345045'),
+  -- Video & Animation
+  ('video_oliveira_campos','Oliveira','Campos','oliveira.campos@video.example.com','hashed_pw46','Video Editor','Edição de vídeos promocionais, cortes dinâmicos e correção de cor no Premiere Pro.','912345046'),
+  ('video_pedro_tavares','Pedro','Tavares','pedro.tavares@video.example.com','hashed_pw47','Animator','Animações 2D e motion graphics para apresentações e vídeos institucionais.','912345047'),
+  ('video_ricardo_vas','Ricardo','Vas','ricardo.vas@video.example.com','hashed_pw48','Cinematographer','Captação de imagem, direção de fotografia e edição avançada para curtas e comerciais.','912345048'),
+  -- Music & Audio
+  ('audio_sophia_mello','Sophia','Mello','sophia.mello@audio.example.com','hashed_pw49','Audio Engineer','Mixagem, masterização e restauração de áudio para podcasts e músicas.','912345049'),
+  ('audio_tiago_lima','Tiago','Lima','tiago.lima@audio.example.com','hashed_pw50','Voice Actor','Locução profissional em diferentes estilos para comerciais, e-learning e narrações.','912345050'),
+  ('audio_ursula_nunes','Ursula','Nunes','ursula.nunes@audio.example.com','hashed_pw51','Composer','Composição de trilhas sonoras e jingles personalizados para marcas.','912345051'),
+  -- Business Consulting
+  ('consult_victor_mendes','Victor','Mendes','victor.mendes@consult.example.com','hashed_pw52','Business Consultant','Análise de processos, planejamento estratégico e melhoria de operações.','912345052'),
+  ('consult_wagner_gomes','Wagner','Gomes','wagner.gomes@consult.example.com','hashed_pw53','Management Advisor','Consultoria em gestão empresarial, liderança e desenvolvimento organizacional.','912345053'),
+  ('consult_xavier_faria','Xavier','Faria','xavier.faria@consult.example.com','hashed_pw54','Market Researcher','Pesquisa de mercado, análise de concorrência e identificação de oportunidades de nicho.','912345054'),
+  -- Legal Services
+  ('legal_yasmin_rocha','Yasmin','Rocha','yasmin.rocha@legal.example.com','hashed_pw55','Legal Advisor','Assessoria jurídica em contratos, disputas comerciais e compliance regulatório.','912345055'),
+  ('legal_zara_castro','Zara','Castro','zara.castro@legal.example.com','hashed_pw56','Corporate Lawyer','Consultoria em constituição de empresas, fusões e aquisições.','912345056'),
+  ('legal_andre_pinto','Andre','Pinto','andre.pinto@legal.example.com','hashed_pw57','IP Specialist','Proteção de propriedade intelectual, registros de marca e patentes.','912345057'),
+  -- Lifestyle
+  ('life_ana_leitao','Ana','Leitao','ana.leitao@life.example.com','hashed_pw58','Fitness Coach','Treinos personalizados, planejamento alimentar e acompanhamento remoto.','912345058'),
+  ('life_bruno_silva','Bruno','Silva','bruno.silva@life.example.com','hashed_pw59','Chef','Aulas de culinária, elaboração de cardápios e consultoria gastronômica.','912345059'),
+  ('life_carla_neto','Carla','Neto','carla.neto@life.example.com','hashed_pw60','Life Coach','Mentoria de desenvolvimento pessoal, estabelecimento de metas e bem-estar.','912345060');
 
 -- Tags
 INSERT INTO Tag (Name) VALUES
