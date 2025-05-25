@@ -1,11 +1,16 @@
 <?php declare(strict_types=1); ?>
 
 <?php function drawFreelancerPage(User $freelancer, array $services = []): void 
-{ ?>
+{ 
+    $maleImgs = ['male1.png','male2.jpg','male3.png','male4.jpg'];
+    $femaleImgs = ['female1.jpg','female2.jpg','female3.jpg','female4.jpg'];
+    $pool = (isset($freelancer->gender) && $freelancer->gender === 'F') ? $femaleImgs : $maleImgs;
+    $randomImg = $pool[array_rand($pool)];
+?>
     <main class="freelancer-page">
         <section class="freelancer-header">
             <div class="freelancer-profile">
-                <img src="/images/users/<?= $freelancer->id ?>.jpg" class="profile-picture"
+                <img src="/images/users/<?= $randomImg ?>" class="profile-picture"
                     onerror="this.src='/images/users/default.jpg'" alt="Freelancer">
                 <div class="freelancer-info">
                     <div class="freelancer-details">
