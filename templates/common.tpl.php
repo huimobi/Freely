@@ -178,6 +178,7 @@ function drawHeader() {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/form_style.css">
+    <script src="../javascript/script.js" defer></script>
   </head>
   <body>
     <header class="minimal-header">

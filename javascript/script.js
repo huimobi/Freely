@@ -1,17 +1,17 @@
 document.querySelectorAll('[data-modal-open]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('dialog').forEach(d => { if (d.open) d.close(); });
-      const dlg = document.getElementById(btn.dataset.modalOpen);
-      dlg?.showModal();
-    });
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('dialog').forEach(d => { if (d.open) d.close(); });
+    const dlg = document.getElementById(btn.dataset.modalOpen);
+    dlg?.showModal();
   });
-  
+});
+
 
 document.querySelectorAll('dialog [data-modal-close]').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const dlg = btn.closest('dialog');
-        if (dlg) dlg?.close();
-    });
+  btn.addEventListener('click', () => {
+    const dlg = btn.closest('dialog');
+    if (dlg) dlg?.close();
+  });
 });
 
 document.querySelectorAll('dialog').forEach(dialog => {
@@ -156,11 +156,11 @@ async function loadConversation(otherUserId) {
       if (item.status === 'pending' && currentUserId === item.receiverId) {
         const accept = document.createElement('button');
         accept.textContent = 'Accept';
-        accept.classList.add('btn--small','btn--primary','active');
+        accept.classList.add('btn--small', 'btn--primary', 'active');
         accept.onclick = async () => {
           await fetch(`/api/offer.php?action=accept`, {
             method: 'POST',
-            headers: {'Content-Type':'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ offerId: item.offerId })
           });
           loadConversation(otherUserId);
@@ -168,11 +168,11 @@ async function loadConversation(otherUserId) {
 
         const decline = document.createElement('button');
         decline.textContent = 'Decline';
-        decline.classList.add('btn--small','btn--primary','delete');
+        decline.classList.add('btn--small', 'btn--primary', 'delete');
         decline.onclick = async () => {
           await fetch(`/api/offer.php?action=decline`, {
             method: 'POST',
-            headers: {'Content-Type':'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ offerId: item.offerId })
           });
           loadConversation(otherUserId);
@@ -217,18 +217,115 @@ async function sendMessage() {
 }
 
 
-//select photo on service page
-    const mainPhoto = document.getElementById('selected-photo');
-    const thumbnailPhotos = document.querySelectorAll('.thumbnail-photos img');
-    thumbnailPhotos.forEach(thumbnail => {
-      thumbnail.addEventListener('click', () => {
-        // Set main photo src to clicked thumbnail src
-        mainPhoto.src = thumbnail.src;
+//--------photo input display----------------
+const mainPhoto = document.getElementById('selected-photo');
+const thumbnailPhotos = document.querySelectorAll('.thumbnail-photos img');
+thumbnailPhotos.forEach(thumbnail => {
+  thumbnail.addEventListener('click', () => {
+    // Set main photo src to clicked thumbnail src
+    mainPhoto.src = thumbnail.src;
 
-        // Highlight selected photo
-        document.querySelectorAll('.thumbnail-photos img').forEach(img => {
-          img.removeAttribute('data-selected');
-        });
-        thumbnail.setAttribute('data-selected', 'true');
-      });
+    // Highlight selected photo
+    document.querySelectorAll('.thumbnail-photos img').forEach(img => {
+      img.removeAttribute('data-selected');
+    });
+    thumbnail.setAttribute('data-selected', 'true');
   });
+});
+
+//create multiple images
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.image-input').forEach(function (input) {
+    const preview = input.closest('form') 
+      ? input.closest('form').querySelector('.image-preview')
+      : document.querySelector('.image-preview');
+    if (!preview) return;
+
+    let filesArr = [];
+
+    function updatePreview() {
+      preview.innerHTML = '';
+      filesArr.forEach(function (file, idx) {
+        const wrapper = document.createElement('div');
+        wrapper.style.position = 'relative';
+        wrapper.style.display = 'inline-block';
+        wrapper.style.margin = '5px';
+
+        const img = document.createElement('img');
+        img.style.maxWidth = '120px';
+        img.style.maxHeight = '120px';
+        img.style.display = 'block';
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.textContent = '×';
+        removeBtn.title = 'Remove image';
+        removeBtn.style.position = 'absolute';
+        removeBtn.style.top = '2px';
+        removeBtn.style.right = '2px';
+        removeBtn.style.background = 'rgba(0,0,0,0.6)';
+        removeBtn.style.color = '#fff';
+        removeBtn.style.border = 'none';
+        removeBtn.style.borderRadius = '50%';
+        removeBtn.style.width = '24px';
+        removeBtn.style.height = '24px';
+        removeBtn.style.cursor = 'pointer';
+        removeBtn.style.fontSize = '18px';
+        removeBtn.style.lineHeight = '20px';
+        removeBtn.style.padding = '0';
+
+        removeBtn.addEventListener('click', function () {
+          filesArr.splice(idx, 1);
+          updatePreview();
+        });
+
+        wrapper.appendChild(img);
+        wrapper.appendChild(removeBtn);
+        preview.appendChild(wrapper);
+      });
+
+      recreateInput();
+    }
+
+    function recreateInput() {
+      const oldInput = input;
+      const newInput = oldInput.cloneNode();
+      newInput.value = '';
+      oldInput.parentNode.replaceChild(newInput, oldInput);
+
+      const dataTransfer = new DataTransfer();
+      filesArr.forEach(file => dataTransfer.items.add(file));
+      newInput.files = dataTransfer.files;
+
+      newInput.addEventListener('change', function () {
+        const newFiles = Array.from(newInput.files);
+        filesArr = filesArr.concat(newFiles);
+        updatePreview();
+        newInput.value = '';
+      });
+    }
+
+    input.addEventListener('change', function () {
+      const newFiles = Array.from(input.files);
+      filesArr = filesArr.concat(newFiles);
+      updatePreview();
+      input.value = '';
+    });
+
+    const form = input.closest('form');
+    if (form) {
+      form.addEventListener('submit', function () {
+        const fileInput = form.querySelector('.image-input');
+        const dataTransfer = new DataTransfer();
+        filesArr.forEach(file => dataTransfer.items.add(file));
+        fileInput.files = dataTransfer.files;
+      });
+    }
+  });
+});

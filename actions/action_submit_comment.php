@@ -30,10 +30,10 @@ if (strlen($desc) > 2000) $errors[] = 'Description is too long (max 2000 charact
 
 if ($errors) {
   $_SESSION['create_comment_errors'] = $errors;
-  header('Location: /pages/service.php?id=' . $serviceId);
+  header('Location: /');
   exit;
 }
 $newCommentId = Comment::create($jobOrderId, $buyerUserId, $serviceId, $rating, $desc);
 
-header('Location: /service.php?id=' . $serviceId);
+header('Location: /pages/service.php?id=' . $serviceId);
 exit;

@@ -53,7 +53,7 @@ $service->currency = $currency;
 $service->deliveryDays = $deliveryDays;
 $service->revisions = $revisions;
 
-if (isset($_FILES['photo']) && is_array($_FILES['photo']['tmp_name']) && count(array_filter($_FILES['photo']['tmp_name'])) > 0) {
+if (isset($_FILES['photos']) && is_array($_FILES['photos']['tmp_name']) && count(array_filter($_FILES['photos']['tmp_name'])) > 0) {
     $uploadDir = __DIR__ . '/../images/services/' . $service->id . '/';
 
     // Delete old images if they exist

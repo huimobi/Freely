@@ -11,6 +11,10 @@ require_once __DIR__ . '/../database/scripts/offer.class.php';
 require_once __DIR__ . '/../templates/messages.tpl.php';
 
 $session = Session::getInstance();
+if (!$_SESSION['user_id']) {
+    header("Location: /");
+    exit;
+}
 $allUsers = User::getMessagedUsers($session->getUser()->id);
 $myServices = Service::getAllByUserId($session->getUser()->id);
 $preselectedUserId = isset($_GET['user']) ? intval($_GET['user']) : null;

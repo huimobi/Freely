@@ -4,31 +4,53 @@ require_once __DIR__ . '/../includes/session.php';
 require_once __DIR__ . '/../templates/common.tpl.php';
 require_once __DIR__ . '/../templates/create_service.tpl.php';
 require_once __DIR__ . '/../database/scripts/category.class.php';
-require_once __DIR__ . '/../database/scripts/service.class.php';
+require_once __DIR__ . '/../database/scripts/SERVICE.class.php';
 require_once __DIR__ . '/../database/scripts/user.class.php';
 require_once __DIR__ . '/../database/scripts/comment.class.php';
 require_once __DIR__ . '/../templates/service_page.tpl.php';
+require_once __DIR__ . '/../database/scripts/joborder.class.php';
 
 $id = (int) $_GET['id'] ?? null;
 
-$SERVICE = Service::getService($id);
 
-if (!$SERVICE) {
+$SERVICE = SERVICE::getService($id);
+$SELLER = User::getUser($SERVICE->sellerId) ?? null;
+
+if (!$SERVICE || !$SELLER) {
     header('Location: /');
     exit;
 }
 
-$SERVICE->seller = User::getUser($SERVICE->sellerId);
-$SERVICE->rating = Comment::averageForService($SERVICE->id);
-$SERVICE->numRatings = Comment::countForService($SERVICE->id);
-$SERVICE->category = Category::getById($SERVICE->categoryId);
-$SERVICE->comments = Comment::getByService($SERVICE->id);
-$SERVICE->totalComments = Comment::countForService($SERVICE->id);
-$SERVICE->commentsToShow = 10;
-$SERVICE->photos = getPhotos($SERVICE->id);
+//seller info
+$sellerInfo=[
+    'seller'=>$SELLER,
+    'rating' => Comment::averageForSeller($SELLER->id),
+    'totalServices' => count(SERVICE::getAllByUserId($SELLER->id)),
+    'totalOrders' => count(JobOrder::getAllBySellerId($SELLER->id)),
+    'profilePic' => (file_exists("../images/users/{$SERVICE->sellerId}.jpg") ? "../images/users/{$SERVICE->sellerId}.jpg" : "../images/users/default.jpg"),
+];
+
+//service info
+$serviceComments=Comment::getByService($SERVICE->id);
+foreach ($serviceComments as $comment) {
+    $comment->user = User::getUser($comment->buyerUserId) ?? null;
+    $comment->userProfilePic = file_exists("/images/users/" . $comment->buyerUserId . ".jpg") ? "/images/users/" . $comment->buyerUserId . ".jpg" : "/images/users/default.jpg";
+}
+
+$photos=getPhotos($SERVICE->id);
+$serviceInfo=[
+    'service'=> $SERVICE,
+    'rating' => Comment::averageForService($SERVICE->id) ?? 0,
+    'numRatings' => Comment::countForService($SERVICE->id) ?? 0,
+    'category' => Category::getById($SERVICE->categoryId) ?? null,
+    'comments' => $serviceComments,
+    'totalComments' => Comment::countForService($SERVICE->id) ?? 0,
+    'photos' => $photos,
+    'totalPhotos' => count($photos) ??0,
+];
 
 drawHeader();
-drawServicePage($SERVICE);
+drawServicePage($serviceInfo,$sellerInfo);
 drawFooter();
 
 
