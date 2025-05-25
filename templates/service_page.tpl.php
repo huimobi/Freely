@@ -59,6 +59,7 @@ function drawServicePage(array $SERVICE_INFO, array $SELLER_INFO): void
       <?php if ( $SERVICE_INFO['service']->sellerId != $_SESSION['user_id'] ): ?>
         <div class="service-actions">
           <form action="../pages/payment.php" method="post">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCsrfToken(), ENT_QUOTES) ?>">
             <input type="hidden" name="service_id" value="<?= $SERVICE_INFO['service']->id ?>">
             <button type="submit" class="pay-btn">Proceed to Payment</button>
           </form>

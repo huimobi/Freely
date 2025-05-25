@@ -32,23 +32,34 @@ function drawMyJobsTable(array $orders): void { ?>
               <td><?= htmlspecialchars($order->orderDate) ?></td>
               <td>
                 <?php if ($order->status === 'InProgress'): ?>
-                 <form action="/api/update_order_status.php" method="post" style="display:inline;">
-                   <input type="hidden" name="order_id"   value="<?= $order->id ?>">
-                   <input type="hidden" name="new_status" value="Completed">
-                   <button type="submit" class="btn btn--primary edit">
-                     Complete
-                   </button>
-                 </form>
-                 <form action="/api/update_order_status.php" method="post" style="display:inline;">
-                   <input type="hidden" name="order_id"   value="<?= $order->id ?>">
-                   <input type="hidden" name="new_status" value="Revision">
-                   <button type="submit" class="btn btn--primary edit">
-                     Revision
-                   </button>
-                 </form>
-               <?php else: ?>
-                 &mdash;
-               <?php endif; ?>
+                  <form action="/api/update_order_status.php" method="post" style="display:inline;">
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCsrfToken(), ENT_QUOTES) ?>">
+                    <input type="hidden" name="order_id"   value="<?= $order->id ?>">
+                    <input type="hidden" name="new_status" value="Completed">
+                    <button type="submit" class="btn btn--primary edit"> Complete </button>
+                  </form>  <form action="/api/update_order_status.php" method="post" style="display:inline;">
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCsrfToken(), ENT_QUOTES) ?>">
+                    <input type="hidden" name="order_id"   value="<?= $order->id ?>">
+                    <input type="hidden" name="new_status" value="Completed">
+                    <button type="submit" class="btn btn--primary edit"> Complete </button>
+                  </form>
+                  <form action="/api/update_order_status.php" method="post" style="display:inline;">
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCsrfToken(), ENT_QUOTES) ?>">
+                    <input type="hidden" name="order_id"   value="<?= $order->id ?>">
+                    <input type="hidden" name="new_status" value="Revision">
+                    <button type="submit" class="btn btn--primary edit">
+                      Revision
+                    </button>
+                  </form>
+                  <form action="/api/update_order_status.php" method="post" style="display:inline;">
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCsrfToken(), ENT_QUOTES) ?>">
+                    <input type="hidden" name="order_id"   value="<?= $order->id ?>">
+                    <input type="hidden" name="new_status" value="Revision">
+                    <button type="submit" class="btn btn--primary edit"> Revision </button>
+                  </form>
+                <?php else: ?>
+                  &mdash;
+                <?php endif; ?>
               </td>
             </tr>
           <?php endforeach; ?>

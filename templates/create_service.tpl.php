@@ -13,6 +13,7 @@ function drawCreateServiceForm(array $cats, array $errors): void {
   <?php endif; ?>
 
   <form action="/actions/action_create_service.php" method="post" class="create-service__form" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCsrfToken(), ENT_QUOTES) ?>">
 
     <label> Category
       <select name="category_id" required>

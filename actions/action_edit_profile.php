@@ -5,6 +5,10 @@ require_once __DIR__.'/../includes/photo.php';
 require_once __DIR__.'/../database/scripts/user.class.php';
 
 $session = Session::getInstance();
+
+$submitted = $_POST['csrf_token'] ?? '';
+if (!$session->validateCsrfToken($submitted)) {http_response_code(403); exit('Invalid CSRF token');}
+
 $current = $session->getUser();
 if (!$current) { header('Location: /'); exit;}
 

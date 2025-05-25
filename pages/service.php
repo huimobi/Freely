@@ -5,7 +5,7 @@ require_once __DIR__ . '/../includes/photo.php';
 require_once __DIR__ . '/../templates/common.tpl.php';
 require_once __DIR__ . '/../templates/create_service.tpl.php';
 require_once __DIR__ . '/../database/scripts/category.class.php';
-require_once __DIR__ . '/../database/scripts/SERVICE.class.php';
+require_once __DIR__ . '/../database/scripts/service.class.php';
 require_once __DIR__ . '/../database/scripts/user.class.php';
 require_once __DIR__ . '/../database/scripts/comment.class.php';
 require_once __DIR__ . '/../templates/service_page.tpl.php';
@@ -15,6 +15,7 @@ $id = (int) $_GET['id'] ?? null;
 
 
 $SERVICE = SERVICE::getService($id);
+
 $SELLER = User::getUser($SERVICE->sellerId) ?? null;
 
 if (!$SERVICE || !$SELLER) {

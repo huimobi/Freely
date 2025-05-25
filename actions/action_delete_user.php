@@ -4,6 +4,10 @@ require_once __DIR__ . '/../includes/session.php';
 require_once __DIR__ . '/../database/scripts/user.class.php';
 
 $session = Session::getInstance();
+
+$submitted = $_POST['csrf_token'] ?? '';
+if (!$session->validateCsrfToken($submitted)) {http_response_code(403); exit('Invalid CSRF token');}
+
 $currentUser = $session->getUser();
 $targetUserId = intval($_POST['id']);
 

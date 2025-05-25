@@ -1,4 +1,4 @@
-    PRAGMA foreign_keys = ON;
+PRAGMA foreign_keys = ON;
     DROP TABLE IF EXISTS Service;
     DROP TABLE IF EXISTS User;
     DROP TABLE IF EXISTS FreeLancer;
@@ -191,7 +191,52 @@ INSERT INTO User (UserName, FirstName, LastName, Email, PasswordHash, Headline, 
   ('grace_voice','Grace','Wilson','grace.wilson@example.com','hashed_pw7','Voice Over Artist','Professional voiceovers in multiple accents.','912345007'),
   ('hank_consult','Hank','Moore','hank.moore@example.com','hashed_pw8','Business Consultant','Process optimization and market research.','912345008'),
   ('ivy_legal','Ivy','Taylor','ivy.taylor@example.com','hashed_pw9','Legal Advisor','Contracts, IP, and compliance services.','912345009'),
-  ('jack_coach','Jack','Anderson','jack.anderson@example.com','hashed_pw10','Fitness Coach','Personal training and nutrition guidance.','912345010');
+  ('jack_coach','Jack','Anderson','jack.anderson@example.com','hashed_pw10','Fitness Coach','Personal training and nutrition guidance.','912345010'),
+  -- Development & IT
+  ('dev_alex_ramos','Alex','Ramos','alex.ramos@dev.example.com','hashed_pw31','Full-Stack Developer','Desenvolvimento de aplicações web completas com React, Node.js e banco de dados SQL. Experiência em microserviços.','912345031'),
+  ('dev_bruna_santos','Bruna','Santos','bruna.santos@dev.example.com','hashed_pw32','Software Engineer','Especialista em sistemas distribuídos e escalabilidade. Estudo de arquiteturas serverless e CI/CD.','912345032'),
+  ('dev_carlos_moura','Carlos','Moura','carlos.moura@dev.example.com','hashed_pw33','Backend Developer','Focado em design de APIs RESTful e otimização de queries em bancos NoSQL e SQL.','912345033'),
+  -- Design & Creative
+  ('design_luiza_coelho','Luiza','Coelho','luiza.coelho@design.example.com','hashed_pw34','UI/UX Designer','Design de interfaces responsivas e prototipagem de alta fidelidade com Figma e Adobe XD.','912345034'),
+  ('design_marcos_almeida','Marcos','Almeida','marcos.almeida@design.example.com','hashed_pw35','Graphic Designer','Criação de identidades visuais, logotipos e material para impressão. Experiência em branding.','912345035'),
+  ('design_naomi_silva','Naomi','Silva','naomi.silva@design.example.com','hashed_pw36','Illustrator','Ilustração vetorial e arte digital para campanhas, livros infantis e produtos.','912345036'),
+  -- Writing & Translation
+  ('write_fernanda_paulo','Fernanda','Paulo','fernanda.paulo@write.example.com','hashed_pw37','Copywriter','Redação publicitária com foco em storytelling e conversão para sites e anúncios.','912345037'),
+  ('write_gabriel_oliveira','Gabriel','Oliveira','gabriel.oliveira@write.example.com','hashed_pw38','Technical Writer','Documentação técnica clara e detalhada, guias de usuário e whitepapers.','912345038'),
+  ('write_helena_rodrigues','Helena','Rodrigues','helena.rodrigues@write.example.com','hashed_pw39','Translator','Tradução do inglês para o português e vice-versa, revisões e localização de conteúdo.','912345039'),
+  -- Sales & Marketing
+  ('market_igor_rocha','Igor','Rocha','igor.rocha@market.example.com','hashed_pw40','Marketing Strategist','Planejamento de campanhas de marketing digital, SEO e inbound marketing.','912345040'),
+  ('market_julia_costa','Julia','Costa','julia.costa@market.example.com','hashed_pw41','Social Media Manager','Gestão de perfis em redes sociais, criação de calendário editorial e anúncios.','912345041'),
+  ('market_kevin_araujo','Kevin','Araujo','kevin.araujo@market.example.com','hashed_pw42','PPC Specialist','Otimização de campanhas Google Ads e Facebook Ads com foco em ROI e CPA.','912345042'),
+  -- Finance & Accounting
+  ('finance_leonardo_fernandes','Leonardo','Fernandes','leonardo.fernandes@finance.example.com','hashed_pw43','Accountant','Serviços de contabilidade, fechamento mensal, balanços e assessoria fiscal.','912345043'),
+  ('finance_manuela_barbosa','Manuela','Barbosa','manuela.barbosa@finance.example.com','hashed_pw44','Financial Analyst','Análise financeira, projeções de fluxo de caixa e relatórios gerenciais.','912345044'),
+  ('finance_nicolas_pereira','Nicolas','Pereira','nicolas.pereira@finance.example.com','hashed_pw45','Tax Consultant','Consultoria tributária, planejamento fiscal e declarações de imposto de renda.','912345045'),
+  -- Video & Animation
+  ('video_oliveira_campos','Oliveira','Campos','oliveira.campos@video.example.com','hashed_pw46','Video Editor','Edição de vídeos promocionais, cortes dinâmicos e correção de cor no Premiere Pro.','912345046'),
+  ('video_pedro_tavares','Pedro','Tavares','pedro.tavares@video.example.com','hashed_pw47','Animator','Animações 2D e motion graphics para apresentações e vídeos institucionais.','912345047'),
+  ('video_ricardo_vas','Ricardo','Vas','ricardo.vas@video.example.com','hashed_pw48','Cinematographer','Captação de imagem, direção de fotografia e edição avançada para curtas e comerciais.','912345048'),
+  -- Music & Audio
+  ('audio_sophia_mello','Sophia','Mello','sophia.mello@audio.example.com','hashed_pw49','Audio Engineer','Mixagem, masterização e restauração de áudio para podcasts e músicas.','912345049'),
+  ('audio_tiago_lima','Tiago','Lima','tiago.lima@audio.example.com','hashed_pw50','Voice Actor','Locução profissional em diferentes estilos para comerciais, e-learning e narrações.','912345050'),
+  ('audio_ursula_nunes','Ursula','Nunes','ursula.nunes@audio.example.com','hashed_pw51','Composer','Composição de trilhas sonoras e jingles personalizados para marcas.','912345051'),
+  -- Business Consulting
+  ('consult_victor_mendes','Victor','Mendes','victor.mendes@consult.example.com','hashed_pw52','Business Consultant','Análise de processos, planejamento estratégico e melhoria de operações.','912345052'),
+  ('consult_wagner_gomes','Wagner','Gomes','wagner.gomes@consult.example.com','hashed_pw53','Management Advisor','Consultoria em gestão empresarial, liderança e desenvolvimento organizacional.','912345053'),
+  ('consult_xavier_faria','Xavier','Faria','xavier.faria@consult.example.com','hashed_pw54','Market Researcher','Pesquisa de mercado, análise de concorrência e identificação de oportunidades de nicho.','912345054'),
+  -- Legal Services
+  ('legal_yasmin_rocha','Yasmin','Rocha','yasmin.rocha@legal.example.com','hashedPw55','Legal Advisor','Assessoria jurídica em contratos, disputas comerciais e compliance regulatório.','912345055'),
+  ('legal_zara_castro','Zara','Castro','zara.castro@legal.example.com','hashed_pw56','Corporate Lawyer','Consultoria em constituição de empresas, fusões e aquisições.','912345056'),
+  ('legal_andre_pinto','Andre','Pinto','andre.pinto@legal.example.com','hashed_pw57','IP Specialist','Proteção de propriedade intelectual, registros de marca e patentes.','912345057'),
+  -- Lifestyle
+  ('life_ana_leitao','Ana','Leitao','ana.leitao@life.example.com','hashed_pw58','Fitness Coach','Treinos personalizados, planejamento alimentar e acompanhamento remoto.','912345058'),
+  ('life_bruno_silva','Bruno','Silva','bruno.silva@life.example.com','hashed_pw59','Chef','Aulas de culinária, elaboração de cardápios e consultoria gastronômica.','912345059'),
+  ('life_carla_neto','Carla','Neto','carla.neto@life.example.com','hashed_pw60','Life Coach','Mentoria de desenvolvimento pessoal, estabelecimento de metas e bem-estar.','912345060'),
+  ('other_anna_martins','Anna','Martins','anna.martins@example.com','hashed_pw61','Artisan','Handcrafted leather goods maker','912345061'),
+  ('other_joao_pereira','João','Pereira','joao.pereira@example.com','hashed_pw62','Virtual Assistant','Professional virtual assistant for administrative tasks','912345062'),
+  ('other_fernanda_lopes','Fernanda','Lopes','fernanda.lopes@example.com','hashed_pw63','Custom Jewelry Designer','Bespoke handmade jewelry creations','912345063'),
+  ('other_rodrigo_silva','Rodrigo','Silva','rodrigo.silva@example.com','hashed_pw64','Language Tutor','Personalized language tutoring sessions','912345064'),
+  ('other_maria_souza','Maria','Souza','maria.souza@example.com','hashed_pw65','Event Planner','Creative event planning and coordination','912345065');
 
 -- Tags
 INSERT INTO Tag (Name) VALUES
@@ -234,23 +279,33 @@ INSERT INTO Service (SellerUserId, CategoryId, Title, Description, BasePrice, Cu
   (9,10,'Legal Consultation Session','One-hour legal advice session',150.0,'EUR',1,0),
   (10,11,'Personal Training Plan','Customized 4-week fitness training plan',100.0,'EUR',7,0),
   (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',81.0,'EUR',5,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',82.0,'EUR',5,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',83.0,'EUR',5,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',84.0,'EUR',5,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',85.0,'EUR',5,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',86.0,'EUR',5,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',87.0,'EUR',5,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',88.0,'EUR',5,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',89.0,'EUR',5,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',90.0,'EUR',5,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',91.0,'EUR',5,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',92.0,'EUR',5,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',93.0,'EUR',5,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',94.0,'EUR',5,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',95.0,'EUR',5,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',96.0,'EUR',5,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',97.0,'EUR',5,0);
-
+  -- additional services for existing freelancers
+  (1,3,'Brand Style Guide','Detailed brand guidelines for consistent identity',120.0,'EUR',7,1),
+  (2,2,'Serverless Architecture Setup','Configure and deploy serverless infrastructure on AWS',500.0,'EUR',5,2),
+  (3,4,'Technical Editing','Proofreading and technical editing of documents up to 2000 words',40.0,'EUR',3,1),
+  (4,5,'LinkedIn Profile Optimization','Optimize LinkedIn profile for professional visibility and networking',60.0,'EUR',2,1),
+  (5,6,'Payroll Processing','Comprehensive payroll setup and monthly processing',200.0,'EUR',10,0),
+  -- services for new 'Other' category freelancers
+  (41,1,'Handcrafted Leather Wallets','High-quality leather wallets handmade to order',75.0,'EUR',5,2),
+  (42,1,'Virtual Admin Support','Efficient virtual administrative assistance for your business',150.0,'EUR',7,3),
+  (43,1,'Bespoke Jewelry Design','Custom jewelry pieces designed and crafted to your specifications',200.0,'EUR',14,2),
+  (44,1,'Online Language Tutoring','One-hour personalized language tutoring session',30.0,'EUR',1,1),
+  (45,1,'Event Planning Coordination','Professional event planning and coordination services',300.0,'EUR',15,2),
+  (2,6,'Data Visualization Dashboard','Interactive dashboard using Python and D3.js',300.0,'EUR',7,2),
+  (3,4,'Resume & Cover Letter','Custom resume and cover letter tailored to job applications',40.0,'EUR',2,1),
+  (4,5,'Email Marketing Campaign','Design and manage targeted email marketing campaigns',150.0,'EUR',7,3),
+  (5,6,'Tax Filing Consultation','Assistance with personal tax filing and compliance',100.0,'EUR',3,1),
+  (6,7,'Short Video Clip','Create short promotional video clip up to 30 seconds',100.0,'EUR',5,1),
+  (7,8,'Podcast Editing','Edit and enhance up to 10-minute podcast episode',80.0,'EUR',3,1),
+  (8,9,'Competitive Analysis','In-depth competitor analysis and market positioning report',500.0,'EUR',10,2),
+  (9,10,'Trademark Registration','Guidance on trademark application and filing',400.0,'EUR',14,1),
+  (10,11,'Yoga Session Plan','Detailed 4-week yoga session plan and guidance',90.0,'EUR',2,0),
+  (41,1,'Leather Repair Service','Repair and refurbishment of leather goods',50.0,'EUR',3,0),
+  (42,1,'Appointment Scheduling','Manage and schedule professional appointments',100.0,'EUR',5,2),
+  (43,1,'Jewelry Repair','Cleaning and repair services for jewelry items',60.0,'EUR',7,1),
+  (44,1,'Language Exam Prep','Preparation sessions for language proficiency exams',50.0,'EUR',3,1),
+  (45,1,'Event Budget Planning','Detailed budget planning for events and coordination',120.0,'EUR',5,1),
+  (1,2,'Mobile App UI Review','Expert review of mobile app UI/UX design',70.0,'EUR',2,1);
 
 -- Messages
 INSERT INTO Message (SenderUserId, ReceiverUserId, Content) VALUES
@@ -317,39 +372,6 @@ PRAGMA foreign_keys = ON;
 PRAGMA foreign_keys = OFF;
 BEGIN TRANSACTION;
 
--- 1) Insert 25 new services
-INSERT INTO Service (SellerUserId, CategoryId, Title, Description, BasePrice, Currency, DeliveryDays, Revisions) VALUES
-  (2, 2, 'Web Dev Service 1',  'Custom web development task #1', 201.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 2',  'Custom web development task #2', 202.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 3',  'Custom web development task #3', 203.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 4',  'Custom web development task #4', 204.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 5',  'Custom web development task #5', 205.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 6',  'Custom web development task #6', 206.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 7',  'Custom web development task #7', 207.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 8',  'Custom web development task #8', 208.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 9',  'Custom web development task #9', 209.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 10', 'Custom web development task #10',210.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 11', 'Custom web development task #11',220.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 12', 'Custom web development task #12',230.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 13', 'Custom web development task #13',240.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 14', 'Custom web development task #14',250.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 15', 'Custom web development task #15',260.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 16', 'Custom web development task #16',270.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 17', 'Custom web development task #17',280.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 18', 'Custom web development task #18',290.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 19', 'Custom web development task #19',300.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 20', 'Custom web development task #20',400.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 21', 'Custom web development task #21',500.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 22', 'Custom web development task #22',600.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 23', 'Custom web development task #23',700.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 24', 'Custom web development task #24',800.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 25', 'Custom web development task #25',900.0, 'EUR', 7, 2);
-
--- 2) Tag all of those new services with TagId = 2 (web development)
-INSERT INTO ServiceTag (ServiceId, TagId)
-SELECT ServiceId, 2
-  FROM Service
- WHERE Title LIKE 'Web Dev Service %';
 
 COMMIT;
 PRAGMA foreign_keys = ON;

@@ -45,12 +45,12 @@ require_once __DIR__ . "/comment_list.php";
 
         <section class="freelancer-description">
             <h2>About <?= htmlspecialchars($freelancerInfo['freelancer']->firstName) ?></h2>
-            <p><?= htmlspecialchars($freelancerInfo['freelancer']->description ?? 'Nenhuma descrição fornecida.') ?></p>
+            <p><?= htmlspecialchars($freelancerInfo['freelancer']->description ?? 'No description') ?></p>
         </section>
 
         <?php if (!empty($services)): ?>
             <section class="freelancer-services">
-                <h2>Freelancer Services</h2>
+                <h2>Offered Services</h2>
                 <div class="service-list">
                     <?php foreach ($services as $service): ?>
                         <?php drawServiceCard($service); ?>

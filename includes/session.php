@@ -6,6 +6,8 @@ session_start();
 require_once __DIR__ . '/../database/scripts/database.php';
 require_once __DIR__ . '/../database/scripts/user.class.php';
 
+if (!isset($_SESSION['csrf_token'])) { $_SESSION['csrf_token'] = bin2hex(random_bytes(32));}
+
 class Session {
     private static ?Session $instance = null;
 
@@ -38,5 +40,13 @@ class Session {
     public function isAdmin(): bool {
         $user = $this->getUser();
         return $user !== null && User::isAdmin($user->id);
+    }
+
+    public function getCsrfToken(): string {
+        return $_SESSION['csrf_token'];
+    }
+
+    public function validateCsrfToken(string $token): bool {
+        return hash_equals($_SESSION['csrf_token'], $token);
     }
 }

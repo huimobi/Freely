@@ -14,6 +14,7 @@
             <p><strong>Seller:</strong> <?= htmlspecialchars($Seller->userName." (".$Seller->firstName." ".$Seller->lastName.")")  ?><p>
         </div>
         <form action="../actions/action_service_payment.php" method="POST">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCsrfToken(), ENT_QUOTES) ?>">
             <label for="card_number">Card Number</label>
             <input type="text" id="card_number" name="card_number" maxlength="19" placeholder="0000 0000 0000 0000">
 

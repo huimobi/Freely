@@ -14,6 +14,7 @@ function drawEditServiceForm($service, array $cats, array $errors): void { ?>
   <?php endif; ?>
 
   <form action="/actions/action_edit_service.php" method="post" class="edit-service__form" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCsrfToken(), ENT_QUOTES) ?>">
     <input type="hidden" name="serviceId" value="<?= $service->id ?>">
 
     <label> Category

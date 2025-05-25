@@ -38,6 +38,7 @@ function drawCategoryList(): void {
   <?php if ($session->isAdmin()): ?>
       <dialog id="addCategoryDialog">
           <form method="post" action="/actions/action_create_category.php" class="modal-form">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCsrfToken(), ENT_QUOTES) ?>">
               <h2>Add New Category</h2>
               <label>
                   <span>Title</span>

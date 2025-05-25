@@ -5,6 +5,10 @@ require_once __DIR__ . '/../database/scripts/category.class.php';
 require_once __DIR__ . '/../database/scripts/service.class.php';
 
 $session = Session::getInstance();
+
+$submitted = $_POST['csrf_token'] ?? '';
+if (!$session->validateCsrfToken($submitted)) {http_response_code(403); exit('Invalid CSRF token');}
+
 if (!$session->isLoggedIn() || !$session->getUser()->isAdmin($session->getUser()->id)) {
     header("Location: ../index.php");
     exit();

@@ -8,6 +8,13 @@ require_once __DIR__ . '/../database/scripts/joborder.class.php';
 
 $session = Session::getInstance();
 if (!$session->isLoggedIn()) {echo json_encode(['status'=>'error','message'=>'Not logged in']); exit;}
+
+$action = $_GET['action'] ?? '';
+if (in_array($action, ['create', 'accept', 'decline'], true)) {
+    $token = $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
+    if (! $session->validateCsrfToken($token)) {echo json_encode(['status' => 'error', 'message' => 'Invalid CSRF token']); exit;}
+}
+
 $userId = $session->getUser()->id;
 $input  = json_decode(file_get_contents('php://input'), true);
 $action = $_GET['action'] ?? '';

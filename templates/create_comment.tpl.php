@@ -11,6 +11,7 @@ function drawCreateCommentForm(int $serviceId, int $jobOrderId): void
         <section class="service-add-comment-section">
             <h2>Leave a Comment</h2>
             <form action="/actions/action_submit_comment.php" method="post" class="add-comment-form">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCsrfToken(), ENT_QUOTES) ?>">
                 <input type="hidden" name="service_id" value="<?= $serviceId ?>">
                 <input type="hidden" name="job_order_id" value="<?= $jobOrderId ?>">
                 <input type="hidden" name="buyer_user_id" value="<?= $user->id ?>">
