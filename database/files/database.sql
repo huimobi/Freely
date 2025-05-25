@@ -290,8 +290,22 @@ INSERT INTO Service (SellerUserId, CategoryId, Title, Description, BasePrice, Cu
   (42,1,'Virtual Admin Support','Efficient virtual administrative assistance for your business',150.0,'EUR',7,3),
   (43,1,'Bespoke Jewelry Design','Custom jewelry pieces designed and crafted to your specifications',200.0,'EUR',14,2),
   (44,1,'Online Language Tutoring','One-hour personalized language tutoring session',30.0,'EUR',1,1),
-  (45,1,'Event Planning Coordination','Professional event planning and coordination services',300.0,'EUR',15,2);
-
+  (45,1,'Event Planning Coordination','Professional event planning and coordination services',300.0,'EUR',15,2),
+  (2,6,'Data Visualization Dashboard','Interactive dashboard using Python and D3.js',300.0,'EUR',7,2),
+  (3,4,'Resume & Cover Letter','Custom resume and cover letter tailored to job applications',40.0,'EUR',2,1),
+  (4,5,'Email Marketing Campaign','Design and manage targeted email marketing campaigns',150.0,'EUR',7,3),
+  (5,6,'Tax Filing Consultation','Assistance with personal tax filing and compliance',100.0,'EUR',3,1),
+  (6,7,'Short Video Clip','Create short promotional video clip up to 30 seconds',100.0,'EUR',5,1),
+  (7,8,'Podcast Editing','Edit and enhance up to 10-minute podcast episode',80.0,'EUR',3,1),
+  (8,9,'Competitive Analysis','In-depth competitor analysis and market positioning report',500.0,'EUR',10,2),
+  (9,10,'Trademark Registration','Guidance on trademark application and filing',400.0,'EUR',14,1),
+  (10,11,'Yoga Session Plan','Detailed 4-week yoga session plan and guidance',90.0,'EUR',2,0),
+  (41,1,'Leather Repair Service','Repair and refurbishment of leather goods',50.0,'EUR',3,0),
+  (42,1,'Appointment Scheduling','Manage and schedule professional appointments',100.0,'EUR',5,2),
+  (43,1,'Jewelry Repair','Cleaning and repair services for jewelry items',60.0,'EUR',7,1),
+  (44,1,'Language Exam Prep','Preparation sessions for language proficiency exams',50.0,'EUR',3,1),
+  (45,1,'Event Budget Planning','Detailed budget planning for events and coordination',120.0,'EUR',5,1),
+  (1,2,'Mobile App UI Review','Expert review of mobile app UI/UX design',70.0,'EUR',2,1);
 
 -- Messages
 INSERT INTO Message (SenderUserId, ReceiverUserId, Content) VALUES
