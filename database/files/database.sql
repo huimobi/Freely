@@ -231,7 +231,12 @@ INSERT INTO User (UserName, FirstName, LastName, Email, PasswordHash, Headline, 
   -- Lifestyle
   ('life_ana_leitao','Ana','Leitao','ana.leitao@life.example.com','hashed_pw58','Fitness Coach','Treinos personalizados, planejamento alimentar e acompanhamento remoto.','912345058'),
   ('life_bruno_silva','Bruno','Silva','bruno.silva@life.example.com','hashed_pw59','Chef','Aulas de culinária, elaboração de cardápios e consultoria gastronômica.','912345059'),
-  ('life_carla_neto','Carla','Neto','carla.neto@life.example.com','hashed_pw60','Life Coach','Mentoria de desenvolvimento pessoal, estabelecimento de metas e bem-estar.','912345060');
+  ('life_carla_neto','Carla','Neto','carla.neto@life.example.com','hashed_pw60','Life Coach','Mentoria de desenvolvimento pessoal, estabelecimento de metas e bem-estar.','912345060'),
+  ('other_anna_martins','Anna','Martins','anna.martins@example.com','hashed_pw61','Artisan','Handcrafted leather goods maker','912345061'),
+  ('other_joao_pereira','João','Pereira','joao.pereira@example.com','hashed_pw62','Virtual Assistant','Professional virtual assistant for administrative tasks','912345062'),
+  ('other_fernanda_lopes','Fernanda','Lopes','fernanda.lopes@example.com','hashed_pw63','Custom Jewelry Designer','Bespoke handmade jewelry creations','912345063'),
+  ('other_rodrigo_silva','Rodrigo','Silva','rodrigo.silva@example.com','hashed_pw64','Language Tutor','Personalized language tutoring sessions','912345064'),
+  ('other_maria_souza','Maria','Souza','maria.souza@example.com','hashed_pw65','Event Planner','Creative event planning and coordination','912345065');
 
 -- Tags
 INSERT INTO Tag (Name) VALUES
@@ -273,7 +278,19 @@ INSERT INTO Service (SellerUserId, CategoryId, Title, Description, BasePrice, Cu
   (9,10,'Contract Drafting','Drafting and review of legal contracts',300.0,'EUR',7,1),
   (9,10,'Legal Consultation Session','One-hour legal advice session',150.0,'EUR',1,0),
   (10,11,'Personal Training Plan','Customized 4-week fitness training plan',100.0,'EUR',7,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',81.0,'EUR',5,0);
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',81.0,'EUR',5,0),
+  -- additional services for existing freelancers
+  (1,3,'Brand Style Guide','Detailed brand guidelines for consistent identity',120.0,'EUR',7,1),
+  (2,2,'Serverless Architecture Setup','Configure and deploy serverless infrastructure on AWS',500.0,'EUR',5,2),
+  (3,4,'Technical Editing','Proofreading and technical editing of documents up to 2000 words',40.0,'EUR',3,1),
+  (4,5,'LinkedIn Profile Optimization','Optimize LinkedIn profile for professional visibility and networking',60.0,'EUR',2,1),
+  (5,6,'Payroll Processing','Comprehensive payroll setup and monthly processing',200.0,'EUR',10,0),
+  -- services for new 'Other' category freelancers
+  (41,1,'Handcrafted Leather Wallets','High-quality leather wallets handmade to order',75.0,'EUR',5,2),
+  (42,1,'Virtual Admin Support','Efficient virtual administrative assistance for your business',150.0,'EUR',7,3),
+  (43,1,'Bespoke Jewelry Design','Custom jewelry pieces designed and crafted to your specifications',200.0,'EUR',14,2),
+  (44,1,'Online Language Tutoring','One-hour personalized language tutoring session',30.0,'EUR',1,1),
+  (45,1,'Event Planning Coordination','Professional event planning and coordination services',300.0,'EUR',15,2);
 
 
 -- Messages
