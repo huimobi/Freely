@@ -46,11 +46,11 @@ function drawServicePage(array $SERVICE_INFO, array $SELLER_INFO): void
       <ul class="comments-list" id="comments-list">
 
         <?php if ($SERVICE_INFO['totalComments'] > 0): 
-          foreach ($SERVICE_INFO['service']->comments as $comment): ?>
+          foreach ($SERVICE_INFO['comments'] as $comment): ?>
 
         <li class="comment">
           <article class="comment-user-info">
-            <img src=<?=$comment->userPorfilePic?> alt="User">
+            <img src="<?= htmlspecialchars($comment->userProfilePic) ?>" class="profile-picture" alt="User">
             <span class="comment-username"><?= htmlspecialchars($comment->user->userName) ?></span>
             <span class="rating">⭐ <?= $comment->rating ?></span>
           </article>
