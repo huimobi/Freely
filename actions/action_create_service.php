@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 require_once __DIR__ . '/../includes/session.php';
+require_once __DIR__ . '/../includes/photo.php';
 require_once __DIR__ . '/../database/scripts/database.php';
 require_once __DIR__. '/../database/scripts/service.class.php';
 require_once __DIR__ . '/../database/scripts/tag.class.php';
@@ -45,24 +46,7 @@ $newServiceId = Service::create( $user->id,$catId, $title, $desc, (float)$basePr
 $rawTags = $_POST['tags'] ?? '';
 Tag::processTagsForService($newServiceId, $rawTags);
 
-if (isset($_FILES['photos']) && is_array($_FILES['photos']['tmp_name'])) {
-    $uploadDir = __DIR__ . '/../images/services/' . $newServiceId . '/';
+Photo::setServicePhotos($_FILES,$newServiceId);
 
-    if (!is_dir($uploadDir)) {
-        mkdir($uploadDir, 0755, true);
-    }
-
-    foreach ($_FILES['photos']['tmp_name'] as $index => $tmpName) {
-        if (is_uploaded_file($tmpName)) {
-            $fileType = mime_content_type($tmpName);
-            if (!in_array($fileType, ['image/jpeg', 'image/png'])) continue;
-
-            $ext = $fileType === 'image/png' ? 'png' : 'jpg';
-            $filename = $index . '.' . $ext;
-            move_uploaded_file($tmpName, $uploadDir . $filename);
-        }
-    }
-}
-
-header('Location: /');
+header('Location: /pages/service.php?id='. $newServiceId);
 exit;

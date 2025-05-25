@@ -47,6 +47,6 @@ if (!empty($queryParams)) {
 }
 
 
-drawHeader("All Services");
+drawHeader();
 drawBrowseServicesPage("All Services", $services, null, $page, $totalPages, $baseUrl);
 drawFooter();

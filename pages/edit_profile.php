@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__.'/../includes/session.php';
+require_once __DIR__.'/../includes/photo.php';
 require_once __DIR__.'/../templates/common.tpl.php';
 require_once __DIR__.'/../templates/edit_profile.tpl.php';
 
@@ -12,5 +13,9 @@ if (!$user) { header('Location: /'); exit;}
 $errors = $_SESSION['edit_errors'] ?? [];
 unset($_SESSION['edit_errors']);
 
+$userInfo=[
+    'user' => $user,
+    'profilePic' =>Photo::getUserProfilePic($user->id)
+];
 drawSimpleHeader();
-drawEditProfileForm($user, $errors);
+drawEditProfileForm($userInfo, $errors);

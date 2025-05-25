@@ -35,16 +35,6 @@ class Session {
         return isset($_SESSION['user_id']);
     }
 
-    public function isClient(): bool {
-        $user = $this->getUser();
-        return $user !== null && User::isClient($user->id);
-    }
-
-    public function isFreelancer(): bool {
-        $user = $this->getUser();
-        return $user !== null && User::isFreelancer($user->id);
-    }
-
     public function isAdmin(): bool {
         $user = $this->getUser();
         return $user !== null && User::isAdmin($user->id);

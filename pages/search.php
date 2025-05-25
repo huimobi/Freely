@@ -55,6 +55,6 @@ $baseUrl = '/pages/search.php?' . http_build_query($queryParams);
 $description = !empty($searchTerm) ? "Results for '" . htmlspecialchars($searchTerm, ENT_QUOTES) . "'" : "Search Results";
 $title = "Services";
 
-drawHeader("Search Results");
+drawHeader();
 drawBrowseServicesPage($title, $services, $desciption, $page, $totalPages, $baseUrl);
 drawFooter();

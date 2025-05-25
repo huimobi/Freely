@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../includes/session.php';
+require_once __DIR__ . '/../includes/photo.php';
 require_once __DIR__ . '/../database/scripts/service.class.php';
 require_once __DIR__ . '/../database/scripts/tag.class.php';
 
@@ -53,33 +54,10 @@ $service->currency = $currency;
 $service->deliveryDays = $deliveryDays;
 $service->revisions = $revisions;
 
-if (isset($_FILES['photos']) && is_array($_FILES['photos']['tmp_name']) && count(array_filter($_FILES['photos']['tmp_name'])) > 0) {
-    $uploadDir = __DIR__ . '/../images/services/' . $service->id . '/';
-
-    // Delete old images if they exist
-    if (is_dir($uploadDir)) {
-        $oldFiles = glob($uploadDir . '*');
-        foreach ($oldFiles as $file) {
-            if (is_file($file)) unlink($file);
-        }
-    } else {
-        mkdir($uploadDir, 0755, true);
-    }
-
-    foreach ($_FILES['photo']['tmp_name'] as $index => $tmpName) {
-        if (is_uploaded_file($tmpName)) {
-            $fileType = mime_content_type($tmpName);
-            if (!in_array($fileType, ['image/jpeg', 'image/png'])) continue;
-
-            $ext = $fileType === 'image/png' ? 'png' : 'jpg';
-            $filename = $index . '.' . $ext;
-            move_uploaded_file($tmpName, $uploadDir . $filename);
-        }
-    }
-}
+Photo::setServicePhotos($_FILES,$serviceId);
 
 $service->save();
 Tag::processTagsForService($service->id, $tags);
 
-header("Location: /pages/my_services.php");
+header("Location: /pages/service.php?id=". $service->id);
 exit;

@@ -38,6 +38,10 @@
       $stmt->execute([ $this->userName, $this->firstName, $this->lastName, $this->email, $this->headline, $this->description, $this->id ]);
     }
 
+    public function getCreationDate(): string {
+      $date = DateTime::createFromFormat('Y-m-d H:i:s', $this->creationDate);
+      return $date->format('d-m-Y'); 
+    }
     public function updatePassword(string $newHash): void {
       $db = Database::getInstance();
       $stmt = $db->prepare('UPDATE User SET PasswordHash = ? WHERE UserId = ?');
