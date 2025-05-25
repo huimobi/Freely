@@ -27,23 +27,27 @@ function drawMyBuysTable(array $orders): void { ?>
             <td>
                 <?php if ($order->status === 'Revision'): ?>
                     <form action="/api/update_order_status.php" method="post" style="display:inline;">
-                    <input type="hidden" name="order_id" value="<?= $order->id ?>">
-                    <input type="hidden" name="new_status" value="Completed">
+                      <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCsrfToken(), ENT_QUOTES) ?>">
+                      <input type="hidden" name="order_id" value="<?= $order->id ?>">
+                      <input type="hidden" name="new_status" value="Completed">
                     <button type="submit" class="btn btn--primary active">Mark as Completed</button>
                     </form>
                     <form action="/api/update_order_status.php" method="post" style="display:inline;">
-                    <input type="hidden" name="order_id" value="<?= $order->id ?>">
-                    <input type="hidden" name="new_status" value="InProgress">
+                      <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCsrfToken(), ENT_QUOTES) ?>">
+                      <input type="hidden" name="order_id" value="<?= $order->id ?>">
+                      <input type="hidden" name="new_status" value="InProgress">
                     <button type="submit" class="btn btn--primary inactive">Send Back</button>
                     </form>
                 <?php elseif ($order->status === 'InProgress'): ?>
                     <form action="/api/update_order_status.php" method="post" style="display:inline;">
+                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCsrfToken(), ENT_QUOTES) ?>">
                         <input type="hidden" name="order_id" value="<?= $order->id ?>">
                         <input type="hidden" name="new_status" value="Cancelled">
                         <button type="submit" class="btn btn--primary delete">Cancel</button>
                     </form>
                   <?php elseif ($order->status === 'Completed' & !$hasComment): ?>
                     <form action="../pages/create_comment.php" method="post" style="display:inline;">
+                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCsrfToken(), ENT_QUOTES) ?>">
                         <input type="hidden" name="order_id" value="<?= $order->id ?>">
                         <input type="hidden" name="service_id" value="<?=$service->id?>">
                         <button type="submit" class="btn btn--primary comment">Comment Service</button>

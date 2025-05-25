@@ -7,6 +7,15 @@ require_once __DIR__ . '/../database/scripts/message.class.php';
 
 $session = Session::getInstance();
 
+$submitted = $_POST['csrf_token'] ?? '';
+$token = $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
+if (! $session->validateCsrfToken($token)) {
+    http_response_code(403);
+    echo json_encode(['status'  => 'error', 'message' => 'Invalid CSRF token']);
+    exit;
+}
+
+
 if (!$session->isLoggedIn()) { echo json_encode(['status' => 'error', 'message' => 'User not logged in']); exit;}
 
 $data = json_decode(file_get_contents('php://input'), true);

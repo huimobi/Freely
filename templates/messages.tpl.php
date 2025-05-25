@@ -61,6 +61,9 @@
 </section>
 
 <script>
+
+  window.CSRF_TOKEN = "<?= htmlspecialchars(Session::getInstance()->getCsrfToken(), ENT_QUOTES) ?>";
+
   const myServices = <?= json_encode(array_map(
     fn($s)=>[
       'id' => $s->id,
@@ -138,7 +141,7 @@
 
         const res  = await fetch('/api/offer.php?action=create', {
           method: 'POST',
-          headers: {'Content-Type':'application/json'},
+          headers: {'Content-Type':'application/json', 'X-CSRF-Token': window.CSRF_TOKEN},
           body: JSON.stringify(payload)
         });
         const data = await res.json();

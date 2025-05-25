@@ -12,6 +12,9 @@ if (!$user || $_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
+$submitted = $_POST['csrf_token'] ?? '';
+if (! $session->validateCsrfToken($submitted)) {http_response_code(403); echo "Invalid CSRF token"; exit;}
+
 $orderId = $_POST['order_id'] ?? null;
 $newStatus = $_POST['new_status'] ?? null;
 

@@ -36,12 +36,14 @@ function drawAdminPanel(array $services, array $users, array $categories): void 
             <td><?= $s->createdAt ?></td>
             <td>
               <form method="post" action="/actions/action_toggle_service.php" style="display:inline;">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCsrfToken(), ENT_QUOTES) ?>">
                 <input type="hidden" name="serviceId" value="<?= $s->id ?>">
                 <button type="submit" class="btn btn--primary <?= $s->isActive ? 'active' : 'inactive' ?>"><?= $s->isActive ? 'Active' : 'Inactive' ?></button>
               </form>
             </td>
             <td>
               <form method="post" action="/actions/action_delete_service.php" style="display:inline;">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCsrfToken(), ENT_QUOTES) ?>">
                 <input type="hidden" name="serviceId" value="<?= $s->id ?>">
                 <button type="submit" class="btn btn--primary delete">Delete</button>
               </form>
@@ -76,12 +78,14 @@ function drawAdminPanel(array $services, array $users, array $categories): void 
             <td><?= $u->creationDate ?></td>
             <td>
               <form method="post" action="/actions/action_toggle_user.php" style="display:inline;">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCsrfToken(), ENT_QUOTES) ?>">
                 <input type="hidden" name="id" value="<?= $u->id ?>">
                 <button type="submit" class="btn btn--primary <?= $u->isActive ? 'active' : 'inactive' ?>"><?= $u->isActive ? 'Active' : 'Inactive' ?></button>
               </form>
             </td>
              <td>
               <form method="post" action="/actions/action_toggle_admin.php" style="display:inline;">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCsrfToken(), ENT_QUOTES) ?>">
                 <input type="hidden" name="id" value="<?= $u->id ?>">
                 <?php $admin = User::isAdmin($u->id); ?>
                 <button type="submit" class="btn btn--primary <?= $admin ? 'active' : 'inactive' ?>"><?= $admin ? 'Admin' : 'User' ?></button>
@@ -90,6 +94,7 @@ function drawAdminPanel(array $services, array $users, array $categories): void 
             <td>
               <?php if (isset($_SESSION['user_id']) && $u->id !== $_SESSION['user_id']): ?>
                 <form method="post" action="/actions/action_delete_user.php" style="display:inline;">
+                  <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCsrfToken(), ENT_QUOTES) ?>">
                   <input type="hidden" name="id" value="<?= $u->id ?>">
                   <button type="submit" class="btn btn--primary delete">Delete</button>
                 </form>
@@ -124,6 +129,7 @@ function drawAdminPanel(array $services, array $users, array $categories): void 
             <td>
               <?php if ($c->id !== 1): ?>
                 <form method="post" action="/actions/action_delete_category.php" style="display:inline;">
+                  <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCsrfToken(), ENT_QUOTES) ?>">
                   <input type="hidden" name="id" value="<?= $c->id ?>">
                   <button type="submit" class="btn btn--primary delete">Delete</button>
                 </form>

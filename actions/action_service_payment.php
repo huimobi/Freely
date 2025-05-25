@@ -8,6 +8,10 @@ require_once __DIR__ . '/../database/scripts/joborder.class.php';
 
 
 $session = Session::getInstance();
+
+$submitted = $_POST['csrf_token'] ?? '';
+if (!$session->validateCsrfToken($submitted)) {http_response_code(403); exit('Invalid CSRF token');}
+
 $user = $session->getUser();
 
 if (!$user) {

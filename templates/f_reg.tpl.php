@@ -14,6 +14,7 @@ declare(strict_types=1);
         <?php endif; ?>
 
         <form action="/actions/action_register.php" method="post">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCsrfToken(), ENT_QUOTES) ?>">
 
             <input type="hidden" name="role" value="freelancer">
 

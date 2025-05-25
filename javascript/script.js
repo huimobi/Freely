@@ -160,7 +160,7 @@ async function loadConversation(otherUserId) {
         accept.onclick = async () => {
           await fetch(`/api/offer.php?action=accept`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': window.CSRF_TOKEN},
             body: JSON.stringify({ offerId: item.offerId })
           });
           loadConversation(otherUserId);
@@ -172,7 +172,7 @@ async function loadConversation(otherUserId) {
         decline.onclick = async () => {
           await fetch(`/api/offer.php?action=decline`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': window.CSRF_TOKEN },
             body: JSON.stringify({ offerId: item.offerId })
           });
           loadConversation(otherUserId);
@@ -202,7 +202,7 @@ async function sendMessage() {
   const content = document.getElementById('message-input').value.trim();
   const response = await fetch('/actions/action_send_message.php', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json' , 'X-CSRF-Token': window.CSRF_TOKEN},
     body: JSON.stringify({ selectedUserId, content })
   });
 

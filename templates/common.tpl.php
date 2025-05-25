@@ -56,6 +56,7 @@ function drawHeader() {
                 </nav>
 
                 <form action="../actions/action_logout.php" method="post" class="login">
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCsrfToken(), ENT_QUOTES) ?>">
                     <button class="btn btn--primary" type="submit">Logout</button>
                 </form>
 
@@ -89,6 +90,7 @@ function drawHeader() {
     <?php endif; ?>
 
     <form action="../actions/action_login.php" method="post" class="login">
+        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCsrfToken(), ENT_QUOTES) ?>">
         <input type="email" name="email" placeholder="you@example.com" required>
         <input type="password" name="password" placeholder="Password" required>
         <button type="submit">Login</button>
@@ -113,6 +115,7 @@ function drawHeader() {
     <?php endif; ?>
 
     <form action="../actions/action_register.php" method="POST">
+        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCsrfToken(), ENT_QUOTES) ?>">
         <input type="hidden" name="role" value="client">
         <input type="text" name="first_name" placeholder="First Name" maxlength="30" required>
         <input type="text" name="last_name" placeholder="Last Name" maxlength="30" required>

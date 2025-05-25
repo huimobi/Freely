@@ -14,6 +14,7 @@ function drawEditProfileForm($user, array $errors): void { ?>
   <?php endif; ?>
 
   <form action="/actions/action_edit_profile.php" method="post" class="edit-profile__form" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCsrfToken(), ENT_QUOTES) ?>">
     <input type="hidden" name="user_id" value="<?= $user->id ?>">
 
     <label> First Name<input type="text" name="first_name" value="<?= htmlspecialchars($user->firstName) ?> "maxlength="30" required> </label>
@@ -31,9 +32,8 @@ function drawEditProfileForm($user, array $errors): void { ?>
   </form>
 
   
-  <form action="/actions/action_delete_account.php" method="post"
-        onsubmit="return confirm('Are you sure you want to delete your account? This cannot be undone.');"
-        class="delete-account__form">
+  <form action="/actions/action_delete_account.php" method="post" onsubmit="return confirm('Are you sure you want to delete your account? This cannot be undone.');" class="delete-account__form">
+    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCsrfToken(), ENT_QUOTES) ?>">
     <input type="hidden" name="user_id" value="<?= $user->id ?>">
     <button type="submit" class="btn btn--danger">Delete Account</button>
   </form>
