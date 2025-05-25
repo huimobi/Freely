@@ -19,16 +19,16 @@ if (!$freelancer) {
     exit;
 }
 
-$services = SERVICE::getAllByUserId($freelancer->id);
+$services = SERVICE::getAllActiveByUserId($freelancer->id);
 foreach ($services as $service) {
     $service->seller=USER::getUser($service->sellerId);
     $service->rating=COMMENT::averageForService($service->id);
     $service->numRatings=COMMENT::countForService($service->id);
 }
 
-$comments= COMMENT::getAllBySeller($freelancer->id);
+$comments= COMMENT::getAllBySeller($id);
 foreach ($comments as $comment) {
-    $comment->user = User::getUser($comment->buyerUserId) ?? null;
+    $comment->user = User::getUser($comment->buyerUserId);
     $comment->userProfilePic = Photo::getUserProfilePic($comment->buyerUserId);
 }
 

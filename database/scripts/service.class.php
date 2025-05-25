@@ -287,6 +287,30 @@ class Service {
         return $services;
     }
 
+    public static function getAllActiveByUserId(int $userId): array {
+        $db = Database::getInstance();
+        $stmt = $db->prepare("SELECT * FROM Service WHERE SellerUserId = ? and IsActive=1");
+        $stmt->execute([$userId]);
+
+        $services = [];
+        while ($service = $stmt->fetch()) {
+            $services[] = new Service(
+                (int)$service['ServiceId'],
+                (int)$service['SellerUserId'],
+                (int)$service['CategoryId'],
+                $service['Title'],
+                $service['Description'],
+                (float)$service['BasePrice'],
+                $service['Currency'],
+                (int)$service['DeliveryDays'],
+                (int)$service['Revisions'],
+                (bool)$service['IsActive'],
+                $service['CreatedAt']
+            );
+        }
+        return $services;
+    }
+
     public static function getTopRated(int $limit = 10): array {
         $db = Database::getInstance();
         $stmt = $db->prepare("SELECT s.*, COALESCE(avgData.avgRating, 0) as avgRating FROM Service s LEFT JOIN ( SELECT ServiceId, AVG(Rating) as avgRating FROM Comment GROUP BY ServiceId ) avgData ON s.ServiceId = avgData.ServiceId WHERE s.IsActive = 1 ORDER BY avgRating DESC LIMIT ?");

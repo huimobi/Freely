@@ -70,17 +70,14 @@ class Comment
     $stmt->execute([$sellerId]);
     $comments = [];
     while ($row = $stmt->fetch()) {
-      $comments = [];
-      while ($row = $stmt->fetch()) {
-        $comments[] = new Comment(
-          (int) $row['JobOrderId'],
-          (int) $row['BuyerUserId'],
-          (int) $row['ServiceId'],
-          (int) $row['Rating'],
-          (string) $row['Description'],
-          (string) $row['CommentDate']
-        );
-      }
+      $comments[] = new Comment(
+        (int) $row['JobOrderId'],
+        (int) $row['BuyerUserId'],
+        (int) $row['ServiceId'],
+        (int) $row['Rating'],
+        (string) $row['Description'],
+        (string) $row['CommentDate']
+      );
     }
     return $comments;
   }

@@ -25,8 +25,8 @@ function drawEditProfileForm(array $userInfo, array $errors): void { ?>
     <label> Headline<textarea name="headline" maxlength="200" ><?= htmlspecialchars($userInfo['user']->headline  ?? '') ?></textarea> </label>
     <label> Description<textarea name="description" maxlength="1000" ><?= htmlspecialchars($userInfo['user']->description  ?? '') ?></textarea> </label>
 
-    <img src="<?= $userInfo['profilePic'] ?>" alt="Profile picture" width="150" height="150"><br>
-    <label>Profile Photo: <input type="file" name="photo" accept="image/jpeg,image/png"></label>
+    <img id="profile-pic-preview" src="<?= $userInfo['profilePic'] ?>" alt="Profile picture" width="150" height="150">
+    <label>Profile Photo: <input type="file" name="photo" accept="image/jpeg,image/png" id="profile-photo-input"></label>
 
     <button type="submit" class="btn btn--primary">Save Changes</button>
   </form>

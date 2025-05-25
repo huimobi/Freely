@@ -12,7 +12,7 @@ function drawCommentList($comments)
             <span class="comment-username"><?= htmlspecialchars($comment->user->userName) ?></span>
             <span class="rating">⭐ <?= $comment->rating ?></span>
           </article>
-          <p><?= htmlspecialchars($comment->description)?></p>
+          <p><?= nl2br(htmlspecialchars($comment->description))?></p>
         </li>
 
           <?php endforeach;?>
