@@ -50,8 +50,8 @@ class Comment
     $stmt->execute([$id]);
 
     $services = [];
-        while ($row = $stmt->fetch()) {
-        $services[]= new Comment(
+    while ($row = $stmt->fetch()) {
+      $services[] = new Comment(
         (int) $row['JobOrderId'],
         (int) $row['BuyerUserId'],
         (int) $row['ServiceId'],
@@ -61,6 +61,28 @@ class Comment
       );
     }
     return $services;
+  }
+
+  public static function getAllBySeller(int $sellerId): array
+  {
+    $db = Database::getInstance();
+    $stmt = $db->prepare('SELECT * from Comment Join Service on Comment.ServiceId=Service.ServiceId where Service.SellerUserId=?');
+    $stmt->execute([$sellerId]);
+    $comments = [];
+    while ($row = $stmt->fetch()) {
+      $comments = [];
+      while ($row = $stmt->fetch()) {
+        $comments[] = new Comment(
+          (int) $row['JobOrderId'],
+          (int) $row['BuyerUserId'],
+          (int) $row['ServiceId'],
+          (int) $row['Rating'],
+          (string) $row['Description'],
+          (string) $row['CommentDate']
+        );
+      }
+    }
+    return $comments;
   }
 
   public static function averageForService(int $serviceId): float
@@ -95,7 +117,8 @@ class Comment
     return (int) $stmt->fetchColumn();
   }
 
-  public static function hasComment($jobOrderId):bool{
+  public static function hasComment($jobOrderId): bool
+  {
     $db = Database::getInstance();
     $stmt = $db->prepare("SELECT * FROM Comment WHERE Comment.jobOrderId=?");
     $stmt->execute([$jobOrderId]);

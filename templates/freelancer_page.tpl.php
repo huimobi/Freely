@@ -1,40 +1,51 @@
-<?php declare(strict_types=1); ?>
-
-<?php function drawFreelancerPage(User $freelancer, array $services = []): void 
-{ 
-    $maleImgs = ['male1.png','male2.jpg','male3.png','male4.jpg'];
-    $femaleImgs = ['female1.jpg','female2.jpg','female3.jpg','female4.jpg'];
-    $pool = (isset($freelancer->gender) && $freelancer->gender === 'F') ? $femaleImgs : $maleImgs;
-    $randomImg = $pool[array_rand($pool)];
+<?php declare(strict_types=1);
+require_once __DIR__ . "/comment_list.php";
 ?>
+
+<?php function drawFreelancerPage(array $freelancerInfo, array $services = []): void
+{ ?>
     <main class="freelancer-page">
         <section class="freelancer-header">
             <div class="freelancer-profile">
-                <img src="/images/users/<?= $randomImg ?>" class="profile-picture"
-                    onerror="this.src='/images/users/default.jpg'" alt="Freelancer">
+                <img src="<?= $freelancerInfo['profilePic'] ?>" class="profile-picture" alt="Freelancer">
                 <div class="freelancer-info">
                     <div class="freelancer-details">
-                        <h1><?= htmlspecialchars($freelancer->name()) ?></h1>
-                        <h2 class="headline"><?= htmlspecialchars($freelancer->headline ?? 'Freelancer') ?></h2>
-                        <div class="rating">
-                            ⭐ <?= $freelancer->rating ?? '0.0' ?> (<?= $freelancer->numReviews ?? '0' ?> reviews)
-                        </div>
+                        <h1><?= htmlspecialchars($freelancerInfo['freelancer']->userName) ?></h1>
+                        <h2 class="headline">
+                            <?= htmlspecialchars($freelancerInfo['freelancer']->headline ?? 'Freelancer') ?>
+                        </h2>
+                        <dl class="freelancer-list-info">
+                            <div class="info-group left">
+                                <dt>Name</dt>
+                                <dd><?= htmlspecialchars($freelancerInfo['freelancer']->name()) ?></dd>
+                                <dt>Rating</dt>
+                                <dd>⭐ <?= $freelancerInfo['freelancer']->rating ?? '0.0' ?>
+                                    (<?= $freelancerInfo['freelancer']->numReviews ?? '0' ?> comments)</dd>
+                                <dt>Member Since</dt>
+                                <dd><?= $freelancerInfo['freelancer']->getCreationDate() ?></dd>
+                            </div>
+                            <div class="info-group right">
+                                <dt>Total Orders</dt>
+                                <dd><?= $freelancerInfo['totalOrders'] ?></dd>
+                                <dt>Total Services</dt>
+                                <dd><?= $freelancerInfo['totalServices'] ?></dd>
+                            </div>
+                        </dl>
                     </div>
-                    <!--
-                    <div class="contact-wrapper">
-                        <button class="contact-btn" onclick="window.location.href='/pages/message.php?user=<?= $freelancer->id ?>'">
-                            <i class="fa fa-handshake-o"></i> Contratar Freelancer
-                        </button>
-                    </div>
-                    -->
-
                 </div>
+                <div class="contact-wrapper">
+                    <button class="contact-btn"
+                        onclick="window.location.href='/pages/messages.php?user=<?= $freelancerInfo['freelancer']->id ?>'">
+                        <i class="fa fa-handshake-o"></i> Contact Freelancer
+                    </button>
+                </div>
+
             </div>
         </section>
 
         <section class="freelancer-description">
-            <h2>About <?= htmlspecialchars($freelancer->firstName) ?></h2>
-            <p><?= htmlspecialchars($freelancer->description ?? 'Nenhuma descrição fornecida.') ?></p>
+            <h2>About <?= htmlspecialchars($freelancerInfo['freelancer']->firstName) ?></h2>
+            <p><?= htmlspecialchars($freelancerInfo['freelancer']->description ?? 'No description') ?></p>
         </section>
 
         <?php if (!empty($services)): ?>
@@ -48,25 +59,9 @@
             </section>
         <?php endif; ?>
 
-        <?php if (!empty($freelancer->reviews)): ?>
-            <section class="freelancer-reviews">
-                <h2>Reviews</h2>
-                <ul class="reviews-list">
-                    <?php foreach ($freelancer->reviews as $review): ?>
-                        <li class="review">
-                            <div class="review-header">
-                                <img src="/images/users/<?= $review->buyerId ?>.jpg" class="reviewer-img"
-                                     onerror="this.src='/images/users/default.jpg'" alt="Reviewer">
-                                <span class="reviewer-name"><?= htmlspecialchars($review->buyerName) ?></span>
-                                <span class="review-rating">⭐ <?= $review->rating ?></span>
-                            </div>
-                            <p><?= htmlspecialchars($review->text) ?></p>
-                        </li>
-                    <?php endforeach; ?>
-                </ul>
-            </section>
-        <?php endif; ?>
-        
-        <!-- Removemos a seção freelancer-contact pois já movemos o botão -->
+        <section class="freelancer-reviews">
+            <h2>Some comments about this Freelancer</h2>
+            <?php drawCommentList($freelancerInfo['comments']); ?>
+        </section>
     </main>
 <?php } ?>

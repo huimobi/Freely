@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 require_once __DIR__.'/../includes/session.php';
+require_once __DIR__.'/../includes/photo.php';
 require_once __DIR__.'/../database/scripts/user.class.php';
 
 $session = Session::getInstance();
@@ -37,7 +38,7 @@ if ($user && $username !== $user->userName) {
   if (User::usernameExists($username)) {
     $errors[] = 'Username already taken.';
   } else {
-    $user->useNname = $username;
+    $user->userName = $username;
   }
 }
 
@@ -54,11 +55,7 @@ if ($user) {
   $user->headline = $headline;
   $user->description = $description;
 
-  if (isset($_FILES['photo']) && is_uploaded_file($_FILES['photo']['tmp_name'])) {
-      $targetDir = __DIR__ . '/../images/users/';
-      $targetFile = $targetDir . $userId . '.jpg';
-      move_uploaded_file($_FILES['photo']['tmp_name'], $targetFile);
-  }
+  PHOTO::setUserProfilePic($_FILES, $user->id);
 
   if (!empty($newPassword)) {
     $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);

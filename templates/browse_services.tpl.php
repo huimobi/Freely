@@ -49,7 +49,7 @@ function drawBrowseServicesPage(string  $title, array   $services, ?string $cate
         <input type="hidden" name="q" value="<?= htmlspecialchars($_GET['q']) ?>">
       <?php endif; ?>
 
-      <button class="btn--primary" type="submit">Filtrar</button>
+      <button class="btn--primary" type="submit">Filter</button>
     </form>
   </section>
 

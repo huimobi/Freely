@@ -29,5 +29,4 @@ declare(strict_types=1);
             <button type="submit">Create Freelancer Account</button>
         </form>
     </main>
-
 <?php } ?>

@@ -1,4 +1,5 @@
 <?php declare(strict_types=1); 
+require_once __DIR__ ."/comment_list.php";
 function drawServicePage(array $SERVICE_INFO, array $SELLER_INFO): void
 {
   ?>
@@ -13,20 +14,20 @@ function drawServicePage(array $SERVICE_INFO, array $SELLER_INFO): void
           </p>
         </div>
         <span class="rating"><strong>Service Rating</strong>⭐ <?= $SERVICE_INFO['service']->rating ?? '0' ?>
-          (<?= $SERVICE_INFO['service']->numRatings ?? '0' ?>)</span>
+          (<?= count($SERVICE_INFO['comments']) ?? '0' ?>)</span>
       </article>
     </a>
     <section class="service-description">
       <h1><?= htmlspecialchars($SERVICE_INFO['service']->title) ?></h1>
       <div class="service-photo-description">
-        <?php if ($SERVICE_INFO['totalPhotos'] > 0): ?>
+        <?php if (count($SERVICE_INFO['photos'])>0): ?>
           <div class="photo-displayer">
             <div class="main-photo">
               <img id="selected-photo" src="<?= htmlspecialchars($SERVICE_INFO['photos'][0]) ?>" alt="Selected Photo">
             </div>
             <div class="thumbnail-photos">
               <?php foreach ($SERVICE_INFO['photos'] as $index => $photo): ?>
-                <img class="thumbnail" src="<?= htmlspecialchars($photo) ?>" alt="Thumbnail" <?= $index === 0 ? 'data-selected="true"' : '' ?>>
+                <img class="thumbnail" src="<?= htmlspecialchars($photo) ?>" alt="Thumbnail" <?= $index === 0 ? 'data-selected="true"' : '' ?> >
               <?php endforeach; ?>
             </div>
           <?php endif; ?>
@@ -35,32 +36,13 @@ function drawServicePage(array $SERVICE_INFO, array $SELLER_INFO): void
           <h2>About this service</h2>
           <p><?= (htmlspecialchars($SERVICE_INFO['service']->description)) ?></p>
         </section>
-
       </div>
     </section>
     </section>
     <section class="service-comment-section">
 
       <h2>Some comments about this service</h2>
-
-      <ul class="comments-list" id="comments-list">
-
-        <?php if ($SERVICE_INFO['totalComments'] > 0): 
-          foreach ($SERVICE_INFO['comments'] as $comment): ?>
-
-        <li class="comment">
-          <article class="comment-user-info">
-            <img src="<?= htmlspecialchars($comment->userProfilePic) ?>" class="profile-picture" alt="User">
-            <span class="comment-username"><?= htmlspecialchars($comment->user->userName) ?></span>
-            <span class="rating">⭐ <?= $comment->rating ?></span>
-          </article>
-          <p><?= htmlspecialchars($comment->description)?></p>
-        </li>
-
-          <?php endforeach;else: ?>
-          <p id='no_comments'>No comments yet.</p>
-        <?php endif; ?>
-      </ul>
+      <?php drawCommentList($SERVICE_INFO['comments']); ?>
     </section>
     <?php
     ?>
