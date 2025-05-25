@@ -191,10 +191,7 @@ INSERT INTO User (UserName, FirstName, LastName, Email, PasswordHash, Headline, 
   ('grace_voice','Grace','Wilson','grace.wilson@example.com','hashed_pw7','Voice Over Artist','Professional voiceovers in multiple accents.','912345007'),
   ('hank_consult','Hank','Moore','hank.moore@example.com','hashed_pw8','Business Consultant','Process optimization and market research.','912345008'),
   ('ivy_legal','Ivy','Taylor','ivy.taylor@example.com','hashed_pw9','Legal Advisor','Contracts, IP, and compliance services.','912345009'),
-  ('jack_coach','Jack','Anderson','jack.anderson@example.com','hashed_pw10','Fitness Coach','Personal training and nutrition guidance.','912345010');
-
--- Additional Freelancers by Category
-INSERT INTO User (UserName, FirstName, LastName, Email, PasswordHash, Headline, Description, Phone) VALUES
+  ('jack_coach','Jack','Anderson','jack.anderson@example.com','hashed_pw10','Fitness Coach','Personal training and nutrition guidance.','912345010'),
   -- Development & IT
   ('dev_alex_ramos','Alex','Ramos','alex.ramos@dev.example.com','hashed_pw31','Full-Stack Developer','Desenvolvimento de aplicações web completas com React, Node.js e banco de dados SQL. Experiência em microserviços.','912345031'),
   ('dev_bruna_santos','Bruna','Santos','bruna.santos@dev.example.com','hashed_pw32','Software Engineer','Especialista em sistemas distribuídos e escalabilidade. Estudo de arquiteturas serverless e CI/CD.','912345032'),
@@ -228,7 +225,7 @@ INSERT INTO User (UserName, FirstName, LastName, Email, PasswordHash, Headline, 
   ('consult_wagner_gomes','Wagner','Gomes','wagner.gomes@consult.example.com','hashed_pw53','Management Advisor','Consultoria em gestão empresarial, liderança e desenvolvimento organizacional.','912345053'),
   ('consult_xavier_faria','Xavier','Faria','xavier.faria@consult.example.com','hashed_pw54','Market Researcher','Pesquisa de mercado, análise de concorrência e identificação de oportunidades de nicho.','912345054'),
   -- Legal Services
-  ('legal_yasmin_rocha','Yasmin','Rocha','yasmin.rocha@legal.example.com','hashed_pw55','Legal Advisor','Assessoria jurídica em contratos, disputas comerciais e compliance regulatório.','912345055'),
+  ('legal_yasmin_rocha','Yasmin','Rocha','yasmin.rocha@legal.example.com','hashedPw55','Legal Advisor','Assessoria jurídica em contratos, disputas comerciais e compliance regulatório.','912345055'),
   ('legal_zara_castro','Zara','Castro','zara.castro@legal.example.com','hashed_pw56','Corporate Lawyer','Consultoria em constituição de empresas, fusões e aquisições.','912345056'),
   ('legal_andre_pinto','Andre','Pinto','andre.pinto@legal.example.com','hashed_pw57','IP Specialist','Proteção de propriedade intelectual, registros de marca e patentes.','912345057'),
   -- Lifestyle
@@ -344,39 +341,6 @@ PRAGMA foreign_keys = ON;
 PRAGMA foreign_keys = OFF;
 BEGIN TRANSACTION;
 
--- 1) Insert 25 new services
-INSERT INTO Service (SellerUserId, CategoryId, Title, Description, BasePrice, Currency, DeliveryDays, Revisions) VALUES
-  (2, 2, 'Web Dev Service 1',  'Custom web development task #1', 201.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 2',  'Custom web development task #2', 202.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 3',  'Custom web development task #3', 203.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 4',  'Custom web development task #4', 204.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 5',  'Custom web development task #5', 205.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 6',  'Custom web development task #6', 206.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 7',  'Custom web development task #7', 207.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 8',  'Custom web development task #8', 208.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 9',  'Custom web development task #9', 209.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 10', 'Custom web development task #10',210.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 11', 'Custom web development task #11',220.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 12', 'Custom web development task #12',230.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 13', 'Custom web development task #13',240.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 14', 'Custom web development task #14',250.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 15', 'Custom web development task #15',260.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 16', 'Custom web development task #16',270.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 17', 'Custom web development task #17',280.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 18', 'Custom web development task #18',290.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 19', 'Custom web development task #19',300.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 20', 'Custom web development task #20',400.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 21', 'Custom web development task #21',500.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 22', 'Custom web development task #22',600.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 23', 'Custom web development task #23',700.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 24', 'Custom web development task #24',800.0, 'EUR', 7, 2),
-  (2, 2, 'Web Dev Service 25', 'Custom web development task #25',900.0, 'EUR', 7, 2);
-
--- 2) Tag all of those new services with TagId = 2 (web development)
-INSERT INTO ServiceTag (ServiceId, TagId)
-SELECT ServiceId, 2
-  FROM Service
- WHERE Title LIKE 'Web Dev Service %';
 
 COMMIT;
 PRAGMA foreign_keys = ON;
