@@ -276,23 +276,7 @@ INSERT INTO Service (SellerUserId, CategoryId, Title, Description, BasePrice, Cu
   (9,10,'Contract Drafting','Drafting and review of legal contracts',300.0,'EUR',7,1),
   (9,10,'Legal Consultation Session','One-hour legal advice session',150.0,'EUR',1,0),
   (10,11,'Personal Training Plan','Customized 4-week fitness training plan',100.0,'EUR',7,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',81.0,'EUR',5,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',82.0,'EUR',5,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',83.0,'EUR',5,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',84.0,'EUR',5,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',85.0,'EUR',5,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',86.0,'EUR',5,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',87.0,'EUR',5,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',88.0,'EUR',5,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',89.0,'EUR',5,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',90.0,'EUR',5,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',91.0,'EUR',5,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',92.0,'EUR',5,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',93.0,'EUR',5,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',94.0,'EUR',5,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',95.0,'EUR',5,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',96.0,'EUR',5,0),
-  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',97.0,'EUR',5,0);
+  (10,11,'Nutritional Meal Plan','Personalized 4-week meal plan',81.0,'EUR',5,0);
 
 
 -- Messages
