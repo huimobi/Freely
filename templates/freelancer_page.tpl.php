@@ -12,26 +12,29 @@
                         <h1><?= htmlspecialchars($freelancer->name()) ?></h1>
                         <h2 class="headline"><?= htmlspecialchars($freelancer->headline ?? 'Freelancer') ?></h2>
                         <div class="rating">
-                            ⭐ <?= $freelancer->rating ?? '0.0' ?> (<?= $freelancer->numReviews ?? '0' ?> avaliações)
+                            ⭐ <?= $freelancer->rating ?? '0.0' ?> (<?= $freelancer->numReviews ?? '0' ?> reviews)
                         </div>
                     </div>
+                    <!--
                     <div class="contact-wrapper">
                         <button class="contact-btn" onclick="window.location.href='/pages/message.php?user=<?= $freelancer->id ?>'">
                             <i class="fa fa-handshake-o"></i> Contratar Freelancer
                         </button>
                     </div>
+                    -->
+
                 </div>
             </div>
         </section>
 
         <section class="freelancer-description">
-            <h2>Sobre <?= htmlspecialchars($freelancer->firstName) ?></h2>
+            <h2>About <?= htmlspecialchars($freelancer->firstName) ?></h2>
             <p><?= htmlspecialchars($freelancer->description ?? 'Nenhuma descrição fornecida.') ?></p>
         </section>
 
         <?php if (!empty($services)): ?>
             <section class="freelancer-services">
-                <h2>Serviços Oferecidos</h2>
+                <h2>Offered Services</h2>
                 <div class="service-list">
                     <?php foreach ($services as $service): ?>
                         <?php drawServiceCard($service); ?>
@@ -42,7 +45,7 @@
 
         <?php if (!empty($freelancer->reviews)): ?>
             <section class="freelancer-reviews">
-                <h2>Avaliações</h2>
+                <h2>Reviews</h2>
                 <ul class="reviews-list">
                     <?php foreach ($freelancer->reviews as $review): ?>
                         <li class="review">
