@@ -362,16 +362,134 @@ INSERT INTO Admin (UserId) VALUES
   (4);
 
 
+-- ──────────────────────────────────────────────────────────────────────────────
+-- 1) Add 50 new completed job orders (IDs 13–62)
+-- ──────────────────────────────────────────────────────────────────────────────
+INSERT INTO JobOrder (ServiceId, BuyerUserId, SellerUserId, AgreedPrice, Currency, Status, Requirements, StartDate, ExpectedDeliveryDate, ActualDeliveryDate, CompletionDate) VALUES
+  (1,  4, 1,   80.0, 'EUR', 'Completed', 'Logo refresh for new branding',             '2025-03-01','2025-03-03','2025-03-03 10:00:00','2025-03-03 10:00:00'),
+  (2,  5, 1,   50.0, 'EUR', 'Completed', 'Social media graphics for campaign',        '2025-03-02','2025-03-03','2025-03-03 11:15:00','2025-03-03 11:15:00'),
+  (3,  6, 2, 1000.0, 'EUR', 'Completed', 'Full-stack portal for client onboarding',   '2025-03-04','2025-03-18','2025-03-18 09:45:00','2025-03-18 09:45:00'),
+  (4,  7, 2,  300.0, 'EUR', 'Completed', 'REST API for mobile app integration',        '2025-03-05','2025-03-12','2025-03-12 14:20:00','2025-03-12 14:20:00'),
+  (5,  2, 3,   25.0, 'EUR', 'Completed', 'SEO blog post on web design trends',         '2025-03-07','2025-03-10','2025-03-10 13:00:00','2025-03-10 13:00:00'),
+  (6,  1, 3,  100.0, 'EUR', 'Completed', 'Landing page copy with clear CTAs',          '2025-03-08','2025-03-13','2025-03-13 15:30:00','2025-03-13 15:30:00'),
+  (7,  3, 4,  200.0, 'EUR', 'Completed', 'Google Ads setup for product launch',         '2025-03-09','2025-03-14','2025-03-14 10:10:00','2025-03-14 10:10:00'),
+  (8,  6, 4,  500.0, 'EUR', 'Completed', 'Monthly social media management',             '2025-03-11','2025-04-10','2025-04-10 16:00:00','2025-04-10 16:00:00'),
+  (9,  8, 5,  150.0, 'EUR', 'Completed', 'Monthly bookkeeping and reconciliation',        '2025-03-12','2025-04-11','2025-04-11 09:25:00','2025-04-11 09:25:00'),
+  (10, 7, 5,  200.0, 'EUR', 'Completed', 'In-depth tax consultation',                     '2025-03-13','2025-03-20','2025-03-20 12:45:00','2025-03-20 12:45:00'),
+  (11, 2, 6,  250.0, 'EUR', 'Completed', 'Promo video editing for social ads',           '2025-03-15','2025-03-25','2025-03-25 13:30:00','2025-03-25 13:30:00'),
+  (12, 3, 6,  400.0, 'EUR', 'Completed', '60s explainer animation',                       '2025-03-16','2025-03-31','2025-03-31 11:00:00','2025-03-31 11:00:00'),
+  (13, 5, 7,  100.0, 'EUR', 'Completed', 'American voice-over for commercial',            '2025-03-18','2025-03-20','2025-03-20 10:50:00','2025-03-20 10:50:00'),
+  (14, 4, 7,  120.0, 'EUR', 'Completed', 'British narration for corporate video',          '2025-03-19','2025-03-21','2025-03-21 14:15:00','2025-03-21 14:15:00'),
+  (15, 1, 8,  500.0, 'EUR', 'Completed', 'Startup business plan',                           '2025-03-20','2025-03-30','2025-03-30 09:00:00','2025-03-30 09:00:00'),
+  (16, 2, 8,  700.0, 'EUR', 'Completed', 'Detailed market research report',                '2025-03-21','2025-04-04','2025-04-04 10:20:00','2025-04-04 10:20:00'),
+  (17, 3, 9,  300.0, 'EUR', 'Completed', 'Contract drafting for partnership',               '2025-03-22','2025-03-29','2025-03-29 11:10:00','2025-03-29 11:10:00'),
+  (18, 6, 9,  150.0, 'EUR', 'Completed', 'Quick legal consultation session',               '2025-03-23','2025-03-24','2025-03-24 12:00:00','2025-03-24 12:00:00'),
+  (19, 7, 10, 100.0, 'EUR', 'Completed', '4-week personal training plan',                  '2025-03-24','2025-03-31','2025-03-31 14:00:00','2025-03-31 14:00:00'),
+  (20, 8, 10,  81.0, 'EUR', 'Completed', '4-week nutritional meal plan',                   '2025-03-25','2025-03-30','2025-03-30 13:45:00','2025-03-30 13:45:00'),
+  (21,  5, 1, 120.0, 'EUR', 'Completed', 'Brand style guide document',                     '2025-04-01','2025-04-08','2025-04-08 10:30:00','2025-04-08 10:30:00'),
+  (22,  6, 2, 500.0, 'EUR', 'Completed', 'Serverless AWS setup',                             '2025-04-02','2025-04-07','2025-04-07 09:15:00','2025-04-07 09:15:00'),
+  (23,  7, 3,  40.0, 'EUR', 'Completed', 'Technical editing of whitepaper',                 '2025-04-03','2025-04-05','2025-04-05 11:50:00','2025-04-05 11:50:00'),
+  (24,  8, 4,  60.0, 'EUR', 'Completed', 'LinkedIn profile optimization',                  '2025-04-04','2025-04-06','2025-04-06 10:40:00','2025-04-06 10:40:00'),
+  (25,  9, 5, 200.0, 'EUR', 'Completed', 'Monthly payroll processing',                    '2025-04-05','2025-04-15','2025-04-15 09:05:00','2025-04-15 09:05:00'),
+  (26, 10,41,  75.0, 'EUR', 'Completed', 'Handcrafted leather wallet order',                '2025-04-06','2025-04-11','2025-04-11 14:20:00','2025-04-11 14:20:00'),
+  (27,  1,42, 150.0, 'EUR', 'Completed', 'Virtual admin support package',                   '2025-04-07','2025-04-14','2025-04-14 13:00:00','2025-04-14 13:00:00'),
+  (28,  2,43, 200.0, 'EUR', 'Completed', 'Custom jewelry design',                            '2025-04-08','2025-04-22','2025-04-22 12:10:00','2025-04-22 12:10:00'),
+  (29,  3,44,  30.0, 'EUR', 'Completed', '1-hour language tutoring session',                '2025-04-09','2025-04-09','2025-04-09 15:30:00','2025-04-09 15:30:00'),
+  (30,  4,45, 300.0, 'EUR', 'Completed', 'Event planning coordination',                     '2025-04-10','2025-04-25','2025-04-25 10:45:00','2025-04-25 10:45:00'),
+  (31,  5, 2, 300.0, 'EUR', 'Completed', 'Interactive data dashboard',                     '2025-04-11','2025-04-18','2025-04-18 11:20:00','2025-04-18 11:20:00'),
+  (32,  6, 3,  40.0, 'EUR', 'Completed', 'Resume and cover letter package',                '2025-04-12','2025-04-14','2025-04-14 09:50:00','2025-04-14 09:50:00'),
+  (33,  7, 4, 150.0, 'EUR', 'Completed', 'Email marketing campaign setup',                 '2025-04-13','2025-04-20','2025-04-20 14:00:00','2025-04-20 14:00:00'),
+  (34,  8, 5, 100.0, 'EUR', 'Completed', 'Personal tax filing help',                       '2025-04-14','2025-04-17','2025-04-17 10:30:00','2025-04-17 10:30:00'),
+  (35,  9, 6, 100.0, 'EUR', 'Completed', '30-sec promotional clip',                        '2025-04-15','2025-04-20','2025-04-20 09:10:00','2025-04-20 09:10:00'),
+  (36, 10, 7,  80.0, 'EUR', 'Completed', 'Podcast episode editing',                         '2025-04-16','2025-04-19','2025-04-19 11:45:00','2025-04-19 11:45:00'),
+  (37,  1, 8, 500.0, 'EUR', 'Completed', 'Competitor analysis report',                     '2025-04-17','2025-04-27','2025-04-27 15:00:00','2025-04-27 15:00:00'),
+  (38,  2, 9, 400.0, 'EUR', 'Completed', 'Trademark filing guidance',                      '2025-04-18','2025-05-02','2025-05-02 10:05:00','2025-05-02 10:05:00'),
+  (39,  3,10,  90.0, 'EUR', 'Completed', '4-week yoga session plan',                       '2025-04-19','2025-04-23','2025-04-23 14:30:00','2025-04-23 14:30:00'),
+  (40,  4,41,  50.0, 'EUR', 'Completed', 'Leather repair and cleaning',                     '2025-04-20','2025-04-22','2025-04-22 09:20:00','2025-04-22 09:20:00'),
+  (41,  5, 1,  70.0, 'EUR', 'Completed', 'Mobile app UI/UX review',                         '2025-04-21','2025-04-23','2025-04-23 11:15:00','2025-04-23 11:15:00'),
+  (1,  6, 1,   85.0, 'EUR', 'Completed', 'Logo tweaks and color variations',               '2025-04-22','2025-04-24','2025-04-24 13:00:00','2025-04-24 13:00:00'),
+  (2,  7, 1,   55.0, 'EUR', 'Completed', 'Extra banner graphics',                           '2025-04-23','2025-04-25','2025-04-25 14:40:00','2025-04-25 14:40:00'),
+  (3,  8, 2, 1100.0,'EUR', 'Completed', 'Extended web portal with analytics',              '2025-04-24','2025-05-08','2025-05-08 10:25:00','2025-05-08 10:25:00'),
+  (4,  9, 2,  320.0,'EUR', 'Completed', 'API docs and testing suite',                     '2025-04-25','2025-05-02','2025-05-02 12:10:00','2025-05-02 12:10:00'),
+  (5, 10, 3,   30.0,'EUR', 'Completed', 'Extra blog post on UX design',                   '2025-04-26','2025-04-29','2025-04-29 15:20:00','2025-04-29 15:20:00'),
+  (6,  1, 3,  110.0,'EUR', 'Completed', 'Long-form website copy',                          '2025-04-27','2025-05-02','2025-05-02 11:00:00','2025-05-02 11:00:00'),
+  (7,  2, 4,  210.0,'EUR', 'Completed', 'Optimized Google Ads keywords',                   '2025-04-28','2025-05-01','2025-05-01 10:55:00','2025-05-01 10:55:00'),
+  (8,  3, 4,  520.0,'EUR', 'Completed', 'Extra social media posts',                        '2025-04-29','2025-05-29','2025-05-29 09:35:00','2025-05-29 09:35:00'),
+  (9,  4, 5,  160.0,'EUR', 'Completed', 'Detailed ledger reconciliation',                  '2025-04-30','2025-05-30','2025-05-30 14:05:00','2025-05-30 14:05:00');
+
+-- ──────────────────────────────────────────────────────────────────────────────
+-- 2) Add 50 comments, one per the new JobOrder rows (13–62)
+-- ──────────────────────────────────────────────────────────────────────────────
+INSERT INTO Comment (JobOrderId, BuyerUserId, ServiceId, Rating, Description) VALUES
+  (13,  5, 1, 5, 'Fantastic logo update – really captured our brand spirit.'),
+  (14,  4, 2, 4, 'Good graphics, helped our campaign stand out.'),
+  (15,  6, 3, 5, 'The portal is rock-solid, great work!'),
+  (16,  7, 4, 4, 'API works well, documentation was clear.'),
+  (17,  2, 5, 5, 'Blog post drove traffic immediately.'),
+  (18,  1, 6, 4, 'Copy is engaging, but needed one small tweak.'),
+  (19,  3, 7, 5, 'Ads setup doubled our conversions!'),
+  (20,  6, 8, 5, 'Hands-off approach; everything was delivered on time.'),
+  (21,  8, 9, 4, 'Bookkeeping reports were accurate and clear.'),
+  (22,  7,10, 5, 'Tax advice saved me hundreds—highly recommended.'),
+  (23,  2,11, 5, 'Video editing was smooth and on-brand.'),
+  (24,  3,12, 4, 'Animation was great but needed minor color fix.'),
+  (25,  5,13, 5, 'Voice-over quality is top-notch!'),
+  (26,  4,14, 4, 'British accent was spot-on.'),
+  (27,  1,15, 5, 'Business plan was thorough and well-presented.'),
+  (28,  2,16, 5, 'Market report gave us clear insights.'),
+  (29,  3,17, 4, 'Contract was well-written; just a minor clause added.'),
+  (30,  6,18, 5, 'Legal session answered all my questions.'),
+  (31,  7,19, 5, 'My workout plan is spot-on—I feel stronger already.'),
+  (32,  8,20, 4, 'Meal plan is tasty but a bit repetitive.'),
+  (33,  5,21, 5, 'Brand guide keeps our visuals consistent—thank you!'),
+  (34,  6,22, 5, 'AWS setup was seamless, zero downtime.'),
+  (35,  7,23, 4, 'Editing was solid, a few grammar suggestions.'),
+  (36,  8,24, 5, 'LinkedIn revamp got me 10 new connections.'),
+  (37,  9,25, 5, 'Payroll was handled perfectly, no errors.'),
+  (38, 10,26, 4, 'Wallet quality is excellent and stitching is neat.'),
+  (39,  1,27, 5, 'Admin support made my life so much easier.'),
+  (40,  2,28, 5, 'Custom jewelry is stunning—exactly as I imagined.'),
+  (41,  3,29, 4, 'Tutoring was helpful, pacing was just right.'),
+  (42,  4,30, 5, 'Event ran smoothly thanks to the coordination.'),
+  (43,  5,31, 5, 'Dashboard is intuitive and insightful.'),
+  (44,  6,32, 4, 'Resume looks great; a couple of wording tweaks.'),
+  (45,  7,33, 5, 'Email campaign open rate skyrocketed.'),
+  (46,  8,34, 4, 'Tax filing went smoothly, some follow-up needed.'),
+  (47,  9,35, 5, 'Promo clip is eye-catching and concise.'),
+  (48, 10,36, 5, 'Podcast sounds crisp and professional.'),
+  (49,  1,37, 4, 'Good analysis, but wanted a deeper competitive set.'),
+  (50,  2,38, 5, 'Trademark process was demystified—excellent guidance.'),
+  (51,  3,39, 5, 'Yoga plan is balanced and energizing.'),
+  (52,  4,40, 4, 'Leather repair looks great; a small scuff remains.'),
+  (53,  5,41, 5, 'UI review notes were spot-on, improved our app UX.'),
+  (54,  6, 1, 5, 'Second logo round nailed the brief perfectly.'),
+  (55,  7, 2, 4, 'Banner graphics look great; resized once.'),
+  (56,  8, 3, 5, 'Extended portal is robust with analytics.'),
+  (57,  9, 4, 5, 'API docs are clear and complete.'),
+  (58, 10, 5, 4, 'Extra blog post was good, but could use more examples.'),
+  (59,  1, 6, 5, 'Long-form copy reads very smoothly.'),
+  (60,  2, 7, 5, 'Keyword optimization boosted our ROI.'),
+  (61,  3, 8, 5, 'Extra posts kept engagement high all month.'),
+  (62,  4, 9, 4, 'Ledger reconciliation was accurate after one tweak.'),
+  (63,  5,10, 5, 'Loved the attention to detail on the reports.'),
+  (64,  6,11, 5, 'Video color grading is perfect.'),
+  (65,  7,12, 4, 'Animation pacing was slightly slow at start.'),
+  (66,  8,13, 5, 'Voice-over timing is flawless.'),
+  (67,  9,14, 5, 'Narration voice suited our brand tone.'),
+  (68, 10,15, 5, 'Business plan impressed potential investors.'),
+  (69,  1,16, 4, 'Market report could include a SWOT table.'),
+  (70,  2,17, 5, 'Contract draft was legally sound.'),
+  (71,  3,18, 5, 'Legal advice was concise and actionable.'),
+  (72,  4,19, 5, 'Training plan is easy to follow.'),
+  (73,  5,20, 4, 'Meal plan is varied but a bit heavy on carbs.');
+
+
 
 COMMIT;
 PRAGMA foreign_keys = ON;
 
-
-
-
 PRAGMA foreign_keys = OFF;
 BEGIN TRANSACTION;
-
 
 COMMIT;
 PRAGMA foreign_keys = ON;

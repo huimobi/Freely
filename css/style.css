@@ -1281,7 +1281,7 @@ h1 {
   gap: var(--spacing-sm);
 }
 
-.comment-user-info .profile-picture {
+.comment-user-info img {
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -1442,7 +1442,7 @@ h1 {
 @media (max-width: 768px) {
   .freelancer-profile {
     flex-direction: column;
-    text-align: center;
+    align-items: center;
   }
 
   .contact-wrapper {
