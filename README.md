@@ -11,10 +11,15 @@ In terms of Security, we implemented protections against:
 - **SQL Injection:** by using prepared statements
 - **Password security:** by hashing it with `password_hash()`
 
-##Images
+## Images
 ![mainPage](images/website/main.png)
+`Main Page`
+
 ![servicePage](images/website/service.png)
+`Service Page`
+
 ![profilePage](images/website/profile.png)
+`Profile Page`
 
 ## Credits
 - **[Francisco Antunes](https://github.com/nuno-gomes-67)**
