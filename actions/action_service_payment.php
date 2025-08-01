@@ -55,5 +55,5 @@ if ($errors) {
 
 $JobOrderId=JobOrder::create($serviceId, $buyerId, $sellerId, $basePrice,$currency );
 
-header('Location: /pages/my_Buys.php');
+header('Location: /pages/my_buys.php');
 exit;
