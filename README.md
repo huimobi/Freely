@@ -1,7 +1,32 @@
-# ltw03g01
+# FREELY
 
-## Features
+### Context
+This project was developed during LTW (Laboratório e Tecnologias Web) class to deepen the understanding of web technologies such as HTML5, CSS, JavaScript (and AJAX), PHP and SQLite. We built a freelancer–client platform where:
+- Freelancers can offer services and receive evaluations.
+- Clients can browse offers, chat with freelancers, and rate completed jobs.
 
+In terms of Security, we implemented protections against:
+- **XSS:** by output escaping with `htmlspecialchars()`
+- **CSRF:** by using tokens in forms
+- **SQL Injection:** by using prepared statements
+- **Password security:** by hashing it with `password_hash()`
+
+##Images
+![mainPage](images/website/main.png)
+![servicePage](images/website/service.png)
+![profilePage](images/website/profile.png)
+
+## Credits
+- **[Francisco Antunes](https://github.com/nuno-gomes-67)**
+- **[Nuno Gomes](https://github.com/sillss1)**
+- **[Pedro Coelho](https://github.com/huimobi)**
+
+## Grade & Retrospective
+**Final Grade:** **18,3/20**
+
+This project was my first contact with web development. I learned that input validation and output escaping are very important in order to create a secure website and protect it against the vulnerabilities above. I also acquired some understanding of how HTTP and HTTPS requests work, and why HTTPS —by encrypting data in transit— is essential for protecting users’ information.
+
+## Project Requirements:
 **User:**
 - [x] Register a new account.
 - [x] Log in and out.
@@ -34,7 +59,7 @@
     sqlite3 database/database.db < database/database.sql
     php -S localhost:9000
 
-## Credentials
+## Credentials (for testing)
 
 - 1@example.com/1234567890 (admin)
 - 2@example.com/1234567890
